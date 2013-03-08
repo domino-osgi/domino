@@ -1,4 +1,4 @@
-commons-scala-osgi
-==================
+Dominoe
+=======
 
-Write OSGi bundle activators in Scala the easy way
+A lightweight Scala library for writing elegant OSGi bundle activators

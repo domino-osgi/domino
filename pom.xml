@@ -9,16 +9,16 @@
     </parent>
     
     <groupId>org.helgoboss</groupId>
-    <artifactId>commons-scala-osgi</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>dominoe</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
-    <name>Commons Scala OSGi</name>
-    <description>Write OSGi bundle activators in Scala the easy way</description>
-    <url>https://github.com/helgoboss/commons-scala-osgi</url>
+    <name>Dominoe</name>
+    <description>A lightweight Scala library for writing elegant OSGi bundle activators</description>
+    <url>https://github.com/helgoboss/dominoe</url>
     <scm>
-        <url>https://github.com/helgoboss/commons-scala-osgi</url>
-        <connection>scm:git:https://github.com/helgoboss/commons-scala-osgi</connection>
-        <developerConnection>scm:git:https://github.com/helgoboss/commons-scala-osgi</developerConnection>
+        <url>https://github.com/helgoboss/dominoe</url>
+        <connection>scm:git:https://github.com/helgoboss/dominoe</connection>
+        <developerConnection>scm:git:https://github.com/helgoboss/dominoe</developerConnection>
     </scm>
     <licenses>
         <license>

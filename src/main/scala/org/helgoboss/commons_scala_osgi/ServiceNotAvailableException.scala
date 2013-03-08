@@ -1,3 +1,0 @@
-package org.helgoboss.commons_scala_osgi
-
-class ServiceNotAvailableException extends Exception
