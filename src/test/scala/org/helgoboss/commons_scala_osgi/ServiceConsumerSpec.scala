@@ -7,13 +7,13 @@ import org.scalatest.matchers.ShouldMatchers
 import org.osgi.framework.BundleContext
 
 @RunWith(classOf[JUnitRunner])
-class OsgiConsumerSpec extends WordSpec with ShouldMatchers {
+class ServiceConsumerSpec extends WordSpec with ShouldMatchers {
     
     trait MyService {
-        def doIt
+        def doIt()
     }
     
-    object MyBundleActivator extends OsgiConsumer {
+    object MyBundleActivator extends ConvenientBundleActivator {        
         /* Define permanent OSGi service */
         def myService = requiredService[MyService]
         def myService2 = requiredService[MyService]("(myProp=myValue)")
@@ -26,11 +26,11 @@ class OsgiConsumerSpec extends WordSpec with ShouldMatchers {
             
             /* Use primary OSGi service of a type */
             optionalService[MyService].foreach(_.doIt)
-            optionalService[MyService]("(myProp=myValue)").foreach(_.doIt)
+            optionalService[MyService]("(myProp=myValue)") foreach { _.doIt() }
             
             /* Get all existing OSGi services of one type and do something on them */
-            services[MyService].foreach(_.doIt)
-            services[MyService]("(myProp=myValue)").foreach(_.doIt)
+            services[MyService] foreach { _.doIt() }
+            services[MyService]("(myProp=myValue)") foreach { _.doIt() }
         }
     }
     

@@ -4,20 +4,19 @@ import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.WordSpec
 import org.scalatest.matchers.ShouldMatchers
-import org.osgi.framework.BundleContext
 import org.osgi.framework.ServiceRegistration
 
 @RunWith(classOf[JUnitRunner])
-class OsgiProviderSpec extends WordSpec with ShouldMatchers with OsgiProvider {
+class ServiceProviderSpec extends ConvenientBundleActivator with WordSpec with ShouldMatchers {
     trait MyService {
-        def doIt
+        def doIt()
     }
     
     trait MyService2 {
     }
     
     val exampleService = new MyService with MyService2 {
-        def doIt {}
+        def doIt() {}
     }
     
     "An OsgiProvider" should {

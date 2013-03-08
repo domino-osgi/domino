@@ -4,7 +4,6 @@ import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.WordSpec
 import org.scalatest.matchers.ShouldMatchers
-import org.osgi.framework.BundleContext
 
 @RunWith(classOf[JUnitRunner])
 class OsgiContextSpec extends WordSpec with ShouldMatchers {
@@ -15,7 +14,7 @@ class OsgiContextSpec extends WordSpec with ShouldMatchers {
     
     trait Service3
         
-    object MyBundleActivator extends Service1 with OsgiContext with OsgiProvider with OsgiServiceWatcher with OsgiBundleWatcher {
+    object MyBundleActivator extends ConvenientBundleActivator with Service1 {
         whenBundleActive {
             this.providesService[Service1]
             onStart {

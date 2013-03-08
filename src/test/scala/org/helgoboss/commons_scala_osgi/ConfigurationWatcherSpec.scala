@@ -7,8 +7,7 @@ import org.scalatest.matchers.ShouldMatchers
 import org.osgi.framework.BundleContext
 
 @RunWith(classOf[JUnitRunner])
-class OsgiConfigurationWatcherSpec extends WordSpec with ShouldMatchers with OsgiConfigurationWatcher {
-        
+class ConfigurationWatcherSpec extends ConvenientBundleActivator with WordSpec with ShouldMatchers {
     "An OsgiConfigurationWatcher" should {
         val defaultConf = Map("test1" -> 2, "test2" -> "b")
         

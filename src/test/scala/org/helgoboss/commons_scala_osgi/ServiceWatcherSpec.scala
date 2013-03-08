@@ -4,14 +4,12 @@ import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.WordSpec
 import org.scalatest.matchers.ShouldMatchers
-import org.osgi.framework.BundleContext
 import org.osgi.util.tracker.ServiceTracker
 
 @RunWith(classOf[JUnitRunner])
-class OsgiServiceWatcherSpec extends WordSpec with ShouldMatchers with OsgiServiceWatcher {
-    
+class ServiceWatcherSpec extends ConvenientBundleActivator with WordSpec with ShouldMatchers {
     trait MyService {
-        def doIt
+        def doIt()
     }
     
     trait MyOtherService {
