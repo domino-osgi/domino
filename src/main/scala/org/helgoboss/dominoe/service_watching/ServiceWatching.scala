@@ -48,7 +48,7 @@ trait ServiceWatching {
     var optActivationState: Option[ActivationState] = None
 
     watchServices[S] {
-      case AddingService(s, context) =>
+      case ServiceWatcherEvent.AddingService(s, context) =>
         if (filter(context) && optActivationState.isEmpty) {
           /* Not already watching a service of this type */
           val c = capsuleContext.executeWithinNewCapsuleContainer {
@@ -57,7 +57,7 @@ trait ServiceWatching {
           optActivationState = Some(ActivationState(watchedService = s, servicePresentCapsuleContainer = c))
         }
 
-      case RemovedService(s, context) =>
+      case ServiceWatcherEvent.RemovedService(s, context) =>
         optActivationState foreach { activationState =>
           if (s == activationState.watchedService) {
             activationState.servicePresentCapsuleContainer.stop()

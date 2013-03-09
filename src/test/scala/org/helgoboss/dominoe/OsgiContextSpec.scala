@@ -1,11 +1,11 @@
 package org.helgoboss.dominoe
 
-import bundle_watching.AddingBundle
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.WordSpec
 import org.scalatest.matchers.ShouldMatchers
-import service_watching.AddingService
+import service_watching.ServiceWatcherEvent._
+import bundle_watching.BundleWatcherEvent._
 
 @RunWith(classOf[JUnitRunner])
 class OsgiContextSpec extends WordSpec with ShouldMatchers {

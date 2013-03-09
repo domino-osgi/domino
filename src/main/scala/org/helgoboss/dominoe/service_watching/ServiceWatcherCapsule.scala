@@ -27,18 +27,18 @@ class ServiceWatcherCapsule[S <: AnyRef: ClassManifest](
     tracker = new ServiceTracker(bundleContext, completeFilter, null) {
       override def addingService(ref: ServiceReference) = {
         val service = context getService ref
-        val watcherEvent = AddingService(service.asInstanceOf[S], ServiceWatcherContext(tracker, new RichServiceReference[S](ref, bundleContext)))
+        val watcherEvent = ServiceWatcherEvent.AddingService(service.asInstanceOf[S], ServiceWatcherContext(tracker, new RichServiceReference[S](ref, bundleContext)))
         f(watcherEvent)
         service
       }
 
       override def modifiedService(ref: ServiceReference, service: AnyRef) {
-        val watcherEvent = ModifiedService(service.asInstanceOf[S], ServiceWatcherContext(tracker, new RichServiceReference[S](ref, bundleContext)))
+        val watcherEvent = ServiceWatcherEvent.ModifiedService(service.asInstanceOf[S], ServiceWatcherContext(tracker, new RichServiceReference[S](ref, bundleContext)))
         f(watcherEvent)
       }
 
       override def removedService(ref: ServiceReference, service: AnyRef) {
-        val watcherEvent = RemovedService(service.asInstanceOf[S], ServiceWatcherContext(tracker, new RichServiceReference[S](ref, bundleContext)))
+        val watcherEvent = ServiceWatcherEvent.RemovedService(service.asInstanceOf[S], ServiceWatcherContext(tracker, new RichServiceReference[S](ref, bundleContext)))
         f(watcherEvent)
         context ungetService ref
       }

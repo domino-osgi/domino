@@ -12,18 +12,18 @@ class BundleWatcherCapsule(f: BundleWatcherEvent => Unit, bundleContext: BundleC
     import Bundle._
     tracker = new BundleTracker(bundleContext, ACTIVE + INSTALLED + RESOLVED + STARTING + STOPPING + UNINSTALLED, null) {
       override def addingBundle(bundle: Bundle, event: BundleEvent) = {
-        val watcherEvent = AddingBundle(bundle, BundleWatcherContext(tracker))
+        val watcherEvent = BundleWatcherEvent.AddingBundle(bundle, BundleWatcherContext(tracker))
         f(watcherEvent)
         bundle
       }
 
       override def modifiedBundle(bundle: Bundle, event: BundleEvent, obj: AnyRef) {
-        val watcherEvent = ModifiedBundle(bundle, BundleWatcherContext(tracker))
+        val watcherEvent = BundleWatcherEvent.ModifiedBundle(bundle, BundleWatcherContext(tracker))
         f(watcherEvent)
       }
 
       override def removedBundle(bundle: Bundle, event: BundleEvent, obj: AnyRef) {
-        val watcherEvent = RemovedBundle(bundle, BundleWatcherContext(tracker))
+        val watcherEvent = BundleWatcherEvent.RemovedBundle(bundle, BundleWatcherContext(tracker))
         f(watcherEvent)
       }
     }

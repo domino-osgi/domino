@@ -5,7 +5,7 @@ import org.junit.runner.RunWith
 import org.scalatest.WordSpec
 import org.scalatest.matchers.ShouldMatchers
 import org.osgi.util.tracker.ServiceTracker
-import service_watching.{ModifiedService, RemovedService, AddingService}
+import service_watching.ServiceWatcherEvent._
 
 @RunWith(classOf[JUnitRunner])
 class ServiceWatcherSpec extends DominoeActivator with WordSpec with ShouldMatchers {
