@@ -19,24 +19,24 @@ trait ConfigurationWatching {
   protected def bundleContext: BundleContext
   protected def serviceConsuming: ServiceConsuming
 
-  def whenConfigurationActive(servicePid: String, metaTypeProvider: Option[MetaTypeProvider] = None)(f: (Option[Map[String, Any]]) => Unit): ServiceRegistration = {
+  def whenConfigurationActive(servicePid: String, metaTypeProvider: Option[MetaTypeProvider] = None)(f: (Map[String, Any]) => Unit): ServiceRegistration = {
     val s = new ConfigurationWatcherCapsule(servicePid, f, metaTypeProvider, serviceConsuming, bundleContext, capsuleContext)
     capsuleContext.addCapsule(s)
     s.reg
   }
 
-  def whenConfigurationActive(objectClassDefinition: ObjectClassDefinition)(f: (Option[Map[String, Any]]) => Unit): ServiceRegistration = {
+  def whenConfigurationActive(objectClassDefinition: ObjectClassDefinition)(f: (Map[String, Any]) => Unit): ServiceRegistration = {
     val metaTypeProvider = new SingleMetaTypeProvider(objectClassDefinition)
     whenConfigurationActive(objectClassDefinition.id, Some(metaTypeProvider))(f)
   }
 
-  def whenFactoryConfigurationActive(servicePid: String, name: String, metaTypeProvider: Option[MetaTypeProvider] = None)(f: (Option[Map[String, Any]], String) => Unit): ServiceRegistration = {
+  def whenFactoryConfigurationActive(servicePid: String, name: String, metaTypeProvider: Option[MetaTypeProvider] = None)(f: (Map[String, Any], String) => Unit): ServiceRegistration = {
     val s = new FactoryConfigurationWatcherCapsule(servicePid, name, f, metaTypeProvider, serviceConsuming, bundleContext, capsuleContext)
     capsuleContext.addCapsule(s)
     s.reg
   }
 
-  def whenFactoryConfigurationActive(objectClassDefinition: ObjectClassDefinition)(f: (Option[Map[String, Any]], String) => Unit): ServiceRegistration = {
+  def whenFactoryConfigurationActive(objectClassDefinition: ObjectClassDefinition)(f: (Map[String, Any], String) => Unit): ServiceRegistration = {
     val metaTypeProvider = new SingleMetaTypeProvider(objectClassDefinition)
     whenFactoryConfigurationActive(objectClassDefinition.id, objectClassDefinition.name, Some(metaTypeProvider))(f)
   }

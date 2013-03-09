@@ -14,10 +14,7 @@ class ConfigurationWatchingSpec extends DominoeActivator with WordSpec with Shou
         "be able to execute code whenever a specific configuration object is changed" in {
             whenBundleActive {
                 whenConfigurationActive("org.helgoboss.test") { conf =>
-                    val resultConf = conf match {
-                        case Some(c) => defaultConf ++ c
-                        case None => defaultConf
-                    }
+                    defaultConf ++ conf
                 }
             }
         }

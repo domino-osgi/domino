@@ -13,7 +13,7 @@ import org.helgoboss.dominoe.service_consuming.ServiceConsuming
 
 class ConfigurationWatcherCapsule(
     servicePid: String,
-    f: Option[Map[String, Any]] => Unit, metaTypeProvider: Option[MetaTypeProvider],
+    f: Map[String, Any] => Unit, metaTypeProvider: Option[MetaTypeProvider],
     serviceConsuming: ServiceConsuming,
     bundleContext: BundleContext,
     capsuleContext: CapsuleContext
@@ -78,10 +78,10 @@ and call updated(). In updated(), we prevent the execution of the inner block, i
     capsuleContainer = Some(capsuleContext.executeWithinNewCapsuleContainer {
       optConf match {
         case Some(conf) =>
-          f(Some(DominoeUtil.convertToMap(conf)))
+          f(DominoeUtil.convertToMap(conf))
 
         case None =>
-          f(None)
+          f(Map.empty)
       }
     })
 

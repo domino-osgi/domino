@@ -14,7 +14,7 @@ import org.helgoboss.dominoe.service_consuming.ServiceConsuming
 class FactoryConfigurationWatcherCapsule(
     servicePid: String,
     name: String,
-    f: (Option[Map[String, Any]], String) => Unit,
+    f: (Map[String, Any], String) => Unit,
     metaTypeProvider: Option[MetaTypeProvider],
     serviceConsuming: ServiceConsuming,
     bundleContext: BundleContext,
@@ -82,10 +82,10 @@ class FactoryConfigurationWatcherCapsule(
     val newCapsuleContainer = capsuleContext.executeWithinNewCapsuleContainer {
       optConf match {
         case Some(conf) =>
-          f(Some(DominoeUtil.convertToMap(conf)), pid)
+          f(DominoeUtil.convertToMap(conf), pid)
 
         case None =>
-          f(None, pid)
+          f(Map.empty, pid)
       }
     }
     addCapsuleContainer(pid, newCapsuleContainer, optConf)
