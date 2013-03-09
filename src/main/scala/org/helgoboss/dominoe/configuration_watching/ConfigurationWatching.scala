@@ -44,15 +44,3 @@ trait ConfigurationWatching {
 
 }
 
-class SimpleConfigurationWatching(
-    protected val capsuleContext: CapsuleContext,
-    protected val bundleContext: BundleContext,
-    protected val serviceConsuming: ServiceConsuming) extends ConfigurationWatching {
-
-  def this(osgiContext: OsgiContext, serviceConsuming: ServiceConsuming) = this(osgiContext, osgiContext.bundleContext, serviceConsuming)
-
-  def this(DominoeActivator: DominoeActivator) = this(
-    DominoeActivator,
-    DominoeActivator.bundleContext,
-    DominoeActivator)
-}

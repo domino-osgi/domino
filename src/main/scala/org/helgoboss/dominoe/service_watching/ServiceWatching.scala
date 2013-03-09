@@ -104,17 +104,3 @@ trait ServiceWatching {
   }
 }
 
-class SimpleServiceWatching(
-    protected val capsuleContext: CapsuleContext,
-    protected val bundleContext: BundleContext,
-    protected val serviceProviding: ServiceProviding) extends ServiceWatching {
-
-  def this(osgiContext: OsgiContext, serviceProviding: ServiceProviding) = this(
-    osgiContext,
-    osgiContext.bundleContext,
-    serviceProviding)
-
-  def this(DominoeActivator: DominoeActivator) = this(
-    DominoeActivator,
-    DominoeActivator)
-}

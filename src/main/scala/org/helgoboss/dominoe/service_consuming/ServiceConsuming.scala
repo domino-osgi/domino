@@ -103,6 +103,3 @@ trait ServiceConsuming {
 
 }
 
-class SimpleServiceConsuming(protected val bundleContext: BundleContext) extends ServiceConsuming {
-  def this(osgiContext: OsgiContext) = this(osgiContext.bundleContext)
-}

@@ -18,9 +18,3 @@ trait ServiceProviding {
   implicit def serviceToProvidableService(service: AnyRef) = new ProvidableService(service, capsuleContext, bundleContext)
 }
 
-class SimpleServiceProviding(
-    protected val capsuleContext: CapsuleContext,
-    protected val bundleContext: BundleContext) extends ServiceProviding {
-
-  def this(osgiContext: OsgiContext) = this(osgiContext, osgiContext.bundleContext)
-}

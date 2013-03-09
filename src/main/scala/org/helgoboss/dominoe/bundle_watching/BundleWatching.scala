@@ -23,9 +23,3 @@ trait BundleWatching {
   }
 }
 
-class SimpleBundleWatching(
-    protected val capsuleContext: CapsuleContext,
-    protected val bundleContext: BundleContext) extends BundleWatching {
-
-  def this(osgiContext: OsgiContext) = this(osgiContext, osgiContext.bundleContext)
-}
