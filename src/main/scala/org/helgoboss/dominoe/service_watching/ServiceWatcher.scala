@@ -1,25 +1,19 @@
-package org.helgoboss.dominoe
+package org.helgoboss.dominoe.service_watching
 
+import org.helgoboss.dominoe.service_providing.ServiceProvider
+import org.helgoboss.module_support.{ModuleContainer, ModuleContext}
+import org.osgi.framework.{Bundle, ServiceRegistration, BundleContext}
 import org.osgi.util.tracker.ServiceTracker
-import org.helgoboss.module_support._
 import org.helgoboss.status_logger.Status
-import org.osgi.framework._
+import org.helgoboss.dominoe.{DominoeActivator, OsgiContext}
 
-class SimpleServiceWatcher(
-    protected val moduleContext: ModuleContext,
-    protected val bundleContext: BundleContext,
-    protected val serviceProvider: ServiceProvider) extends ServiceWatcher {
-
-  def this(osgiContext: OsgiContext, serviceProvider: ServiceProvider) = this(
-    osgiContext,
-    osgiContext.bundleContext,
-    serviceProvider)
-
-  def this(DominoeActivator: DominoeActivator) = this(
-    DominoeActivator,
-    DominoeActivator)
-}
-
+/**
+ * Created with IntelliJ IDEA.
+ * User: bkl
+ * Date: 09.03.13
+ * Time: 22:26
+ * To change this template use File | Settings | File Templates.
+ */
 trait ServiceWatcher {
   protected val serviceProvider: ServiceProvider
   protected def moduleContext: ModuleContext
@@ -27,58 +21,17 @@ trait ServiceWatcher {
 
   import serviceProvider._
 
-  private class ServiceWatcher[S <: AnyRef: ClassManifest](mf: ClassManifest[_], f: ServiceWatcherEvent[S] => Unit) extends Module {
-    var tracker: ServiceTracker = _
 
-    def start() {
-      /* Construct filter containing generic type info if necessary */
-      val objectClassFilterString = Some("(" + Constants.OBJECTCLASS + "=" + mf.erasure.getName + ")")
-      val completeTypesExpressionFilterString = RichService.createCompleteTypeExpressionFilter(mf)
-
-      val completeFilterString = RichService.linkFiltersWithAnd(
-        objectClassFilterString,
-        completeTypesExpressionFilterString)
-
-      val completeFilter = bundleContext.createFilter(completeFilterString.get)
-
-      /* Create tracker matching this filter */
-      tracker = new ServiceTracker(bundleContext, completeFilter, null) {
-        override def addingService(ref: ServiceReference) = {
-          val service = context getService ref
-          val watcherEvent = AddingService(service.asInstanceOf[S], ServiceWatcherContext(tracker, new RichServiceReference[S](ref, bundleContext)))
-          f(watcherEvent)
-          service
-        }
-
-        override def modifiedService(ref: ServiceReference, service: AnyRef) {
-          val watcherEvent = ModifiedService(service.asInstanceOf[S], ServiceWatcherContext(tracker, new RichServiceReference[S](ref, bundleContext)))
-          f(watcherEvent)
-        }
-
-        override def removedService(ref: ServiceReference, service: AnyRef) {
-          val watcherEvent = RemovedService(service.asInstanceOf[S], ServiceWatcherContext(tracker, new RichServiceReference[S](ref, bundleContext)))
-          f(watcherEvent)
-          context ungetService ref
-        }
-      }
-      tracker.open()
-    }
-
-    def stop() {
-      tracker.close()
-      tracker = null
-    }
-  }
 
   /**
    * Watches the coming, going and changing of services of the given type and allows you to react on it.
    */
   def watchServices[S <: AnyRef: ClassManifest](f: ServiceWatcherEvent[S] => Unit): ServiceTracker = {
-    val sw = new ServiceWatcher[S](classManifest[S], f)
+    val sw = new ServiceWatcherModule[S](classManifest[S], f, bundleContext)
     moduleContext.addModule(sw)
     sw.tracker
   }
-  
+
   def whenServicePresent[S <: AnyRef: ClassManifest](f: (S) => Unit): ServiceTracker = {
     whenFilteredServicePresent[S](_ => true)(f)
   }
@@ -91,7 +44,7 @@ trait ServiceWatcher {
    * TODO Fallback to another service if s is removed and another service of the type is available (reevaluate module).
    */
   def whenFilteredServicePresent[S <: AnyRef: ClassManifest](filter: ServiceWatcherContext[S] => Boolean)(f: (S) => Unit): ServiceTracker = {
-  
+
     case class ActivationState(watchedService: S, servicePresentModuleContainer: ModuleContainer)
     var optActivationState: Option[ActivationState] = None
 
@@ -168,4 +121,19 @@ trait ServiceWatcher {
       }
     }
   }
+}
+
+class SimpleServiceWatcher(
+    protected val moduleContext: ModuleContext,
+    protected val bundleContext: BundleContext,
+    protected val serviceProvider: ServiceProvider) extends ServiceWatcher {
+
+  def this(osgiContext: OsgiContext, serviceProvider: ServiceProvider) = this(
+    osgiContext,
+    osgiContext.bundleContext,
+    serviceProvider)
+
+  def this(DominoeActivator: DominoeActivator) = this(
+    DominoeActivator,
+    DominoeActivator)
 }

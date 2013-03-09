@@ -1,4 +1,4 @@
-package org.helgoboss.dominoe
+package org.helgoboss.dominoe.logging
 
 import org.osgi.service.log.LogService
 import org.helgoboss.commons_scala.Logger

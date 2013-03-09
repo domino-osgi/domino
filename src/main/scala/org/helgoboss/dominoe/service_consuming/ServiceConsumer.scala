@@ -1,19 +1,23 @@
-package org.helgoboss.dominoe
+package org.helgoboss.dominoe.service_consuming
 
 import org.osgi.framework.BundleContext
+import org.helgoboss.dominoe.{DominoeUtil, OsgiContext, RichServiceReference}
 
-class SimpleServiceConsumer(protected val bundleContext: BundleContext) extends ServiceConsumer {
-  def this(osgiContext: OsgiContext) = this(osgiContext.bundleContext)
-}
-
+/**
+ * Created with IntelliJ IDEA.
+ * User: bkl
+ * Date: 09.03.13
+ * Time: 22:25
+ * To change this template use File | Settings | File Templates.
+ */
 trait ServiceConsumer {
   protected def bundleContext: BundleContext
-  
+
   def withService[S <: AnyRef: ClassManifest, R](f: Option[S] => R): R = {
     optionalServiceReference[S] match {
       case Some(ref) =>
         try f(Some(ref.service)) finally bundleContext.ungetService(ref)
-      
+
       case None =>
         f(None)
     }
@@ -69,8 +73,8 @@ trait ServiceConsumer {
       Nil
     } else {
       val cm = classManifest[S]
-      val completeTypeExpressionFilter = RichService.createCompleteTypeExpressionFilter(cm)
-      val completeFilter = RichService.linkFiltersWithAnd(completeTypeExpressionFilter, Option(filter))
+      val completeTypeExpressionFilter = DominoeUtil.createCompleteTypeExpressionFilter(cm)
+      val completeFilter = DominoeUtil.linkFiltersWithAnd(completeTypeExpressionFilter, Option(filter))
       val refs = bundleContext.getServiceReferences(
         cm.erasure.getName,
         completeFilter.orNull)
@@ -97,4 +101,8 @@ trait ServiceConsumer {
     optionalService[S](filter) getOrElse (throw new ServiceNotAvailableException)
   }
 
+}
+
+class SimpleServiceConsumer(protected val bundleContext: BundleContext) extends ServiceConsumer {
+  def this(osgiContext: OsgiContext) = this(osgiContext.bundleContext)
 }

@@ -1,4 +1,4 @@
-package org.helgoboss.dominoe
+package org.helgoboss.dominoe.bundle_watching
 
 import org.osgi.framework.Bundle
 

@@ -1,3 +1,3 @@
-package org.helgoboss.dominoe
+package org.helgoboss.dominoe.service_consuming
 
 class ServiceNotAvailableException extends Exception
