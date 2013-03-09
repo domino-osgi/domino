@@ -1,9 +1,9 @@
 package org.helgoboss.dominoe.service_providing
 
 import org.osgi.framework.{ BundleContext, ServiceRegistration }
-import org.helgoboss.module_support._
+import org.helgoboss.capsule._
 
-class ProvidableService(service: Any, moduleContext: ModuleContext, bundleContext: BundleContext) {
+class ProvidableService(service: Any, capsuleContext: CapsuleContext, bundleContext: BundleContext) {
   def providesService[S <: AnyRef: ClassManifest](properties: (String, Any)*): ServiceRegistration = {
     providesServiceInternal(
       List(classManifest[S]),
@@ -47,8 +47,8 @@ class ProvidableService(service: Any, moduleContext: ModuleContext, bundleContex
   }
 
   private def providesServiceInternal(manifests: List[ClassManifest[_]], properties: Seq[(String, Any)]): ServiceRegistration = {
-    val sp = new ServiceProviderModule(manifests, properties, bundleContext, service)
-    moduleContext.addModule(sp)
+    val sp = new ServiceProviderCapsule(manifests, properties, bundleContext, service)
+    capsuleContext.addCapsule(sp)
     sp.reg
   }
 }

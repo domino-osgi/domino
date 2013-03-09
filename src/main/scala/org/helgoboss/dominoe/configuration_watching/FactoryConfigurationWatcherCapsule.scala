@@ -1,24 +1,24 @@
 package org.helgoboss.dominoe.configuration_watching
 
 import org.osgi.service.cm.{Configuration, ConfigurationAdmin, ManagedServiceFactory}
-import org.helgoboss.module_support.{ModuleContext, ModuleContainer, Module}
+import org.helgoboss.capsule.{CapsuleContext, CapsuleContainer, Capsule}
 import org.osgi.service.metatype.{MetaTypeProvider => JMetaTypeProvider}
 import org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider
 import org.osgi.framework.{BundleContext, Constants, ServiceRegistration}
 import org.helgoboss.scala_osgi_metatype.adapters.MetaTypeProviderAdapter
 import java.util.Dictionary
 import org.helgoboss.dominoe.DominoeUtil
-import org.helgoboss.dominoe.service_consuming.ServiceConsumer
+import org.helgoboss.dominoe.service_consuming.ServiceConsuming
 
 
-class FactoryConfigurationWatcherModule(
+class FactoryConfigurationWatcherCapsule(
     servicePid: String,
     name: String,
     f: (Option[Map[String, Any]], String) => Unit,
     metaTypeProvider: Option[MetaTypeProvider],
-    serviceConsumer: ServiceConsumer,
+    serviceConsuming: ServiceConsuming,
     bundleContext: BundleContext,
-    moduleContext: ModuleContext) extends ManagedServiceFactory with Module with JMetaTypeProvider {
+    capsuleContext: CapsuleContext) extends ManagedServiceFactory with Capsule with JMetaTypeProvider {
 
   var reg: ServiceRegistration = _
 
@@ -28,7 +28,7 @@ class FactoryConfigurationWatcherModule(
     metaTypeProvider map { p => classOf[JMetaTypeProvider].getName }
     )
 
-  var moduleContainers = new collection.mutable.HashMap[String, ModuleContainer]
+  var capsuleContainers = new collection.mutable.HashMap[String, CapsuleContainer]
   var oldOptConfs = new collection.mutable.HashMap[String, Option[Dictionary[_, _]]]
 
   def start() {
@@ -36,7 +36,7 @@ class FactoryConfigurationWatcherModule(
 
     // At first execute inner block synchronously with each configuration
 
-    val configurations = serviceConsumer.withService[ConfigurationAdmin, Traversable[Configuration]] {
+    val configurations = serviceConsuming.withService[ConfigurationAdmin, Traversable[Configuration]] {
       case Some(confAdmin) =>
         Option(confAdmin.listConfigurations("(service.pid=" + servicePid + ")")) match {
           case Some(cs) => cs
@@ -56,7 +56,7 @@ class FactoryConfigurationWatcherModule(
   }
 
   def stop() {
-    moduleContainers.keys foreach { stopAndRemoveModuleContainer }
+    capsuleContainers.keys foreach { stopAndRemoveCapsuleContainer }
     reg.unregister()
     reg = null
   }
@@ -75,11 +75,11 @@ class FactoryConfigurationWatcherModule(
   }
 
   private def executeBlockWithConf(pid: String, optConf: Option[Dictionary[_, _]]) {
-    if (moduleContainers.contains(pid)) {
-      // Existing service is reconfigured. So we have to stop the module corresponding to the PID first.
-      stopAndRemoveModuleContainer(pid)
+    if (capsuleContainers.contains(pid)) {
+      // Existing service is reconfigured. So we have to stop the capsule corresponding to the PID first.
+      stopAndRemoveCapsuleContainer(pid)
     }
-    val newModuleContainer = moduleContext.executeWithinNewModuleContainer {
+    val newCapsuleContainer = capsuleContext.executeWithinNewCapsuleContainer {
       optConf match {
         case Some(conf) =>
           f(Some(DominoeUtil.convertToMap(conf)), pid)
@@ -88,22 +88,22 @@ class FactoryConfigurationWatcherModule(
           f(None, pid)
       }
     }
-    addModuleContainer(pid, newModuleContainer, optConf)
+    addCapsuleContainer(pid, newCapsuleContainer, optConf)
   }
 
   def deleted(pid: String) {
-    stopAndRemoveModuleContainer(pid)
+    stopAndRemoveCapsuleContainer(pid)
   }
 
-  private def addModuleContainer(pid: String, moduleContainer: ModuleContainer, optConf: Option[Dictionary[_, _]]) {
-    moduleContainers += (pid -> moduleContainer)
+  private def addCapsuleContainer(pid: String, capsuleContainer: CapsuleContainer, optConf: Option[Dictionary[_, _]]) {
+    capsuleContainers += (pid -> capsuleContainer)
     oldOptConfs += (pid -> optConf)
   }
 
-  private def stopAndRemoveModuleContainer(pid: String) {
-    val moduleContainer = moduleContainers(pid)
-    moduleContainer.stop()
-    moduleContainers -= pid
+  private def stopAndRemoveCapsuleContainer(pid: String) {
+    val capsuleContainer = capsuleContainers(pid)
+    capsuleContainer.stop()
+    capsuleContainers -= pid
     oldOptConfs -= pid
   }
 

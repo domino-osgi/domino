@@ -2,22 +2,22 @@ package org.helgoboss.dominoe.configuration_watching
 
 import org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider
 import org.osgi.service.cm.{ConfigurationAdmin, ManagedService}
-import org.helgoboss.module_support.{ModuleContext, ModuleContainer, Module}
+import org.helgoboss.capsule.{CapsuleContext, CapsuleContainer, Capsule}
 import org.osgi.service.metatype.{MetaTypeProvider => JMetaTypeProvider}
 import org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider
 import org.helgoboss.scala_osgi_metatype.adapters.MetaTypeProviderAdapter
 import org.osgi.framework.{BundleContext, Constants, ServiceRegistration}
 import java.util.Dictionary
-import org.helgoboss.dominoe.service_consuming.ServiceConsumer
 import org.helgoboss.dominoe.DominoeUtil
+import org.helgoboss.dominoe.service_consuming.ServiceConsuming
 
-class ConfigurationWatcherModule(
+class ConfigurationWatcherCapsule(
     servicePid: String,
     f: Option[Map[String, Any]] => Unit, metaTypeProvider: Option[MetaTypeProvider],
-    serviceConsumer: ServiceConsumer,
+    serviceConsuming: ServiceConsuming,
     bundleContext: BundleContext,
-    moduleContext: ModuleContext
-  ) extends ManagedService with Module with JMetaTypeProvider {
+    capsuleContext: CapsuleContext
+  ) extends ManagedService with Capsule with JMetaTypeProvider {
 
   lazy val metaTypeProviderAdapter = metaTypeProvider map { new MetaTypeProviderAdapter(_) }
 
@@ -27,7 +27,7 @@ class ConfigurationWatcherModule(
 
   var reg: ServiceRegistration = _
 
-  var moduleContainer: Option[ModuleContainer] = None
+  var capsuleContainer: Option[CapsuleContainer] = None
 
   var oldOptConf: Option[Dictionary[_, _]] = None
 
@@ -35,7 +35,7 @@ class ConfigurationWatcherModule(
     val propertiesMap = Map(Constants.SERVICE_PID -> servicePid)
 
     // At first execute inner block synchronously with current configuration.
-    val optConf = serviceConsumer.withService[ConfigurationAdmin, Option[Dictionary[_, _]]] {
+    val optConf = serviceConsuming.withService[ConfigurationAdmin, Option[Dictionary[_, _]]] {
       case Some(confAdmin) =>
         Option(confAdmin.getConfiguration(servicePid).getProperties)
 
@@ -50,7 +50,7 @@ and call updated(). In updated(), we prevent the execution of the inner block, i
   }
 
   def stop() {
-    moduleContainer foreach { _.stop() }
+    capsuleContainer foreach { _.stop() }
     reg.unregister()
     reg = null
   }
@@ -71,11 +71,11 @@ and call updated(). In updated(), we prevent the execution of the inner block, i
   }
 
   private def executeBlockWithConf(optConf: Option[Dictionary[_, _]]) {
-    // Stop previous modules
-    moduleContainer foreach { _.stop() }
+    // Stop previous capsules
+    capsuleContainer foreach { _.stop() }
 
-    // Start new modules
-    moduleContainer = Some(moduleContext.executeWithinNewModuleContainer {
+    // Start new capsules
+    capsuleContainer = Some(capsuleContext.executeWithinNewCapsuleContainer {
       optConf match {
         case Some(conf) =>
           f(Some(DominoeUtil.convertToMap(conf)))
@@ -90,7 +90,7 @@ and call updated(). In updated(), we prevent the execution of the inner block, i
   }
 
   private def getConfigDirectly(): Option[Dictionary[_, _]] = {
-    serviceConsumer.withService[ConfigurationAdmin, Option[Dictionary[_, _]]] {
+    serviceConsuming.withService[ConfigurationAdmin, Option[Dictionary[_, _]]] {
       case Some(confAdmin) =>
         Option(confAdmin.getConfiguration(servicePid)) match {
           case Some(c) => Option(c.getProperties)

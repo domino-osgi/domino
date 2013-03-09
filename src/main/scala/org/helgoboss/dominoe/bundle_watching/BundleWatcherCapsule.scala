@@ -1,11 +1,11 @@
 package org.helgoboss.dominoe.bundle_watching
 
-import org.helgoboss.module_support.Module
+import org.helgoboss.capsule.Capsule
 import org.osgi.util.tracker.BundleTracker
 import org.osgi.framework.{BundleContext, BundleEvent, Bundle}
 
 
-class BundleWatcherModule(f: BundleWatcherEvent => Unit, bundleContext: BundleContext) extends Module {
+class BundleWatcherCapsule(f: BundleWatcherEvent => Unit, bundleContext: BundleContext) extends Capsule {
   var tracker: BundleTracker = _
 
   def start() {

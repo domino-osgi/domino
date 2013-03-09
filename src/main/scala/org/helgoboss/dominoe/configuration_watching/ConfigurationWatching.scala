@@ -1,11 +1,11 @@
 package org.helgoboss.dominoe.configuration_watching
 
-import org.helgoboss.module_support.ModuleContext
+import org.helgoboss.capsule.CapsuleContext
 import org.osgi.framework.{ServiceRegistration, BundleContext}
-import org.helgoboss.dominoe.service_consuming.ServiceConsumer
 import org.helgoboss.scala_osgi_metatype.interfaces.{ObjectClassDefinition, MetaTypeProvider}
 import org.helgoboss.scala_osgi_metatype.builders.SingleMetaTypeProvider
 import org.helgoboss.dominoe.{DominoeActivator, OsgiContext}
+import org.helgoboss.dominoe.service_consuming.ServiceConsuming
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,14 +14,14 @@ import org.helgoboss.dominoe.{DominoeActivator, OsgiContext}
  * Time: 22:20
  * To change this template use File | Settings | File Templates.
  */
-trait ConfigurationWatcher {
-  protected def moduleContext: ModuleContext
+trait ConfigurationWatching {
+  protected def capsuleContext: CapsuleContext
   protected def bundleContext: BundleContext
-  protected def serviceConsumer: ServiceConsumer
+  protected def serviceConsuming: ServiceConsuming
 
   def whenConfigurationActive(servicePid: String, metaTypeProvider: Option[MetaTypeProvider] = None)(f: (Option[Map[String, Any]]) => Unit): ServiceRegistration = {
-    val s = new ConfigurationWatcherModule(servicePid, f, metaTypeProvider, serviceConsumer, bundleContext, moduleContext)
-    moduleContext.addModule(s)
+    val s = new ConfigurationWatcherCapsule(servicePid, f, metaTypeProvider, serviceConsuming, bundleContext, capsuleContext)
+    capsuleContext.addCapsule(s)
     s.reg
   }
 
@@ -31,8 +31,8 @@ trait ConfigurationWatcher {
   }
 
   def whenFactoryConfigurationActive(servicePid: String, name: String, metaTypeProvider: Option[MetaTypeProvider] = None)(f: (Option[Map[String, Any]], String) => Unit): ServiceRegistration = {
-    val s = new FactoryConfigurationWatcherModule(servicePid, name, f, metaTypeProvider, serviceConsumer, bundleContext, moduleContext)
-    moduleContext.addModule(s)
+    val s = new FactoryConfigurationWatcherCapsule(servicePid, name, f, metaTypeProvider, serviceConsuming, bundleContext, capsuleContext)
+    capsuleContext.addCapsule(s)
     s.reg
   }
 
@@ -44,12 +44,12 @@ trait ConfigurationWatcher {
 
 }
 
-class SimpleConfigurationWatcher(
-    protected val moduleContext: ModuleContext,
+class SimpleConfigurationWatching(
+    protected val capsuleContext: CapsuleContext,
     protected val bundleContext: BundleContext,
-    protected val serviceConsumer: ServiceConsumer) extends ConfigurationWatcher {
+    protected val serviceConsuming: ServiceConsuming) extends ConfigurationWatching {
 
-  def this(osgiContext: OsgiContext, serviceConsumer: ServiceConsumer) = this(osgiContext, osgiContext.bundleContext, serviceConsumer)
+  def this(osgiContext: OsgiContext, serviceConsuming: ServiceConsuming) = this(osgiContext, osgiContext.bundleContext, serviceConsuming)
 
   def this(DominoeActivator: DominoeActivator) = this(
     DominoeActivator,

@@ -1,14 +1,14 @@
 package org.helgoboss.dominoe.service_watching
 
-import org.helgoboss.module_support.Module
+import org.helgoboss.capsule.Capsule
 import org.osgi.util.tracker.ServiceTracker
 import org.osgi.framework.{BundleContext, ServiceReference, Constants}
 import org.helgoboss.dominoe.{DominoeUtil, RichServiceReference}
 
-class ServiceWatcherModule[S <: AnyRef: ClassManifest](
+class ServiceWatcherCapsule[S <: AnyRef: ClassManifest](
     mf: ClassManifest[_],
     f: ServiceWatcherEvent[S] => Unit,
-    bundleContext: BundleContext) extends Module {
+    bundleContext: BundleContext) extends Capsule {
 
   var tracker: ServiceTracker = _
 

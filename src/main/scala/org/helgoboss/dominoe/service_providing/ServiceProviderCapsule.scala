@@ -1,15 +1,15 @@
 package org.helgoboss.dominoe.service_providing
 
-import org.helgoboss.module_support.Module
+import org.helgoboss.capsule.Capsule
 import org.osgi.framework.{BundleContext, ServiceRegistration}
 import org.helgoboss.dominoe.DominoeUtil
 
 
-class ServiceProviderModule(
+class ServiceProviderCapsule(
     manifests: List[ClassManifest[_]],
     properties: Seq[(String, Any)],
     bundleContext: BundleContext,
-    service: Any) extends Module {
+    service: Any) extends Capsule {
   var reg: ServiceRegistration = _
 
   def start() {

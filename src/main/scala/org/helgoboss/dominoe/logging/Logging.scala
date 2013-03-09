@@ -1,9 +1,9 @@
 package org.helgoboss.dominoe.logging
 
-import org.helgoboss.dominoe.service_consuming.ServiceConsumer
 import org.helgoboss.commons_scala.{FallbackLogger, Logger, JavaUtilLoggingLogger}
 import org.osgi.service.log.LogService
 import java.util.logging.{Logger => JLogger}
+import org.helgoboss.dominoe.service_consuming.ServiceConsuming
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,13 +13,13 @@ import java.util.logging.{Logger => JLogger}
  * To change this template use File | Settings | File Templates.
  */
 trait Logging {
-  protected def serviceConsumer: ServiceConsumer
+  protected def serviceConsuming: ServiceConsuming
 
   private val fallbackLogger = new JavaUtilLoggingLogger(JLogger.getLogger(getClass.getName))
 
   val log: Logger = new FallbackLogger(primaryLogger, fallbackLogger)
 
-  private def primaryLogger = serviceConsumer.optionalService[LogService] map { s => new OsgiLogger(s) }
+  private def primaryLogger = serviceConsuming.optionalService[LogService] map { s => new OsgiLogger(s) }
 }
 
-class SimpleLogging(protected val serviceConsumer: ServiceConsumer) extends Logging
+class SimpleLogging(protected val serviceConsuming: ServiceConsuming) extends Logging

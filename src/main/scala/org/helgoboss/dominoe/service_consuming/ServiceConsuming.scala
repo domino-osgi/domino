@@ -10,7 +10,7 @@ import org.helgoboss.dominoe.{DominoeUtil, OsgiContext, RichServiceReference}
  * Time: 22:25
  * To change this template use File | Settings | File Templates.
  */
-trait ServiceConsumer {
+trait ServiceConsuming {
   protected def bundleContext: BundleContext
 
   def withService[S <: AnyRef: ClassManifest, R](f: Option[S] => R): R = {
@@ -103,6 +103,6 @@ trait ServiceConsumer {
 
 }
 
-class SimpleServiceConsumer(protected val bundleContext: BundleContext) extends ServiceConsumer {
+class SimpleServiceConsuming(protected val bundleContext: BundleContext) extends ServiceConsuming {
   def this(osgiContext: OsgiContext) = this(osgiContext.bundleContext)
 }

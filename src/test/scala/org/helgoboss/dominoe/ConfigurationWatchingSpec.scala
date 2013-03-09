@@ -7,7 +7,7 @@ import org.scalatest.matchers.ShouldMatchers
 import org.osgi.framework.BundleContext
 
 @RunWith(classOf[JUnitRunner])
-class ConfigurationWatcherSpec extends DominoeActivator with WordSpec with ShouldMatchers {
+class ConfigurationWatchingSpec extends DominoeActivator with WordSpec with ShouldMatchers {
     "An OsgiConfigurationWatcher" should {
         val defaultConf = Map("test1" -> 2, "test2" -> "b")
         
