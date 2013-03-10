@@ -6,6 +6,9 @@ import org.osgi.framework.{BundleContext, BundleEvent, Bundle}
 
 
 class BundleWatcherCapsule(f: BundleWatcherEvent => Unit, bundleContext: BundleContext) extends Capsule {
+  /**
+   * The bundle tracker used to implement this feature. Is available as long as the current scope is active.
+   */
   var tracker: BundleTracker = _
 
   def start() {

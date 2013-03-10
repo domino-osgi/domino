@@ -1,6 +1,6 @@
 package org.helgoboss.dominoe.logging
 
-import org.helgoboss.commons_scala.{FallbackLogger, Logger, JavaUtilLoggingLogger}
+import org.helgoboss.scala_logging.{FallbackLogger, Logger, JavaUtilLoggingLogger}
 import org.osgi.service.log.LogService
 import java.util.logging.{Logger => JLogger}
 import org.helgoboss.dominoe.service_consuming.ServiceConsuming
@@ -22,4 +22,3 @@ trait Logging {
   private def primaryLogger = serviceConsuming.optionalService[LogService] map { s => new OsgiLogger(s) }
 }
 
-class SimpleLogging(protected val serviceConsuming: ServiceConsuming) extends Logging
