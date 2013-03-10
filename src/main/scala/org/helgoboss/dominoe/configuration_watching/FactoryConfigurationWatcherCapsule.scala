@@ -1,7 +1,7 @@
 package org.helgoboss.dominoe.configuration_watching
 
 import org.osgi.service.cm.{Configuration, ConfigurationAdmin, ManagedServiceFactory}
-import org.helgoboss.capsule.{CapsuleContext, CapsuleContainer, Capsule}
+import org.helgoboss.capsule.{CapsuleContext, CapsuleScope, Capsule}
 import org.osgi.service.metatype.{MetaTypeProvider => JMetaTypeProvider}
 import org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider
 import org.osgi.framework.{BundleContext, Constants, ServiceRegistration}
@@ -28,7 +28,7 @@ class FactoryConfigurationWatcherCapsule(
     metaTypeProvider map { p => classOf[JMetaTypeProvider].getName }
     )
 
-  var capsuleContainers = new collection.mutable.HashMap[String, CapsuleContainer]
+  var capsuleScopes = new collection.mutable.HashMap[String, CapsuleScope]
   var oldOptConfs = new collection.mutable.HashMap[String, Option[Dictionary[_, _]]]
 
   def start() {
@@ -56,7 +56,7 @@ class FactoryConfigurationWatcherCapsule(
   }
 
   def stop() {
-    capsuleContainers.keys foreach { stopAndRemoveCapsuleContainer }
+    capsuleScopes.keys foreach { stopAndRemoveCapsuleScope }
     reg.unregister()
     reg = null
   }
@@ -75,11 +75,11 @@ class FactoryConfigurationWatcherCapsule(
   }
 
   private def executeBlockWithConf(pid: String, optConf: Option[Dictionary[_, _]]) {
-    if (capsuleContainers.contains(pid)) {
+    if (capsuleScopes.contains(pid)) {
       // Existing service is reconfigured. So we have to stop the capsule corresponding to the PID first.
-      stopAndRemoveCapsuleContainer(pid)
+      stopAndRemoveCapsuleScope(pid)
     }
-    val newCapsuleContainer = capsuleContext.executeWithinNewCapsuleContainer {
+    val newCapsuleScope = capsuleContext.executeWithinNewCapsuleScope {
       optConf match {
         case Some(conf) =>
           f(DominoeUtil.convertToMap(conf), pid)
@@ -88,22 +88,22 @@ class FactoryConfigurationWatcherCapsule(
           f(Map.empty, pid)
       }
     }
-    addCapsuleContainer(pid, newCapsuleContainer, optConf)
+    addCapsuleScope(pid, newCapsuleScope, optConf)
   }
 
   def deleted(pid: String) {
-    stopAndRemoveCapsuleContainer(pid)
+    stopAndRemoveCapsuleScope(pid)
   }
 
-  private def addCapsuleContainer(pid: String, capsuleContainer: CapsuleContainer, optConf: Option[Dictionary[_, _]]) {
-    capsuleContainers += (pid -> capsuleContainer)
+  private def addCapsuleScope(pid: String, capsuleScope: CapsuleScope, optConf: Option[Dictionary[_, _]]) {
+    capsuleScopes += (pid -> capsuleScope)
     oldOptConfs += (pid -> optConf)
   }
 
-  private def stopAndRemoveCapsuleContainer(pid: String) {
-    val capsuleContainer = capsuleContainers(pid)
-    capsuleContainer.stop()
-    capsuleContainers -= pid
+  private def stopAndRemoveCapsuleScope(pid: String) {
+    val capsuleScope = capsuleScopes(pid)
+    capsuleScope.stop()
+    capsuleScopes -= pid
     oldOptConfs -= pid
   }
 

@@ -25,7 +25,7 @@ trait OsgiContext extends DynamicCapsuleContext with EmptyBundleActivator {
   var bundleContext: BundleContext = _
 
   private var bundleActiveHandler: Option[() => Unit] = None
-  private var bundleActiveCapsuleContainer: Option[CapsuleContainer] = None
+  private var bundleActiveCapsuleScope: Option[CapsuleScope] = None
 
   def whenBundleActive(f: => Unit) {
     bundleActiveHandler = Some(f _)
@@ -39,16 +39,16 @@ trait OsgiContext extends DynamicCapsuleContext with EmptyBundleActivator {
 
     /* Execute the function defined by "whenBundleActive", if any */
     bundleActiveHandler foreach { f =>
-      /* Executes f. All capsules added in f are added to a new capsule container which is returned afterwards. */
-      bundleActiveCapsuleContainer = Some(executeWithinNewCapsuleContainer(f()))
+      /* Executes f. All capsules added in f are added to a new capsule scope which is returned afterwards. */
+      bundleActiveCapsuleScope = Some(executeWithinNewCapsuleScope(f()))
     }
   }
 
   abstract override def stop(context: BundleContext) {
     /* Stop and release all the capsules */
-    bundleActiveCapsuleContainer foreach { mc =>
+    bundleActiveCapsuleScope foreach { mc =>
       mc.stop()
-      bundleActiveCapsuleContainer = None
+      bundleActiveCapsuleScope = None
     }
 
     /* Release bundle context */

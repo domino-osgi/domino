@@ -1,7 +1,7 @@
 package org.helgoboss.dominoe.service_watching
 
 import org.helgoboss.dominoe.service_providing.ServiceProviding
-import org.helgoboss.capsule.{CapsuleContainer, CapsuleContext}
+import org.helgoboss.capsule.{CapsuleScope, CapsuleContext}
 import org.osgi.framework.{Bundle, ServiceRegistration, BundleContext}
 import org.osgi.util.tracker.ServiceTracker
 import org.helgoboss.dominoe.{DominoeActivator, OsgiContext}
@@ -44,23 +44,23 @@ trait ServiceWatching {
    */
   def whenFilteredServicePresent[S <: AnyRef: ClassManifest](filter: ServiceWatcherContext[S] => Boolean)(f: (S) => Unit): ServiceTracker = {
 
-    case class ActivationState(watchedService: S, servicePresentCapsuleContainer: CapsuleContainer)
+    case class ActivationState(watchedService: S, servicePresentCapsuleScope: CapsuleScope)
     var optActivationState: Option[ActivationState] = None
 
     watchServices[S] {
       case ServiceWatcherEvent.AddingService(s, context) =>
         if (filter(context) && optActivationState.isEmpty) {
           /* Not already watching a service of this type */
-          val c = capsuleContext.executeWithinNewCapsuleContainer {
+          val c = capsuleContext.executeWithinNewCapsuleScope {
             f(s)
           }
-          optActivationState = Some(ActivationState(watchedService = s, servicePresentCapsuleContainer = c))
+          optActivationState = Some(ActivationState(watchedService = s, servicePresentCapsuleScope = c))
         }
 
       case ServiceWatcherEvent.RemovedService(s, context) =>
         optActivationState foreach { activationState =>
           if (s == activationState.watchedService) {
-            activationState.servicePresentCapsuleContainer.stop()
+            activationState.servicePresentCapsuleScope.stop()
             optActivationState = None
             if (bundleContext.getBundle.getState == Bundle.ACTIVE) {
             }

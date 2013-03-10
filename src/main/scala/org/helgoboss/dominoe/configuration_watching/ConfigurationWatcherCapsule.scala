@@ -2,7 +2,7 @@ package org.helgoboss.dominoe.configuration_watching
 
 import org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider
 import org.osgi.service.cm.{ConfigurationAdmin, ManagedService}
-import org.helgoboss.capsule.{CapsuleContext, CapsuleContainer, Capsule}
+import org.helgoboss.capsule.{CapsuleContext, CapsuleScope, Capsule}
 import org.osgi.service.metatype.{MetaTypeProvider => JMetaTypeProvider}
 import org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider
 import org.helgoboss.scala_osgi_metatype.adapters.MetaTypeProviderAdapter
@@ -27,7 +27,7 @@ class ConfigurationWatcherCapsule(
 
   var reg: ServiceRegistration = _
 
-  var capsuleContainer: Option[CapsuleContainer] = None
+  var capsuleScope: Option[CapsuleScope] = None
 
   var oldOptConf: Option[Dictionary[_, _]] = None
 
@@ -50,7 +50,7 @@ and call updated(). In updated(), we prevent the execution of the inner block, i
   }
 
   def stop() {
-    capsuleContainer foreach { _.stop() }
+    capsuleScope foreach { _.stop() }
     reg.unregister()
     reg = null
   }
@@ -72,10 +72,10 @@ and call updated(). In updated(), we prevent the execution of the inner block, i
 
   private def executeBlockWithConf(optConf: Option[Dictionary[_, _]]) {
     // Stop previous capsules
-    capsuleContainer foreach { _.stop() }
+    capsuleScope foreach { _.stop() }
 
     // Start new capsules
-    capsuleContainer = Some(capsuleContext.executeWithinNewCapsuleContainer {
+    capsuleScope = Some(capsuleContext.executeWithinNewCapsuleScope {
       optConf match {
         case Some(conf) =>
           f(DominoeUtil.convertToMap(conf))
