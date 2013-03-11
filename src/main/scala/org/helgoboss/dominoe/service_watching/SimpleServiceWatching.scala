@@ -6,11 +6,8 @@ import org.helgoboss.dominoe.service_providing.ServiceProviding
 import org.helgoboss.dominoe.{DominoeActivator, OsgiContext}
 
 /**
- * Created with IntelliJ IDEA.
- * User: bkl
- * Date: 10.03.13
- * Time: 00:16
- * To change this template use File | Settings | File Templates.
+ * A class version of the [[org.helgoboss.dominoe.service_watching.ServiceWatching]] trait. Use this if you
+ * don't want to use the trait.
  */
 class SimpleServiceWatching(
     protected val capsuleContext: CapsuleContext,

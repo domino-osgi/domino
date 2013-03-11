@@ -4,11 +4,8 @@ import org.osgi.framework.BundleContext
 import org.helgoboss.dominoe.OsgiContext
 
 /**
- * Created with IntelliJ IDEA.
- * User: bkl
- * Date: 10.03.13
- * Time: 00:16
- * To change this template use File | Settings | File Templates.
+ * A class version of the [[org.helgoboss.dominoe.service_consuming.ServiceConsuming]] trait. Use this if you
+ * don't want to use the trait.
  */
 class SimpleServiceConsuming(protected val bundleContext: BundleContext) extends ServiceConsuming {
   def this(osgiContext: OsgiContext) = this(osgiContext.bundleContext)

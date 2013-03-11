@@ -1,22 +1,26 @@
 package org.helgoboss.dominoe.bundle_watching
 
 import org.helgoboss.capsule.CapsuleContext
-import org.osgi.framework.BundleContext
+import org.osgi.framework.{Bundle, BundleContext}
 import org.osgi.util.tracker.BundleTracker
-import org.helgoboss.dominoe.OsgiContext
 
 /**
- * Created with IntelliJ IDEA.
- * User: bkl
- * Date: 09.03.13
- * Time: 22:19
- * To change this template use File | Settings | File Templates.
+ * Provides a convenient method to add a bundle watcher to the current scope.
  */
 trait BundleWatching {
+  /** Dependency */
   protected def capsuleContext: CapsuleContext
+
+  /** Dependency */
   protected def bundleContext: BundleContext
 
-  def watchBundles(f: BundleWatcherEvent => Unit): BundleTracker = {
+  /**
+   * Reacts to bundle events with the given event handler.
+   *
+   * @param f bundle event handler
+   * @return underlying bundle tracker
+   */
+  def watchBundles(f: BundleWatcherEvent => Unit): BundleTracker[Bundle] = {
     val bw = new BundleWatcherCapsule(f, bundleContext)
     capsuleContext.addCapsule(bw)
     bw.tracker

@@ -5,11 +5,8 @@ import org.osgi.framework.BundleContext
 import org.helgoboss.dominoe.OsgiContext
 
 /**
- * Created with IntelliJ IDEA.
- * User: bkl
- * Date: 10.03.13
- * Time: 00:15
- * To change this template use File | Settings | File Templates.
+ * A class version of the [[org.helgoboss.dominoe.bundle_watching.BundleWatching]] trait. Use this if you don't want
+ * to use the trait.
  */
 class SimpleBundleWatching(
     protected val capsuleContext: CapsuleContext,

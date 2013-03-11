@@ -49,7 +49,7 @@ class OsgiLogger(logService: LogService) extends Logger {
     log(LOG_DEBUG, message, exception)
   }
 
-  private def log(level: Int, message: => AnyRef, exception: => Throwable) {
+  protected def log(level: Int, message: => AnyRef, exception: => Throwable) {
     logService.log(level, message.toString, exception)
   }
 }

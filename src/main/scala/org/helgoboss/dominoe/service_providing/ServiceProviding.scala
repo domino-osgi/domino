@@ -5,16 +5,20 @@ import org.helgoboss.capsule.CapsuleContext
 import org.helgoboss.dominoe.OsgiContext
 
 /**
- * Created with IntelliJ IDEA.
- * User: bkl
- * Date: 09.03.13
- * Time: 22:26
- * To change this template use File | Settings | File Templates.
+ * Provides an implicit conversion to make any object easily registerable.
  */
 trait ServiceProviding {
+  /** Dependency */
   protected def bundleContext: BundleContext
+
+  /** Dependency */
   protected def capsuleContext: CapsuleContext
 
-  implicit def serviceToProvidableService(service: AnyRef) = new ProvidableService(service, capsuleContext, bundleContext)
+  /**
+   * Automatically converts any object to a [[org.helgoboss.dominoe.service_providing.ProvidableService]].
+   */
+  implicit def serviceToProvidableService[S](service: S) = {
+    new ProvidableService[S](service, capsuleContext, bundleContext)
+  }
 }
 

@@ -1,6 +1,5 @@
 package org.helgoboss.dominoe.configuration_watching
 
-import org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider
 import org.osgi.service.cm.{ConfigurationAdmin, ManagedService}
 import org.helgoboss.capsule.{CapsuleContext, CapsuleScope, Capsule}
 import org.osgi.service.metatype.{MetaTypeProvider => JMetaTypeProvider}
@@ -11,76 +10,108 @@ import java.util.Dictionary
 import org.helgoboss.dominoe.DominoeUtil
 import org.helgoboss.dominoe.service_consuming.ServiceConsuming
 
+/**
+ * A capsule which allows easy access to the [[org.osgi.service.cm.ConfigurationAdmin]] functionality related
+ * to normal configurations (not factory ones).
+ * It gets the initial configuration and reacts to configuration changes while the current scope is active.
+ *
+ * @param servicePid service PID
+ * @param f handler which is executed initially and on every configuration change
+ * @param metaTypeProvider optional metatype provider
+ * @param serviceConsuming dependency
+ * @param bundleContext dependency
+ * @param capsuleContext dependency
+ */
 class ConfigurationWatcherCapsule(
     servicePid: String,
-    f: Map[String, Any] => Unit, metaTypeProvider: Option[MetaTypeProvider],
+    f: Map[String, Any] => Unit,
+    metaTypeProvider: Option[MetaTypeProvider],
     serviceConsuming: ServiceConsuming,
     bundleContext: BundleContext,
     capsuleContext: CapsuleContext
-  ) extends ManagedService with Capsule with JMetaTypeProvider {
+  ) extends AbstractConfigurationWatcherCapsule(metaTypeProvider) with ManagedService {
 
-  lazy val metaTypeProviderAdapter = metaTypeProvider map { new MetaTypeProviderAdapter(_) }
 
-  lazy val interfacesArray: Array[String] = Array(classOf[ManagedService].getName) ++ (
-    metaTypeProvider map { p => classOf[JMetaTypeProvider].getName }
-    )
+  protected var _reg: ServiceRegistration[ManagedService] = _
 
-  var reg: ServiceRegistration = _
+  /**
+   * Returns the service registration of the ManagedService.
+   */
+  def reg = _reg
 
-  var capsuleScope: Option[CapsuleScope] = None
+  /**
+   * Contains the interfaces under which this object will be put in the service registry.
+   */
+  protected lazy val interfacesArray: Array[String] = Array(classOf[ManagedService].getName) ++ (
+    metaTypeProvider map { p => classOf[JMetaTypeProvider].getName })
 
-  var oldOptConf: Option[Dictionary[_, _]] = None
+  /**
+   * Contains the new capsule scope.
+   */
+  protected var newCapsuleScope: Option[CapsuleScope] = None
+
+  /**
+   * Contains the previous configuration map. Used to determine whether the configuration has changed.
+   */
+  protected var oldOptConf: Option[Dictionary[String, _]] = None
 
   def start() {
+    // Service properties
     val propertiesMap = Map(Constants.SERVICE_PID -> servicePid)
 
-    // At first execute inner block synchronously with current configuration.
-    val optConf = serviceConsuming.withService[ConfigurationAdmin, Option[Dictionary[_, _]]] {
-      case Some(confAdmin) =>
-        Option(confAdmin.getConfiguration(servicePid).getProperties)
+    // Find out current configuration by pulling it
+    val optConf = getConfigDirectly()
 
-      case None =>
-        None
-    }
+    // At first execute inner block synchronously with current configuration. Even if configuration admin is not present.
     executeBlockWithConf(optConf)
 
-    /* Then register managed service. This will cause ConfigurationAdmin push the current configuration in a separate thread
-and call updated(). In updated(), we prevent the execution of the inner block, if the configuration stayed the same. */
-    reg = bundleContext.registerService(interfacesArray, this, DominoeUtil.convertToDictionary(propertiesMap))
+    // Register managed service. This will cause ConfigurationAdmin push the current configuration in a separate
+    // thread and call updated(). In updated(), we prevent the second execution of the inner block because we check
+    // whether the configuration is still the same.
+    val tmp = bundleContext.registerService(interfacesArray, this, DominoeUtil.convertToDictionary(propertiesMap))
+    _reg = tmp.asInstanceOf[ServiceRegistration[ManagedService]]
   }
 
   def stop() {
-    capsuleScope foreach { _.stop() }
-    reg.unregister()
-    reg = null
+    // Stop capsules in the newly created capsule scope
+    newCapsuleScope foreach { _.stop() }
+
+    // Unregister managed service
+    _reg.unregister()
+    _reg = null
   }
 
-  def updated(conf: Dictionary[_, _]) {
+  def updated(conf: Dictionary[String, _]) {
+    // We query the config admin directly because the user can make sure then that the config value is already set.
     // See http://www.mail-archive.com/users@felix.apache.org/msg06764.html
-    // We really need the right webservice URL here. This might be already important on first OSGi startup.
-    // Therefore we query the config admin directly because the user can make sure then that the config value is already set.
     val safeOptConf = Option(conf) orElse getConfigDirectly()
 
+    // Execute handler only if configuration has changed
     executeBlockWithConfIfChanged(safeOptConf)
   }
 
-  private def executeBlockWithConfIfChanged(optConf: Option[Dictionary[_, _]]) {
+  /**
+   * Executes the handler only if the configuration has changed compared to the one which was used last.
+   */
+  protected def executeBlockWithConfIfChanged(optConf: Option[Dictionary[String, _]]) {
     if (oldOptConf != optConf) {
       executeBlockWithConf(optConf)
     }
   }
 
-  private def executeBlockWithConf(optConf: Option[Dictionary[_, _]]) {
-    // Stop previous capsules
-    capsuleScope foreach { _.stop() }
+  protected def executeBlockWithConf(optConf: Option[Dictionary[String, _]]) {
+    // Stop capsules in previous scope
+    newCapsuleScope foreach { _.stop() }
 
-    // Start new capsules
-    capsuleScope = Some(capsuleContext.executeWithinNewCapsuleScope {
+    // Start capsules in new scope
+    newCapsuleScope = Some(capsuleContext.executeWithinNewCapsuleScope {
       optConf match {
         case Some(conf) =>
+          // Execute handler
           f(DominoeUtil.convertToMap(conf))
 
         case None =>
+          // No configuration there. We use an empty map.
           f(Map.empty)
       }
     })
@@ -89,8 +120,11 @@ and call updated(). In updated(), we prevent the execution of the inner block, i
     oldOptConf = optConf
   }
 
-  private def getConfigDirectly(): Option[Dictionary[_, _]] = {
-    serviceConsuming.withService[ConfigurationAdmin, Option[Dictionary[_, _]]] {
+  /**
+   * Pulls the current configuration from the configuration admin.
+   */
+  protected def getConfigDirectly(): Option[Dictionary[String, _]] = {
+    serviceConsuming.withService[ConfigurationAdmin, Option[Dictionary[String, _]]] {
       case Some(confAdmin) =>
         Option(confAdmin.getConfiguration(servicePid)) match {
           case Some(c) => Option(c.getProperties)
@@ -100,10 +134,4 @@ and call updated(). In updated(), we prevent the execution of the inner block, i
       case None => None
     }
   }
-
-  def getObjectClassDefinition(id: String, locale: String) = {
-    metaTypeProviderAdapter map { _.getObjectClassDefinition(id, locale) } orNull
-  }
-
-  def getLocales = metaTypeProviderAdapter map { _.getLocales } orNull
 }

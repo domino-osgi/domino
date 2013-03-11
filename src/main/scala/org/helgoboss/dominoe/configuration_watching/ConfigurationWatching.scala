@@ -6,41 +6,81 @@ import org.helgoboss.scala_osgi_metatype.interfaces.{ObjectClassDefinition, Meta
 import org.helgoboss.scala_osgi_metatype.builders.SingleMetaTypeProvider
 import org.helgoboss.dominoe.{DominoeActivator, OsgiContext}
 import org.helgoboss.dominoe.service_consuming.ServiceConsuming
+import org.osgi.service.cm.{ManagedServiceFactory, ManagedService}
 
 /**
- * Created with IntelliJ IDEA.
- * User: bkl
- * Date: 09.03.13
- * Time: 22:20
- * To change this template use File | Settings | File Templates.
+ * Provides convenient methods to add a configuration watcher to the current scope.
  */
 trait ConfigurationWatching {
+  /** Dependency */
   protected def capsuleContext: CapsuleContext
+
+  /** Dependency */
   protected def bundleContext: BundleContext
+
+  /** Dependency */
   protected def serviceConsuming: ServiceConsuming
 
-  def whenConfigurationActive(servicePid: String, metaTypeProvider: Option[MetaTypeProvider] = None)(f: (Map[String, Any]) => Unit): ServiceRegistration = {
-    val s = new ConfigurationWatcherCapsule(servicePid, f, metaTypeProvider, serviceConsuming, bundleContext, capsuleContext)
+  /**
+   * Executes the given handler with the initial configuration or an empty map if none exists. Whenever
+   * the configuration is changed, the capsules registered in the handler are stopped and the handler is executed
+   * again with the new configuration.
+   *
+   * @param servicePid service PID
+   * @param metaTypeProvider optional metatype provider
+   * @param f handler
+   * @return the managed service registration
+   */
+  def whenConfigurationActive(servicePid: String, metaTypeProvider: Option[MetaTypeProvider] = None)
+                             (f: (Map[String, Any]) => Unit): ServiceRegistration[ManagedService] = {
+    val s = new ConfigurationWatcherCapsule(servicePid, f, metaTypeProvider, serviceConsuming, bundleContext,
+      capsuleContext)
     capsuleContext.addCapsule(s)
     s.reg
   }
 
-  def whenConfigurationActive(objectClassDefinition: ObjectClassDefinition)(f: (Map[String, Any]) => Unit): ServiceRegistration = {
+  /**
+   * Like the same-named method which expects the service PID but takes the service PID from the given object class
+   * definition and registers a corresponding meta type provider so a nice configuration GUI will be created.
+   *
+   * @param objectClassDefinition object class definition
+   */
+  def whenConfigurationActive(objectClassDefinition: ObjectClassDefinition)
+                             (f: (Map[String, Any]) => Unit): ServiceRegistration[ManagedService] = {
     val metaTypeProvider = new SingleMetaTypeProvider(objectClassDefinition)
     whenConfigurationActive(objectClassDefinition.id, Some(metaTypeProvider))(f)
   }
 
-  def whenFactoryConfigurationActive(servicePid: String, name: String, metaTypeProvider: Option[MetaTypeProvider] = None)(f: (Map[String, Any], String) => Unit): ServiceRegistration = {
-    val s = new FactoryConfigurationWatcherCapsule(servicePid, name, f, metaTypeProvider, serviceConsuming, bundleContext, capsuleContext)
+  /**
+   * Executes the given handler whenever a new factory configuration is created. Whenever a factory configuration
+   * is changed, the correct capsules registered in the corresponding handler are stopped and the handler is
+   * executed again with the new factory configuration. When the factory configuration is removed, the corresponding
+   * capsules are stopped.
+   *
+   * @param servicePid service PID
+   * @param name descriptive name for the factory
+   * @param metaTypeProvider optional metatype provider
+   * @param f handler
+   * @return the managed service factory registration
+   */
+  def whenFactoryConfigurationActive(servicePid: String, name: String, metaTypeProvider: Option[MetaTypeProvider] = None)
+                                    (f: (Map[String, Any], String) => Unit): ServiceRegistration[ManagedServiceFactory] = {
+    val s = new FactoryConfigurationWatcherCapsule(servicePid, name, f, metaTypeProvider, serviceConsuming,
+      bundleContext, capsuleContext)
     capsuleContext.addCapsule(s)
     s.reg
   }
 
-  def whenFactoryConfigurationActive(objectClassDefinition: ObjectClassDefinition)(f: (Map[String, Any], String) => Unit): ServiceRegistration = {
+  /**
+   * Like the same-named method which expects the service PID but takes the service PID from the given object class
+   * definition and registers a corresponding meta type provider so a nice configuration GUI will be created.
+   *
+   * @param objectClassDefinition object class definition
+   */
+  def whenFactoryConfigurationActive(objectClassDefinition: ObjectClassDefinition)
+                                    (f: (Map[String, Any], String) => Unit): ServiceRegistration[ManagedServiceFactory] = {
     val metaTypeProvider = new SingleMetaTypeProvider(objectClassDefinition)
     whenFactoryConfigurationActive(objectClassDefinition.id, objectClassDefinition.name, Some(metaTypeProvider))(f)
   }
-
-
 }
 

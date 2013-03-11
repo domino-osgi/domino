@@ -2,52 +2,59 @@ package org.helgoboss.dominoe.service_watching
 
 import org.helgoboss.capsule.Capsule
 import org.osgi.util.tracker.ServiceTracker
-import org.osgi.framework.{BundleContext, ServiceReference, Constants}
+import org.osgi.framework.{Filter, BundleContext, ServiceReference, Constants}
 import org.helgoboss.dominoe.{DominoeUtil, RichServiceReference}
 
+/**
+ * A capsule which executes the given event handlers on service state transitions while the current scope is active.
+ * Tracks all state transitions and services visible to the class loader. The custom object facility of the service
+ * tracker is not used.
+ *
+ * @param filter filter expression restricting the set of services to be tracked
+ * @param f event handlers
+ * @param bundleContext bundle context
+ * @tparam S service type to be tracked
+ */
 class ServiceWatcherCapsule[S <: AnyRef: ClassManifest](
-    mf: ClassManifest[_],
+    filter: Filter,
     f: ServiceWatcherEvent[S] => Unit,
     bundleContext: BundleContext) extends Capsule {
 
-  var tracker: ServiceTracker = _
+  protected var _tracker: ServiceTracker[S, S] = _
+
+  /**
+   * Returns the underlying service tracker.
+   */
+  def tracker = _tracker
 
   def start() {
-    /* Construct filter containing generic type info if necessary */
-    val objectClassFilterString = Some("(" + Constants.OBJECTCLASS + "=" + mf.erasure.getName + ")")
-    val completeTypesExpressionFilterString = DominoeUtil.createCompleteTypeExpressionFilter(mf)
-
-    val completeFilterString = DominoeUtil.linkFiltersWithAnd(
-      objectClassFilterString,
-      completeTypesExpressionFilterString)
-
-    val completeFilter = bundleContext.createFilter(completeFilterString.get)
-
-    /* Create tracker matching this filter */
-    tracker = new ServiceTracker(bundleContext, completeFilter, null) {
-      override def addingService(ref: ServiceReference) = {
-        val service = context getService ref
-        val watcherEvent = ServiceWatcherEvent.AddingService(service.asInstanceOf[S], ServiceWatcherContext(tracker, new RichServiceReference[S](ref, bundleContext)))
+    // Create tracker matching this filter
+    _tracker = new ServiceTracker[S, S](bundleContext, filter, null) {
+      override def addingService(ref: ServiceReference[S]) = {
+        val service = context.getService(ref)
+        val watcherEvent = ServiceWatcherEvent.AddingService(service, ServiceWatcherContext(_tracker, ref))
         f(watcherEvent)
         service
       }
 
-      override def modifiedService(ref: ServiceReference, service: AnyRef) {
-        val watcherEvent = ServiceWatcherEvent.ModifiedService(service.asInstanceOf[S], ServiceWatcherContext(tracker, new RichServiceReference[S](ref, bundleContext)))
+      override def modifiedService(ref: ServiceReference[S], service: S) {
+        val watcherEvent = ServiceWatcherEvent.ModifiedService(service, ServiceWatcherContext(_tracker, ref))
         f(watcherEvent)
       }
 
-      override def removedService(ref: ServiceReference, service: AnyRef) {
-        val watcherEvent = ServiceWatcherEvent.RemovedService(service.asInstanceOf[S], ServiceWatcherContext(tracker, new RichServiceReference[S](ref, bundleContext)))
-        f(watcherEvent)
-        context ungetService ref
+      override def removedService(ref: ServiceReference[S], service: S) {
+        val watcherEvent = ServiceWatcherEvent.RemovedService(service, ServiceWatcherContext(_tracker, ref))
+        try f(watcherEvent) finally context ungetService ref
       }
     }
-    tracker.open()
+
+    // Open tracker
+    _tracker.open()
   }
 
   def stop() {
-    tracker.close()
-    tracker = null
+    // Close tracker
+    _tracker.close()
+    _tracker = null
   }
 }

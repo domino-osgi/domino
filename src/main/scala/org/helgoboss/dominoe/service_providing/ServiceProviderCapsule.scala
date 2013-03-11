@@ -5,21 +5,36 @@ import org.osgi.framework.{BundleContext, ServiceRegistration}
 import org.helgoboss.dominoe.DominoeUtil
 
 
-class ServiceProviderCapsule(
+/**
+ * A capsule which registers an object in the OSGi service registry while the current scope is active.
+ *
+ * @param manifests manifests for types under which to register the given service in the OSGi registry
+ * @param properties service properties
+ * @param bundleContext bundle context
+ * @param service the object to be registered
+ * @tparam S service type
+ */
+class ServiceProviderCapsule[S](
     manifests: List[ClassManifest[_]],
     properties: Seq[(String, Any)],
     bundleContext: BundleContext,
-    service: Any) extends Capsule {
-  var reg: ServiceRegistration = _
+    service: S) extends Capsule {
+
+  protected var _reg: ServiceRegistration[S] = _
+
+  /**
+   * Returns the service registration.
+   */
+  def reg = _reg
 
   def start() {
-    // Create OBJECTCLASS array
+    // Create array of class names under which the service shall be registered
     val interfaceArray = manifests map { _.erasure.getName } toArray
 
-    // Add complete types expression to properties if necessary
-    val extendedProperties = DominoeUtil.createCompleteTypesExpression(manifests) match {
-      case Some(e) =>
-        (DominoeUtil.CompleteTypesExpressionKey -> e) +: properties
+    // Add generic types expression to properties if necessary
+    val extendedProperties = DominoeUtil.createGenericsExpression(manifests) match {
+      case Some(exp) =>
+        (DominoeUtil.CompleteTypesExpressionKey -> exp) +: properties
 
       case None =>
         properties
@@ -32,16 +47,18 @@ class ServiceProviderCapsule(
     }
 
     // Register service
-    reg = bundleContext.registerService(interfaceArray, service, javaPropertiesHashtable)
+    val tmp = bundleContext.registerService(interfaceArray, service, javaPropertiesHashtable)
+    _reg = tmp.asInstanceOf[ServiceRegistration[S]]
   }
 
   def stop() {
+    // Unregister
     try {
-      reg.unregister()
+      _reg.unregister()
     } catch {
       case x: IllegalStateException =>
-      // Do nothing. Was already unregistered.
+        // Do nothing. Was already unregistered.
     }
-    reg = null
+    _reg = null
   }
 }

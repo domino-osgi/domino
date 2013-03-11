@@ -4,66 +4,86 @@ import org.helgoboss.dominoe.service_providing.ServiceProviding
 import org.helgoboss.capsule.{CapsuleScope, CapsuleContext}
 import org.osgi.framework.{Bundle, ServiceRegistration, BundleContext}
 import org.osgi.util.tracker.ServiceTracker
-import org.helgoboss.dominoe.{DominoeActivator, OsgiContext}
+import org.helgoboss.dominoe.{DominoeImplicits, DominoeUtil, DominoeActivator, OsgiContext}
 
 /**
- * Created with IntelliJ IDEA.
- * User: bkl
- * Date: 09.03.13
- * Time: 22:26
- * To change this template use File | Settings | File Templates.
+ * Provides convenient methods to add a service watcher to the current scope and wait until services are present.
  */
-trait ServiceWatching {
-  protected val serviceProviding: ServiceProviding
+trait ServiceWatching extends DominoeImplicits {
+  /** Dependency */
   protected def capsuleContext: CapsuleContext
+
+  /** Dependency */
   protected def bundleContext: BundleContext
-
-  import serviceProviding._
-
 
 
   /**
-   * Watches the coming, going and changing of services of the given type and allows you to react on it.
+   * Lets you react to service events for services with the specified type.
+   *
+   * @param f service event handler
+   * @tparam S service type
+   * @return underlying service tracker
    */
-  def watchServices[S <: AnyRef: ClassManifest](f: ServiceWatcherEvent[S] => Unit): ServiceTracker = {
-    val sw = new ServiceWatcherCapsule[S](classManifest[S], f, bundleContext)
+  def watchServices[S <: AnyRef: ClassManifest](f: ServiceWatcherEvent[S] => Unit): ServiceTracker[S, S] = {
+    watchAdvancedServices[S](null)(f)
+  }
+
+  /**
+   * Lets you react to service events for services with the specified type which match the given filter.
+   *
+   * @param f service event handler
+   * @tparam S service type
+   * @return underlying service tracker
+   */
+  def watchAdvancedServices[S <: AnyRef: ClassManifest](filter: String)(f: ServiceWatcherEvent[S] => Unit): ServiceTracker[S, S] = {
+    val combinedFilter = DominoeUtil.createCompleteFilter(classManifest[S], filter)
+    val typedFilter = bundleContext.createFilter(combinedFilter)
+    val sw = new ServiceWatcherCapsule[S](typedFilter, f, bundleContext)
     capsuleContext.addCapsule(sw)
     sw.tracker
   }
 
-  def whenServicePresent[S <: AnyRef: ClassManifest](f: (S) => Unit): ServiceTracker = {
-    whenFilteredServicePresent[S](_ => true)(f)
+  /**
+   * Waits until a service of the specified type is available and executes the given event handler with it.
+   * When the service disappears, the capsules added in the handlers are stopped.
+   * You can wait on a bunch of services if you nest `whenServicePresent` methods.
+   *
+   * @param f handler
+   * @tparam S service type
+   * @return underlying service tracker
+   */
+  def whenServicePresent[S <: AnyRef: ClassManifest](f: (S) => Unit): ServiceTracker[S, S] = {
+    whenAdvancedServicePresent[S](null)(f)
   }
 
   /**
    * Activates the given inner logic as long as the first service of the given type is present. This implements the concept of
    * required services. The inner logic is started as soon as a service s of the given type gets present and stopped when s is removed.
-   * You can wait on a bunch of services if you nest several whenServicePresent methods.
    *
-   * TODO Fallback to another service if s is removed and another service of the type is available (reevaluate capsule).
+   * Idea for roadmap: Fallback to another service if s is removed and another service of the type is available (reevaluate capsule).
    */
-  def whenFilteredServicePresent[S <: AnyRef: ClassManifest](filter: ServiceWatcherContext[S] => Boolean)(f: (S) => Unit): ServiceTracker = {
-
+  def whenAdvancedServicePresent[S <: AnyRef: ClassManifest](filter: String)(f: S => Unit): ServiceTracker[S, S] = {
     case class ActivationState(watchedService: S, servicePresentCapsuleScope: CapsuleScope)
     var optActivationState: Option[ActivationState] = None
 
-    watchServices[S] {
+    watchAdvancedServices[S](filter) {
       case ServiceWatcherEvent.AddingService(s, context) =>
-        if (filter(context) && optActivationState.isEmpty) {
-          /* Not already watching a service of this type */
+        if (optActivationState.isEmpty) {
+          // Not already watching a service of this type. Run handler.
           val c = capsuleContext.executeWithinNewCapsuleScope {
             f(s)
           }
+
+          // Save the activation state
           optActivationState = Some(ActivationState(watchedService = s, servicePresentCapsuleScope = c))
         }
 
       case ServiceWatcherEvent.RemovedService(s, context) =>
         optActivationState foreach { activationState =>
+          // Stop the capsule scope only if exactly that service got removed which triggered its creation
           if (s == activationState.watchedService) {
             activationState.servicePresentCapsuleScope.stop()
             optActivationState = None
-            if (bundleContext.getBundle.getState == Bundle.ACTIVE) {
-            }
           }
         }
 
@@ -71,7 +91,10 @@ trait ServiceWatching {
     }
   }
 
-  def whenServicesPresent[S1 <: AnyRef: ClassManifest, S2 <: AnyRef: ClassManifest](f: (S1, S2) => Unit): ServiceTracker = {
+  def whenServicesPresent[
+      S1 <: AnyRef: ClassManifest,
+      S2 <: AnyRef: ClassManifest](f: (S1, S2) => Unit): ServiceTracker[S1, S1] = {
+
     whenServicePresent[S1] { (service1: S1) =>
       whenServicePresent[S2] { (service2: S2) =>
         f(service1, service2)
@@ -79,7 +102,11 @@ trait ServiceWatching {
     }
   }
 
-  def whenServicesPresent[S1 <: AnyRef: ClassManifest, S2 <: AnyRef: ClassManifest, S3 <: AnyRef: ClassManifest](f: (S1, S2, S3) => Unit): ServiceTracker = {
+  def whenServicesPresent[
+      S1 <: AnyRef: ClassManifest,
+      S2 <: AnyRef: ClassManifest,
+      S3 <: AnyRef: ClassManifest](f: (S1, S2, S3) => Unit): ServiceTracker[S1, S1] = {
+
     whenServicesPresent[S1, S2] { (service1: S1, service2: S2) =>
       whenServicePresent[S3] { (service3: S3) =>
         f(service1, service2, service3)
@@ -87,7 +114,12 @@ trait ServiceWatching {
     }
   }
 
-  def whenServicesPresent[S1 <: AnyRef: ClassManifest, S2 <: AnyRef: ClassManifest, S3 <: AnyRef: ClassManifest, S4 <: AnyRef: ClassManifest](f: (S1, S2, S3, S4) => Unit): ServiceTracker = {
+  def whenServicesPresent[
+      S1 <: AnyRef: ClassManifest,
+      S2 <: AnyRef: ClassManifest,
+      S3 <: AnyRef: ClassManifest,
+      S4 <: AnyRef: ClassManifest](f: (S1, S2, S3, S4) => Unit): ServiceTracker[S1, S1] = {
+
     whenServicesPresent[S1, S2, S3] { (service1: S1, service2: S2, service3: S3) =>
       whenServicePresent[S4] { (service4: S4) =>
         f(service1, service2, service3, service4)
@@ -95,7 +127,13 @@ trait ServiceWatching {
     }
   }
 
-  def whenServicesPresent[S1 <: AnyRef: ClassManifest, S2 <: AnyRef: ClassManifest, S3 <: AnyRef: ClassManifest, S4 <: AnyRef: ClassManifest, S5 <: AnyRef: ClassManifest](f: (S1, S2, S3, S4, S5) => Unit): ServiceTracker = {
+  def whenServicesPresent[
+      S1 <: AnyRef: ClassManifest,
+      S2 <: AnyRef: ClassManifest,
+      S3 <: AnyRef: ClassManifest,
+      S4 <: AnyRef: ClassManifest,
+      S5 <: AnyRef: ClassManifest](f: (S1, S2, S3, S4, S5) => Unit): ServiceTracker[S1, S1] = {
+
     whenServicesPresent[S1, S2, S3, S4] { (service1: S1, service2: S2, service3: S3, service4: S4) =>
       whenServicePresent[S5] { (service5: S5) =>
         f(service1, service2, service3, service4, service5)

@@ -3,10 +3,6 @@ package org.helgoboss.dominoe.logging
 import org.helgoboss.dominoe.service_consuming.ServiceConsuming
 
 /**
- * Created with IntelliJ IDEA.
- * User: bkl
- * Date: 10.03.13
- * Time: 02:50
- * To change this template use File | Settings | File Templates.
+ * A class version of the [[org.helgoboss.dominoe.logging.Logging]] trait. Use this if you don't want to use the trait.
  */
 class SimpleLogging(protected val serviceConsuming: ServiceConsuming) extends Logging

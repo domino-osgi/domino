@@ -9,9 +9,10 @@ import service_providing.ServiceProviding
 import service_watching.ServiceWatching
 
 /**
- * Extend from this class if you want to build a bundle activator in a very comfortable Scalaish way with everything included.
- * Extending from this class instead of mixing in the separate Osgi* traits you need has the big advantage that you don't need to
- * recompile your bundle if internal changes are made to the Osgi* traits. You just would have to replace the osgi-additions bundle.
+ * Let your bundle activator extend from this class to get full access to the Dominoe DSL.
+ *
+ * I encourage extending from this class instead of mixing in the single traits because then you don't need to
+ * recompile your bundle if minor internal changes are made to Dominoe. This results in greater upwards compatibility.
  */
 abstract class DominoeActivator extends OsgiContext
     with CapsuleConvenience
