@@ -1,0 +1,226 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>capsule - Domino 1.0.0-SNAPSHOT API - org.helgoboss.capsule</title>
+          <meta name="description" content="capsule - Domino 1.0.0 - SNAPSHOT API - org.helgoboss.capsule" />
+          <meta name="keywords" content="capsule Domino 1.0.0 SNAPSHOT API org.helgoboss.capsule" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'org.helgoboss.capsule.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.helgoboss">helgoboss</a></p>
+        <h1>capsule</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">capsule</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Contains a basic API and default implementation for building, using and extending a capsule-based DSL.</p><p>A capsule-based DSL is a generalization of the DSL used in the project &quot;Domino&quot;. Here's an illustrative example
+how a capsuled-based DSL might look like:</p><pre><span class="cmt">// Somewhere in your code</span>
+whenTurnedOn {
+  whenDevicePluggedIn {
+    lightLED()
+  }
+}</pre><p>The documentation distinguishes between 3 types of API clients: End users, capsule providers and context providers.
+The majority of developers will just come into contact with this API as end users.
+</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="org.helgoboss.capsule"><span>capsule</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.helgoboss.capsule.Capsule" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="CapsuleextendsObject"></a>
+      <a id="Capsule:Capsule"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Capsule.html"><span class="name">Capsule</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">A capsule represents something which is startable and stoppable.</p>
+    </li><li name="org.helgoboss.capsule.CapsuleContext" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="CapsuleContextextendsObject"></a>
+      <a id="CapsuleContext:CapsuleContext"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="CapsuleContext.html"><span class="name">CapsuleContext</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represents the tree structure which is formed by capsule scopes and their contained capsules.</p>
+    </li><li name="org.helgoboss.capsule.CapsuleConvenience" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="CapsuleConvenienceextendsObject"></a>
+      <a id="CapsuleConvenience:CapsuleConvenience"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="CapsuleConvenience.html"><span class="name">CapsuleConvenience</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Provides convenient <code>onStart</code> and <code>onStop</code> methods which the end user can use for ad-hoc adding
+start and stop logic to the current scope.</p>
+    </li><li name="org.helgoboss.capsule.CapsuleScope" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="CapsuleScopeextendsObject"></a>
+      <a id="CapsuleScope:CapsuleScope"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="CapsuleScope.html"><span class="name">CapsuleScope</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represents a collection of capsules which shall all be stopped on the same event.</p>
+    </li><li name="org.helgoboss.capsule.DefaultCapsuleScope" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DefaultCapsuleScopeextendsCapsuleScope"></a>
+      <a id="DefaultCapsuleScope:DefaultCapsuleScope"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="DefaultCapsuleScope.html"><span class="name">DefaultCapsuleScope</span></a><span class="result"> extends <a href="CapsuleScope.html" class="extype" name="org.helgoboss.capsule.CapsuleScope">CapsuleScope</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">A capsule scope implementation based on a <span class="extype" name="scala.collection.Traversable">scala.collection.Traversable</span>.</p>
+    </li><li name="org.helgoboss.capsule.DynamicCapsuleContext" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="DynamicCapsuleContextextendsCapsuleContext"></a>
+      <a id="DynamicCapsuleContext:DynamicCapsuleContext"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="DynamicCapsuleContext.html"><span class="name">DynamicCapsuleContext</span></a><span class="result"> extends <a href="CapsuleContext.html" class="extype" name="org.helgoboss.capsule.CapsuleContext">CapsuleContext</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">A <a href="CapsuleContext.html" class="extype" name="org.helgoboss.capsule.CapsuleContext">CapsuleContext</a> implementation based on <span class="extype" name="scala.util.DynamicVariable">scala.util.DynamicVariable</span> and
+<a href="DefaultCapsuleScope.html" class="extype" name="org.helgoboss.capsule.DefaultCapsuleScope">DefaultCapsuleScope</a>.</p>
+    </li><li name="org.helgoboss.capsule.SimpleDynamicCapsuleContext" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SimpleDynamicCapsuleContextextendsDynamicCapsuleContext"></a>
+      <a id="SimpleDynamicCapsuleContext:SimpleDynamicCapsuleContext"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SimpleDynamicCapsuleContext.html"><span class="name">SimpleDynamicCapsuleContext</span></a><span class="result"> extends <a href="DynamicCapsuleContext.html" class="extype" name="org.helgoboss.capsule.DynamicCapsuleContext">DynamicCapsuleContext</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">A class extending from <a href="DynamicCapsuleContext.html" class="extype" name="org.helgoboss.capsule.DynamicCapsuleContext">DynamicCapsuleContext</a>.</p>
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

@@ -1,0 +1,1109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>DominoActivator - Domino 1.0.0-SNAPSHOT API - org.helgoboss.domino.DominoActivator</title>
+          <meta name="description" content="DominoActivator - Domino 1.0.0 - SNAPSHOT API - org.helgoboss.domino.DominoActivator" />
+          <meta name="keywords" content="DominoActivator Domino 1.0.0 SNAPSHOT API org.helgoboss.domino.DominoActivator" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'org.helgoboss.domino.DominoActivator';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="type">
+      <div id="definition">
+        <img src="../../../lib/class_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.helgoboss">helgoboss</a>.<a href="package.html" class="extype" name="org.helgoboss.domino">domino</a></p>
+        <h1>DominoActivator</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <span class="name">DominoActivator</span><span class="result"> extends <a href="OsgiContext.html" class="extype" name="org.helgoboss.domino.OsgiContext">OsgiContext</a> with <a href="../capsule/CapsuleConvenience.html" class="extype" name="org.helgoboss.capsule.CapsuleConvenience">CapsuleConvenience</a> with <a href="bundle_watching/BundleWatching.html" class="extype" name="org.helgoboss.domino.bundle_watching.BundleWatching">BundleWatching</a> with <a href="configuration_watching/ConfigurationWatching.html" class="extype" name="org.helgoboss.domino.configuration_watching.ConfigurationWatching">ConfigurationWatching</a> with <a href="service_consuming/ServiceConsuming.html" class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming">ServiceConsuming</a> with <a href="logging/Logging.html" class="extype" name="org.helgoboss.domino.logging.Logging">Logging</a> with <a href="service_providing/ServiceProviding.html" class="extype" name="org.helgoboss.domino.service_providing.ServiceProviding">ServiceProviding</a> with <a href="service_watching/ServiceWatching.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching">ServiceWatching</a></span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>This is the main entry point to the Domino DSL.</p><p>By having your bundle activator extend from this class, you get <b>full</b> access to the Domino DSL.
+In most cases <a href="" class="extype" name="org.helgoboss.domino.DominoActivator">DominoActivator</a> is all you need because it mixes in all the other functionality.</p><p>Note that if you use <a href="#watchServices[S&lt;:AnyRef](f:org.helgoboss.domino.service_watching.ServiceWatcherEvent[S]=&gt;Unit)(implicitevidence$1:ClassManifest[S]):org.osgi.util.tracker.ServiceTracker[S,S]" class="extmbr" name="org.helgoboss.domino.DominoActivator#watchServices">watchServices</a> or <a href="#watchBundles(f:org.helgoboss.domino.bundle_watching.BundleWatcherEvent=&gt;Unit):org.osgi.util.tracker.BundleTracker[org.osgi.framework.Bundle]" class="extmbr" name="org.helgoboss.domino.DominoActivator#watchBundles">watchBundles</a>, you might additionally want to import the
+relevant watcher events.</p><h4> Example 1: Wait for a service </h4><pre><span class="kw">package</span> org.example.domino_test_one
+
+<span class="kw">import</span> org.helgoboss.domino.DominoActivator
+<span class="kw">import</span> org.osgi.service.http.HttpService
+
+<span class="kw">class</span> MyService(httpService: HttpService)
+
+<span class="kw">class</span> Activator <span class="kw">extends</span> DominoActivator {
+  whenBundleActive {
+    <span class="cmt">// Make MyService available as long as HttpService is present</span>
+    whenServicePresent[HttpService] { httpService <span class="kw">=&gt;</span>
+      <span class="kw">val</span> myService = <span class="kw">new</span> MyService(httpService)
+      myService.providesService[MyService]
+    }
+  }
+}</pre><h4> Example 2: Listen for configuration changes </h4><pre><span class="kw">package</span> org.example.domino_test_two
+
+<span class="kw">import</span> org.helgoboss.domino.DominoActivator
+
+<span class="kw">class</span> KeyService(key: <span class="std">String</span>)
+
+<span class="kw">class</span> Activator <span class="kw">extends</span> DominoActivator {
+  whenBundleActive {
+    <span class="cmt">// Reregister KeyService whenever configuration changes</span>
+    whenConfigurationActive(<span class="lit">"my_service"</span>) { conf <span class="kw">=&gt;</span>
+      <span class="kw">val</span> key = conf.get(<span class="lit">"key"</span>) map { _.asInstanceOf[<span class="std">String</span>] } getOrElse <span class="lit">"defaultKey"</span>
+      <span class="kw">new</span> KeyService(key).providesService[KeyService]
+    }
+  }
+}</pre></div><dl class="attributes block"> <dt>Note</dt><dd><span class="cmt"><p>I suggest extending from this class instead of mixing in the subpackage traits. Then you don't need to
+      recompile your bundle if minor internal changes are made to Domino. This results in greater upwards compatibility.
+</p></span></dd></dl><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><a href="service_watching/ServiceWatching.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching">ServiceWatching</a>, <a href="service_providing/ServiceProviding.html" class="extype" name="org.helgoboss.domino.service_providing.ServiceProviding">ServiceProviding</a>, <a href="logging/Logging.html" class="extype" name="org.helgoboss.domino.logging.Logging">Logging</a>, <a href="service_consuming/ServiceConsuming.html" class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming">ServiceConsuming</a>, <a href="DominoImplicits.html" class="extype" name="org.helgoboss.domino.DominoImplicits">DominoImplicits</a>, <a href="configuration_watching/ConfigurationWatching.html" class="extype" name="org.helgoboss.domino.configuration_watching.ConfigurationWatching">ConfigurationWatching</a>, <a href="bundle_watching/BundleWatching.html" class="extype" name="org.helgoboss.domino.bundle_watching.BundleWatching">BundleWatching</a>, <a href="../capsule/CapsuleConvenience.html" class="extype" name="org.helgoboss.capsule.CapsuleConvenience">CapsuleConvenience</a>, <a href="OsgiContext.html" class="extype" name="org.helgoboss.domino.OsgiContext">OsgiContext</a>, <a href="EmptyBundleActivator.html" class="extype" name="org.helgoboss.domino.EmptyBundleActivator">EmptyBundleActivator</a>, <span class="extype" name="org.osgi.framework.BundleActivator">BundleActivator</span>, <a href="../capsule/DynamicCapsuleContext.html" class="extype" name="org.helgoboss.capsule.DynamicCapsuleContext">DynamicCapsuleContext</a>, <a href="../capsule/CapsuleContext.html" class="extype" name="org.helgoboss.capsule.CapsuleContext">CapsuleContext</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                <li class="group out"><span>Grouped</span></li>
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="org.helgoboss.domino.DominoActivator"><span>DominoActivator</span></li><li class="in" name="org.helgoboss.domino.service_watching.ServiceWatching"><span>ServiceWatching</span></li><li class="in" name="org.helgoboss.domino.service_providing.ServiceProviding"><span>ServiceProviding</span></li><li class="in" name="org.helgoboss.domino.logging.Logging"><span>Logging</span></li><li class="in" name="org.helgoboss.domino.service_consuming.ServiceConsuming"><span>ServiceConsuming</span></li><li class="in" name="org.helgoboss.domino.DominoImplicits"><span>DominoImplicits</span></li><li class="in" name="org.helgoboss.domino.configuration_watching.ConfigurationWatching"><span>ConfigurationWatching</span></li><li class="in" name="org.helgoboss.domino.bundle_watching.BundleWatching"><span>BundleWatching</span></li><li class="in" name="org.helgoboss.capsule.CapsuleConvenience"><span>CapsuleConvenience</span></li><li class="in" name="org.helgoboss.domino.OsgiContext"><span>OsgiContext</span></li><li class="in" name="org.helgoboss.domino.EmptyBundleActivator"><span>EmptyBundleActivator</span></li><li class="in" name="org.osgi.framework.BundleActivator"><span>BundleActivator</span></li><li class="in" name="org.helgoboss.capsule.DynamicCapsuleContext"><span>DynamicCapsuleContext</span></li><li class="in" name="org.helgoboss.capsule.CapsuleContext"><span>CapsuleContext</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="org.helgoboss.domino.DominoActivator#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;():org.helgoboss.domino.DominoActivator"></a>
+      <a id="&lt;init&gt;:DominoActivator"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">DominoActivator</span><span class="params">()</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Will be called by the OSGi framework.</p>
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:AnyRef):Boolean"></a>
+      <a id="!=(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:AnyRef):Boolean"></a>
+      <a id="==(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.helgoboss.capsule.DynamicCapsuleContext#addCapsule" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="addCapsule(capsule:org.helgoboss.capsule.Capsule):Unit"></a>
+      <a id="addCapsule(Capsule):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addCapsule</span><span class="params">(<span name="capsule">capsule: <a href="../capsule/Capsule.html" class="extype" name="org.helgoboss.capsule.Capsule">Capsule</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Starts the given capsule and adds it to the current capsule scope.</p><div class="fullcomment"><div class="comment cmt"><p>Starts the given capsule and adds it to the current capsule scope.
+</p></div><dl class="paramcmts block"><dt class="param">capsule</dt><dd class="cmt"><p>capsule
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../capsule/DynamicCapsuleContext.html" class="extype" name="org.helgoboss.capsule.DynamicCapsuleContext">DynamicCapsuleContext</a> → <a href="../capsule/CapsuleContext.html" class="extype" name="org.helgoboss.capsule.CapsuleContext">CapsuleContext</a></dd></dl></div>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.helgoboss.domino.OsgiContext#bundleContext" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="bundleContext:org.osgi.framework.BundleContext"></a>
+      <a id="bundleContext:BundleContext"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">bundleContext</span><span class="result">: <span class="extype" name="org.osgi.framework.BundleContext">BundleContext</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns the bundle context as long as the bundle is active.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the bundle context as long as the bundle is active.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="OsgiContext.html" class="extype" name="org.helgoboss.domino.OsgiContext">OsgiContext</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.DominoActivator#capsuleContext" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="capsuleContext:org.helgoboss.domino.DominoActivator"></a>
+      <a id="capsuleContext:DominoActivator"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">capsuleContext</span><span class="result">: <a href="" class="extype" name="org.helgoboss.domino.DominoActivator">DominoActivator</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Dependency</p><div class="fullcomment"><div class="comment cmt"><p>Dependency</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="" class="extype" name="org.helgoboss.domino.DominoActivator">DominoActivator</a> → <a href="service_watching/ServiceWatching.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching">ServiceWatching</a> → <a href="service_providing/ServiceProviding.html" class="extype" name="org.helgoboss.domino.service_providing.ServiceProviding">ServiceProviding</a> → <a href="configuration_watching/ConfigurationWatching.html" class="extype" name="org.helgoboss.domino.configuration_watching.ConfigurationWatching">ConfigurationWatching</a> → <a href="bundle_watching/BundleWatching.html" class="extype" name="org.helgoboss.domino.bundle_watching.BundleWatching">BundleWatching</a> → <a href="../capsule/CapsuleConvenience.html" class="extype" name="org.helgoboss.capsule.CapsuleConvenience">CapsuleConvenience</a></dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<span class="extype" name="java.lang">java.lang</span>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.helgoboss.capsule.DynamicCapsuleContext#executeWithinNewCapsuleScope" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="executeWithinNewCapsuleScope(f:=&gt;Unit):org.helgoboss.capsule.CapsuleScope"></a>
+      <a id="executeWithinNewCapsuleScope(⇒Unit):CapsuleScope"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">executeWithinNewCapsuleScope</span><span class="params">(<span name="f">f: ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <a href="../capsule/CapsuleScope.html" class="extype" name="org.helgoboss.capsule.CapsuleScope">CapsuleScope</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Creates a new capsule scope on top of the active one and executes the given function in it.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a new capsule scope on top of the active one and executes the given function in it. So the function
+sees the new capsule scope as the current one.
+</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>the function which might add capsules to the new scope</p></dd><dt>returns</dt><dd class="cmt"><p>the new scope
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../capsule/DynamicCapsuleContext.html" class="extype" name="org.helgoboss.capsule.DynamicCapsuleContext">DynamicCapsuleContext</a> → <a href="../capsule/CapsuleContext.html" class="extype" name="org.helgoboss.capsule.CapsuleContext">CapsuleContext</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.logging.Logging#fallbackLogger" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="fallbackLogger:org.helgoboss.scala_logging.JavaUtilLoggingLogger"></a>
+      <a id="fallbackLogger:JavaUtilLoggingLogger"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">fallbackLogger</span><span class="result">: <a href="../scala_logging/JavaUtilLoggingLogger.html" class="extype" name="org.helgoboss.scala_logging.JavaUtilLoggingLogger">JavaUtilLoggingLogger</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Fallback if OSGi logger is not available</p><div class="fullcomment"><div class="comment cmt"><p>Fallback if OSGi logger is not available</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="logging/Logging.html" class="extype" name="org.helgoboss.domino.logging.Logging">Logging</a></dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<span class="extype" name="java.lang">java.lang</span>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.helgoboss.domino.logging.Logging#log" visbl="pub" data-isabs="false" fullComment="yes" group="LogMessages">
+      <a id="log:org.helgoboss.scala_logging.Logger"></a>
+      <a id="log:Logger"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">log</span><span class="result">: <a href="../scala_logging/Logger.html" class="extype" name="org.helgoboss.scala_logging.Logger">Logger</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">A logger for the current bundle.</p><div class="fullcomment"><div class="comment cmt"><p>A logger for the current bundle. Uses the OSGi logging facility under the hood. If it is not available,
+it uses Java Util Logging.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="logging/Logging.html" class="extype" name="org.helgoboss.domino.logging.Logging">Logging</a></dd></dl></div>
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.helgoboss.capsule.CapsuleConvenience#onStart" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="onStart(f:=&gt;Unit):Unit"></a>
+      <a id="onStart(⇒Unit):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">onStart</span><span class="params">(<span name="f">f: ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Adds the given start logic.</p><div class="fullcomment"><div class="comment cmt"><p>Adds the given start logic. The logic is executed immediately.
+</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>start logic
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../capsule/CapsuleConvenience.html" class="extype" name="org.helgoboss.capsule.CapsuleConvenience">CapsuleConvenience</a></dd></dl></div>
+    </li><li name="org.helgoboss.capsule.CapsuleConvenience#onStop" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="onStop(f:=&gt;Unit):Unit"></a>
+      <a id="onStop(⇒Unit):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">onStop</span><span class="params">(<span name="f">f: ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Adds the given stop logic.</p><div class="fullcomment"><div class="comment cmt"><p>Adds the given stop logic. The given function will be executed when the current scope is stopped.
+</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>stop logic
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../capsule/CapsuleConvenience.html" class="extype" name="org.helgoboss.capsule.CapsuleConvenience">CapsuleConvenience</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.logging.Logging#primaryLogger" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="primaryLogger:Option[org.helgoboss.domino.logging.OsgiLogger]"></a>
+      <a id="primaryLogger:Option[OsgiLogger]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">primaryLogger</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="logging/OsgiLogger.html" class="extype" name="org.helgoboss.domino.logging.OsgiLogger">OsgiLogger</a>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">The OSGi logger.</p><div class="fullcomment"><div class="comment cmt"><p>The OSGi logger.
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="logging/Logging.html" class="extype" name="org.helgoboss.domino.logging.Logging">Logging</a></dd><dt>To do</dt><dd><span class="cmt"><p>Always looked up dynamically. Can become a bottleneck.
+</p></span></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_consuming.ServiceConsuming#service" visbl="pub" data-isabs="false" fullComment="yes" group="GetServices">
+      <a id="service[S&lt;:AnyRef](filter:String)(implicitevidence$5:ClassManifest[S]):Option[S]"></a>
+      <a id="service[S&lt;:AnyRef](String)(ClassManifest[S]):Option[S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">service</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="filter">filter: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.service.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.service.S">S</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns the first available service of the specified class which satisfies the filter if available.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the first available service of the specified class which satisfies the filter if available. If the service
+is not available, it returns <span class="extype" name="scala.None">scala.None</span>. The service is not explicitly released.
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>service type</p></dd><dt class="param">filter</dt><dd class="cmt"><p>filter expression</p></dd><dt>returns</dt><dd class="cmt"><p>service if available
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_consuming/ServiceConsuming.html" class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming">ServiceConsuming</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_consuming.ServiceConsuming#service" visbl="pub" data-isabs="false" fullComment="yes" group="GetServices">
+      <a id="service[S&lt;:AnyRef](implicitevidence$3:ClassManifest[S]):Option[S]"></a>
+      <a id="service[S&lt;:AnyRef](ClassManifest[S]):Option[S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">service</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.service.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.service.S">S</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns the highest-ranked service of the specified type if available.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the highest-ranked service of the specified type if available. The service is not explicitly released.
+It's assumed that the service will be used until the bundle stops.
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>service type</p></dd><dt>returns</dt><dd class="cmt"><p>service if available
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_consuming/ServiceConsuming.html" class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming">ServiceConsuming</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.DominoActivator#serviceConsuming" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="serviceConsuming:org.helgoboss.domino.DominoActivator"></a>
+      <a id="serviceConsuming:DominoActivator"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">serviceConsuming</span><span class="result">: <a href="" class="extype" name="org.helgoboss.domino.DominoActivator">DominoActivator</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Dependency</p><div class="fullcomment"><div class="comment cmt"><p>Dependency</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="" class="extype" name="org.helgoboss.domino.DominoActivator">DominoActivator</a> → <a href="logging/Logging.html" class="extype" name="org.helgoboss.domino.logging.Logging">Logging</a> → <a href="configuration_watching/ConfigurationWatching.html" class="extype" name="org.helgoboss.domino.configuration_watching.ConfigurationWatching">ConfigurationWatching</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.DominoActivator#serviceProviding" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="serviceProviding:org.helgoboss.domino.DominoActivator"></a>
+      <a id="serviceProviding:DominoActivator"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">serviceProviding</span><span class="result">: <a href="" class="extype" name="org.helgoboss.domino.DominoActivator">DominoActivator</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Dependency</p><div class="fullcomment"><div class="comment cmt"><p>Dependency</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_consuming.ServiceConsuming#serviceRef" visbl="pub" data-isabs="false" fullComment="yes" group="GetServiceReferences">
+      <a id="serviceRef[S&lt;:AnyRef](filter:String)(implicitevidence$6:ClassManifest[S]):Option[org.osgi.framework.ServiceReference[S]]"></a>
+      <a id="serviceRef[S&lt;:AnyRef](String)(ClassManifest[S]):Option[ServiceReference[S]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">serviceRef</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="filter">filter: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.serviceRef.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.osgi.framework.ServiceReference">ServiceReference</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.serviceRef.S">S</span>]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Like <a href="#service[S&lt;:AnyRef](filter:String)(implicitevidence$5:ClassManifest[S]):Option[S]" class="extmbr" name="org.helgoboss.domino.DominoActivator#service">service</a> with filter but returns the service reference.</p><div class="fullcomment"><div class="comment cmt"><p>Like <a href="#service[S&lt;:AnyRef](filter:String)(implicitevidence$5:ClassManifest[S]):Option[S]" class="extmbr" name="org.helgoboss.domino.DominoActivator#service">service</a> with filter but returns the service reference.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_consuming/ServiceConsuming.html" class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming">ServiceConsuming</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_consuming.ServiceConsuming#serviceRef" visbl="pub" data-isabs="false" fullComment="yes" group="GetServiceReferences">
+      <a id="serviceRef[S&lt;:AnyRef](implicitevidence$4:ClassManifest[S]):Option[org.osgi.framework.ServiceReference[S]]"></a>
+      <a id="serviceRef[S&lt;:AnyRef](ClassManifest[S]):Option[ServiceReference[S]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">serviceRef</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.serviceRef.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.osgi.framework.ServiceReference">ServiceReference</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.serviceRef.S">S</span>]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Like <a href="#service[S&lt;:AnyRef](filter:String)(implicitevidence$5:ClassManifest[S]):Option[S]" class="extmbr" name="org.helgoboss.domino.DominoActivator#service">service</a> but returns the reference so you can access meta information about that service.</p><div class="fullcomment"><div class="comment cmt"><p>Like <a href="#service[S&lt;:AnyRef](filter:String)(implicitevidence$5:ClassManifest[S]):Option[S]" class="extmbr" name="org.helgoboss.domino.DominoActivator#service">service</a> but returns the reference so you can access meta information about that service.
+An implicit conversion adds a <code>service</code> property to the reference, so you can simply use that to obtain the service.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_consuming/ServiceConsuming.html" class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming">ServiceConsuming</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.DominoImplicits#serviceRefToRichServiceRef" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="serviceRefToRichServiceRef[S&lt;:AnyRef](serviceRef:org.osgi.framework.ServiceReference[S])(implicitevidence$1:ClassManifest[S]):org.helgoboss.domino.RichServiceReference[S]"></a>
+      <a id="serviceRefToRichServiceRef[S&lt;:AnyRef](ServiceReference[S])(ClassManifest[S]):RichServiceReference[S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">serviceRefToRichServiceRef</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="serviceRef">serviceRef: <span class="extype" name="org.osgi.framework.ServiceReference">ServiceReference</span>[<span class="extype" name="org.helgoboss.domino.DominoImplicits.serviceRefToRichServiceRef.S">S</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.DominoImplicits.serviceRefToRichServiceRef.S">S</span>]</span>)</span><span class="result">: <a href="RichServiceReference.html" class="extype" name="org.helgoboss.domino.RichServiceReference">RichServiceReference</a>[<span class="extype" name="org.helgoboss.domino.DominoImplicits.serviceRefToRichServiceRef.S">S</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Converts a service reference to a rich service reference so one can easily obtain the
+corresponding service by calling <code>service</code>, for example.</p><div class="fullcomment"><div class="comment cmt"><p>Converts a service reference to a rich service reference so one can easily obtain the
+corresponding service by calling <code>service</code>, for example.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="DominoImplicits.html" class="extype" name="org.helgoboss.domino.DominoImplicits">DominoImplicits</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_consuming.ServiceConsuming#serviceRefs" visbl="pub" data-isabs="false" fullComment="yes" group="GetServiceReferences">
+      <a id="serviceRefs[S&lt;:AnyRef](filter:String)(implicitevidence$10:ClassManifest[S]):Seq[org.osgi.framework.ServiceReference[S]]"></a>
+      <a id="serviceRefs[S&lt;:AnyRef](String)(ClassManifest[S]):Seq[ServiceReference[S]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">serviceRefs</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="filter">filter: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.serviceRefs.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="org.osgi.framework.ServiceReference">ServiceReference</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.serviceRefs.S">S</span>]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Like <a href="#services[S&lt;:AnyRef](filter:String)(implicitevidence$9:ClassManifest[S]):Seq[S]" class="extmbr" name="org.helgoboss.domino.DominoActivator#services">services</a> with filters but returns the references.</p><div class="fullcomment"><div class="comment cmt"><p>Like <a href="#services[S&lt;:AnyRef](filter:String)(implicitevidence$9:ClassManifest[S]):Seq[S]" class="extmbr" name="org.helgoboss.domino.DominoActivator#services">services</a> with filters but returns the references.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_consuming/ServiceConsuming.html" class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming">ServiceConsuming</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_consuming.ServiceConsuming#serviceRefs" visbl="pub" data-isabs="false" fullComment="yes" group="GetServiceReferences">
+      <a id="serviceRefs[S&lt;:AnyRef](implicitevidence$8:ClassManifest[S]):Seq[org.osgi.framework.ServiceReference[S]]"></a>
+      <a id="serviceRefs[S&lt;:AnyRef](ClassManifest[S]):Seq[ServiceReference[S]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">serviceRefs</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.serviceRefs.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="org.osgi.framework.ServiceReference">ServiceReference</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.serviceRefs.S">S</span>]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Like <a href="#services[S&lt;:AnyRef](filter:String)(implicitevidence$9:ClassManifest[S]):Seq[S]" class="extmbr" name="org.helgoboss.domino.DominoActivator#services">services</a> but returns service references.</p><div class="fullcomment"><div class="comment cmt"><p>Like <a href="#services[S&lt;:AnyRef](filter:String)(implicitevidence$9:ClassManifest[S]):Seq[S]" class="extmbr" name="org.helgoboss.domino.DominoActivator#services">services</a> but returns service references.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_consuming/ServiceConsuming.html" class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming">ServiceConsuming</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_providing.ServiceProviding#serviceToProvidableService" visbl="pub" data-isabs="false" fullComment="yes" group="ProvideServices">
+      <a id="serviceToProvidableService[S](service:S):org.helgoboss.domino.service_providing.ProvidableService[S]"></a>
+      <a id="serviceToProvidableService[S](S):ProvidableService[S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">serviceToProvidableService</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="service">service: <span class="extype" name="org.helgoboss.domino.service_providing.ServiceProviding.serviceToProvidableService.S">S</span></span>)</span><span class="result">: <a href="service_providing/ProvidableService.html" class="extype" name="org.helgoboss.domino.service_providing.ProvidableService">ProvidableService</a>[<span class="extype" name="org.helgoboss.domino.service_providing.ServiceProviding.serviceToProvidableService.S">S</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Automatically converts any object to a <span class="extype" name="ProvidableService">ProvidableService</span>.</p><div class="fullcomment"><div class="comment cmt"><p>Automatically converts any object to a <span class="extype" name="ProvidableService">ProvidableService</span>.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_providing/ServiceProviding.html" class="extype" name="org.helgoboss.domino.service_providing.ServiceProviding">ServiceProviding</a></dd><dt>See also</dt><dd><span class="cmt"><p><span class="extype" name="ProvidableService">ProvidableService</span> for the list of service registration methods
+</p></span></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_consuming.ServiceConsuming#services" visbl="pub" data-isabs="false" fullComment="yes" group="GetServices">
+      <a id="services[S&lt;:AnyRef](filter:String)(implicitevidence$9:ClassManifest[S]):Seq[S]"></a>
+      <a id="services[S&lt;:AnyRef](String)(ClassManifest[S]):Seq[S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">services</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="filter">filter: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.services.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.services.S">S</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns all services of the specified type which satisfy the given filter.</p><div class="fullcomment"><div class="comment cmt"><p>Returns all services of the specified type which satisfy the given filter.
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>service type</p></dd><dt class="param">filter</dt><dd class="cmt"><p>filter expression</p></dd><dt>returns</dt><dd class="cmt"><p>services
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_consuming/ServiceConsuming.html" class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming">ServiceConsuming</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_consuming.ServiceConsuming#services" visbl="pub" data-isabs="false" fullComment="yes" group="GetServices">
+      <a id="services[S&lt;:AnyRef](implicitevidence$7:ClassManifest[S]):Seq[S]"></a>
+      <a id="services[S&lt;:AnyRef](ClassManifest[S]):Seq[S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">services</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.services.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.services.S">S</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns all services of the given type.</p><div class="fullcomment"><div class="comment cmt"><p>Returns all services of the given type.
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>service type
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_consuming/ServiceConsuming.html" class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming">ServiceConsuming</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.OsgiContext#start" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="start(context:org.osgi.framework.BundleContext):Unit"></a>
+      <a id="start(BundleContext):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">start</span><span class="params">(<span name="context">context: <span class="extype" name="org.osgi.framework.BundleContext">BundleContext</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="OsgiContext.html" class="extype" name="org.helgoboss.domino.OsgiContext">OsgiContext</a> → <a href="EmptyBundleActivator.html" class="extype" name="org.helgoboss.domino.EmptyBundleActivator">EmptyBundleActivator</a> → BundleActivator</dd></dl></div>
+    </li><li name="org.helgoboss.domino.OsgiContext#stop" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="stop(context:org.osgi.framework.BundleContext):Unit"></a>
+      <a id="stop(BundleContext):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">stop</span><span class="params">(<span name="context">context: <span class="extype" name="org.osgi.framework.BundleContext">BundleContext</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="OsgiContext.html" class="extype" name="org.helgoboss.domino.OsgiContext">OsgiContext</a> → <a href="EmptyBundleActivator.html" class="extype" name="org.helgoboss.domino.EmptyBundleActivator">EmptyBundleActivator</a> → BundleActivator</dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#watchAdvancedServices" visbl="pub" data-isabs="false" fullComment="yes" group="WatchServices">
+      <a id="watchAdvancedServices[S&lt;:AnyRef](filter:String)(f:org.helgoboss.domino.service_watching.ServiceWatcherEvent[S]=&gt;Unit)(implicitevidence$2:ClassManifest[S]):org.osgi.util.tracker.ServiceTracker[S,S]"></a>
+      <a id="watchAdvancedServices[S&lt;:AnyRef](String)((ServiceWatcherEvent[S])⇒Unit)(ClassManifest[S]):ServiceTracker[S,S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">watchAdvancedServices</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="filter">filter: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="f">f: (<a href="service_watching/ServiceWatcherEvent.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatcherEvent">ServiceWatcherEvent</a>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchAdvancedServices.S">S</span>]) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchAdvancedServices.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchAdvancedServices.S">S</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchAdvancedServices.S">S</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Lets you react to service events for services with the specified type which match the given filter.</p><div class="fullcomment"><div class="comment cmt"><p>Lets you react to service events for services with the specified type which match the given filter.
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>Service type</p></dd><dt class="param">f</dt><dd class="cmt"><p>Service event handler</p></dd><dt>returns</dt><dd class="cmt"><p>Underlying service tracker
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_watching/ServiceWatching.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching">ServiceWatching</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.bundle_watching.BundleWatching#watchBundles" visbl="pub" data-isabs="false" fullComment="yes" group="WatchBundles">
+      <a id="watchBundles(f:org.helgoboss.domino.bundle_watching.BundleWatcherEvent=&gt;Unit):org.osgi.util.tracker.BundleTracker[org.osgi.framework.Bundle]"></a>
+      <a id="watchBundles((BundleWatcherEvent)⇒Unit):BundleTracker[Bundle]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">watchBundles</span><span class="params">(<span name="f">f: (<a href="bundle_watching/BundleWatcherEvent.html" class="extype" name="org.helgoboss.domino.bundle_watching.BundleWatcherEvent">BundleWatcherEvent</a>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.BundleTracker">BundleTracker</span>[<span class="extype" name="org.osgi.framework.Bundle">Bundle</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Reacts to bundle events with the given event handler.</p><div class="fullcomment"><div class="comment cmt"><p>Reacts to bundle events with the given event handler.
+</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>bundle event handler</p></dd><dt>returns</dt><dd class="cmt"><p>underlying bundle tracker
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="bundle_watching/BundleWatching.html" class="extype" name="org.helgoboss.domino.bundle_watching.BundleWatching">BundleWatching</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#watchServices" visbl="pub" data-isabs="false" fullComment="yes" group="WatchServices">
+      <a id="watchServices[S&lt;:AnyRef](f:org.helgoboss.domino.service_watching.ServiceWatcherEvent[S]=&gt;Unit)(implicitevidence$1:ClassManifest[S]):org.osgi.util.tracker.ServiceTracker[S,S]"></a>
+      <a id="watchServices[S&lt;:AnyRef]((ServiceWatcherEvent[S])⇒Unit)(ClassManifest[S]):ServiceTracker[S,S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">watchServices</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="f">f: (<a href="service_watching/ServiceWatcherEvent.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatcherEvent">ServiceWatcherEvent</a>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchServices.S">S</span>]) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchServices.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchServices.S">S</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchServices.S">S</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Lets you react to service events for services with the specified type.</p><div class="fullcomment"><div class="comment cmt"><p>Lets you react to service events for services with the specified type.
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>Service type</p></dd><dt class="param">f</dt><dd class="cmt"><p>Service event handler</p></dd><dt>returns</dt><dd class="cmt"><p>Underlying service tracker
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_watching/ServiceWatching.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching">ServiceWatching</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#whenAdvancedServicePresent" visbl="pub" data-isabs="false" fullComment="yes" group="WaitForServices">
+      <a id="whenAdvancedServicePresent[S&lt;:AnyRef](filter:String)(f:S=&gt;Unit)(implicitevidence$4:ClassManifest[S]):org.osgi.util.tracker.ServiceTracker[S,S]"></a>
+      <a id="whenAdvancedServicePresent[S&lt;:AnyRef](String)((S)⇒Unit)(ClassManifest[S]):ServiceTracker[S,S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenAdvancedServicePresent</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="filter">filter: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="f">f: (<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenAdvancedServicePresent.S">S</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenAdvancedServicePresent.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenAdvancedServicePresent.S">S</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenAdvancedServicePresent.S">S</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Activates the given inner logic as long as the first service of the given type is present.</p><div class="fullcomment"><div class="comment cmt"><p>Activates the given inner logic as long as the first service of the given type is present. This implements the concept of
+required services. The inner logic is started as soon as a service s of the given type gets present and stopped when s is removed.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_watching/ServiceWatching.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching">ServiceWatching</a></dd><dt>To do</dt><dd><span class="cmt"><p>Idea for roadmap: Fallback to another service if s is removed and another service of the type is available
+      (reevaluate capsule).
+</p></span></dd></dl></div>
+    </li><li name="org.helgoboss.domino.OsgiContext#whenBundleActive" visbl="pub" data-isabs="false" fullComment="yes" group="Basics">
+      <a id="whenBundleActive(f:=&gt;Unit):Unit"></a>
+      <a id="whenBundleActive(⇒Unit):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenBundleActive</span><span class="params">(<span name="f">f: ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Defines a handler <code>f</code> to be executed when the bundle becomes active.</p><div class="fullcomment"><div class="comment cmt"><p>Defines a handler <code>f</code> to be executed when the bundle becomes active. <code>f</code> is executed as soon as the bundle
+activator's <code>start</code> method is called. This should be called in the constructor of your activator.</p><p>In <code>f</code>, you have the opportunity to add so called capsules, which have their own <code>start</code> and <code>stop</code> methods
+(a kind of mini bundles). Their <code>stop</code> methods will be invoked as soon as the bundle activator's <code>stop</code> method
+is called. So you have the big chance here to encapsulate start and stop logic at one place, making the bundle
+activator less error-prone, better readable and easier to write.
+</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>Handler
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="OsgiContext.html" class="extype" name="org.helgoboss.domino.OsgiContext">OsgiContext</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatching#whenConfigurationActive" visbl="pub" data-isabs="false" fullComment="yes" group="WatchConfigurations">
+      <a id="whenConfigurationActive(objectClassDefinition:org.helgoboss.scala_osgi_metatype.interfaces.ObjectClassDefinition)(f:Map[String,Any]=&gt;Unit):org.osgi.framework.ServiceRegistration[org.osgi.service.cm.ManagedService]"></a>
+      <a id="whenConfigurationActive(ObjectClassDefinition)((Map[String,Any])⇒Unit):ServiceRegistration[ManagedService]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenConfigurationActive</span><span class="params">(<span name="objectClassDefinition">objectClassDefinition: <a href="../scala_osgi_metatype/interfaces/ObjectClassDefinition.html" class="extype" name="org.helgoboss.scala_osgi_metatype.interfaces.ObjectClassDefinition">ObjectClassDefinition</a></span>)</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Any">Any</span>]) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <span class="extype" name="org.osgi.framework.ServiceRegistration">ServiceRegistration</span>[<span class="extype" name="org.osgi.service.cm.ManagedService">ManagedService</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Like the same-named method which expects the service PID but takes the service PID from the given object class
+definition and registers a corresponding meta type provider so a nice configuration GUI will be created.</p><div class="fullcomment"><div class="comment cmt"><p>Like the same-named method which expects the service PID but takes the service PID from the given object class
+definition and registers a corresponding meta type provider so a nice configuration GUI will be created.
+</p></div><dl class="paramcmts block"><dt class="param">objectClassDefinition</dt><dd class="cmt"><p>object class definition</p></dd><dt class="param">f</dt><dd class="cmt"><p>handler</p></dd><dt>returns</dt><dd class="cmt"><p>the managed service registration
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="configuration_watching/ConfigurationWatching.html" class="extype" name="org.helgoboss.domino.configuration_watching.ConfigurationWatching">ConfigurationWatching</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatching#whenConfigurationActive" visbl="pub" data-isabs="false" fullComment="yes" group="WatchConfigurations">
+      <a id="whenConfigurationActive(servicePid:String,metaTypeProvider:Option[org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider])(f:Map[String,Any]=&gt;Unit):org.osgi.framework.ServiceRegistration[org.osgi.service.cm.ManagedService]"></a>
+      <a id="whenConfigurationActive(String,Option[MetaTypeProvider])((Map[String,Any])⇒Unit):ServiceRegistration[ManagedService]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenConfigurationActive</span><span class="params">(<span name="servicePid">servicePid: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="metaTypeProvider">metaTypeProvider: <span class="extype" name="scala.Option">Option</span>[<a href="../scala_osgi_metatype/interfaces/MetaTypeProvider.html" class="extype" name="org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider">MetaTypeProvider</a>] = <span class="symbol">None</span></span>)</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Any">Any</span>]) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <span class="extype" name="org.osgi.framework.ServiceRegistration">ServiceRegistration</span>[<span class="extype" name="org.osgi.service.cm.ManagedService">ManagedService</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Executes the given handler with the initial configuration or an empty map if none exists.</p><div class="fullcomment"><div class="comment cmt"><p>Executes the given handler with the initial configuration or an empty map if none exists. Whenever
+the configuration is changed, the capsules registered in the handler are stopped and the handler is executed
+again with the new configuration.
+</p></div><dl class="paramcmts block"><dt class="param">servicePid</dt><dd class="cmt"><p>service PID</p></dd><dt class="param">metaTypeProvider</dt><dd class="cmt"><p>optional metatype provider</p></dd><dt class="param">f</dt><dd class="cmt"><p>handler</p></dd><dt>returns</dt><dd class="cmt"><p>the managed service registration
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="configuration_watching/ConfigurationWatching.html" class="extype" name="org.helgoboss.domino.configuration_watching.ConfigurationWatching">ConfigurationWatching</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatching#whenFactoryConfigurationActive" visbl="pub" data-isabs="false" fullComment="yes" group="WatchFactoryConfigurations">
+      <a id="whenFactoryConfigurationActive(objectClassDefinition:org.helgoboss.scala_osgi_metatype.interfaces.ObjectClassDefinition)(f:(Map[String,Any],String)=&gt;Unit):org.osgi.framework.ServiceRegistration[org.osgi.service.cm.ManagedServiceFactory]"></a>
+      <a id="whenFactoryConfigurationActive(ObjectClassDefinition)((Map[String,Any],String)⇒Unit):ServiceRegistration[ManagedServiceFactory]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenFactoryConfigurationActive</span><span class="params">(<span name="objectClassDefinition">objectClassDefinition: <a href="../scala_osgi_metatype/interfaces/ObjectClassDefinition.html" class="extype" name="org.helgoboss.scala_osgi_metatype.interfaces.ObjectClassDefinition">ObjectClassDefinition</a></span>)</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Any">Any</span>], <span class="extype" name="scala.Predef.String">String</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <span class="extype" name="org.osgi.framework.ServiceRegistration">ServiceRegistration</span>[<span class="extype" name="org.osgi.service.cm.ManagedServiceFactory">ManagedServiceFactory</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Like the same-named method which expects the service PID but takes the service PID from the given object class
+definition and registers a corresponding meta type provider so a nice configuration GUI will be created.</p><div class="fullcomment"><div class="comment cmt"><p>Like the same-named method which expects the service PID but takes the service PID from the given object class
+definition and registers a corresponding meta type provider so a nice configuration GUI will be created.
+</p></div><dl class="paramcmts block"><dt class="param">objectClassDefinition</dt><dd class="cmt"><p>object class definition</p></dd><dt class="param">f</dt><dd class="cmt"><p>handler</p></dd><dt>returns</dt><dd class="cmt"><p>the managed service factory registration
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="configuration_watching/ConfigurationWatching.html" class="extype" name="org.helgoboss.domino.configuration_watching.ConfigurationWatching">ConfigurationWatching</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatching#whenFactoryConfigurationActive" visbl="pub" data-isabs="false" fullComment="yes" group="WatchFactoryConfigurations">
+      <a id="whenFactoryConfigurationActive(servicePid:String,name:String,metaTypeProvider:Option[org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider])(f:(Map[String,Any],String)=&gt;Unit):org.osgi.framework.ServiceRegistration[org.osgi.service.cm.ManagedServiceFactory]"></a>
+      <a id="whenFactoryConfigurationActive(String,String,Option[MetaTypeProvider])((Map[String,Any],String)⇒Unit):ServiceRegistration[ManagedServiceFactory]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenFactoryConfigurationActive</span><span class="params">(<span name="servicePid">servicePid: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="metaTypeProvider">metaTypeProvider: <span class="extype" name="scala.Option">Option</span>[<a href="../scala_osgi_metatype/interfaces/MetaTypeProvider.html" class="extype" name="org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider">MetaTypeProvider</a>] = <span class="symbol">None</span></span>)</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Any">Any</span>], <span class="extype" name="scala.Predef.String">String</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <span class="extype" name="org.osgi.framework.ServiceRegistration">ServiceRegistration</span>[<span class="extype" name="org.osgi.service.cm.ManagedServiceFactory">ManagedServiceFactory</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Executes the given handler whenever a new factory configuration is created.</p><div class="fullcomment"><div class="comment cmt"><p>Executes the given handler whenever a new factory configuration is created. Whenever a factory configuration
+is changed, the correct capsules registered in the corresponding handler are stopped and the handler is
+executed again with the new factory configuration. When the factory configuration is removed, the corresponding
+capsules are stopped.
+</p></div><dl class="paramcmts block"><dt class="param">servicePid</dt><dd class="cmt"><p>service PID</p></dd><dt class="param">name</dt><dd class="cmt"><p>descriptive name for the factory</p></dd><dt class="param">metaTypeProvider</dt><dd class="cmt"><p>optional metatype provider</p></dd><dt class="param">f</dt><dd class="cmt"><p>handler</p></dd><dt>returns</dt><dd class="cmt"><p>the managed service factory registration
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="configuration_watching/ConfigurationWatching.html" class="extype" name="org.helgoboss.domino.configuration_watching.ConfigurationWatching">ConfigurationWatching</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#whenServicePresent" visbl="pub" data-isabs="false" fullComment="yes" group="WaitForServices">
+      <a id="whenServicePresent[S&lt;:AnyRef](f:S=&gt;Unit)(implicitevidence$3:ClassManifest[S]):org.osgi.util.tracker.ServiceTracker[S,S]"></a>
+      <a id="whenServicePresent[S&lt;:AnyRef]((S)⇒Unit)(ClassManifest[S]):ServiceTracker[S,S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenServicePresent</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicePresent.S">S</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicePresent.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicePresent.S">S</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicePresent.S">S</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Waits until a service of the specified type is available and executes the given event handler with it.</p><div class="fullcomment"><div class="comment cmt"><p>Waits until a service of the specified type is available and executes the given event handler with it.
+When the service disappears, the capsules added in the handlers are stopped.
+You can wait on a bunch of services if you nest <code>whenServicePresent</code> methods.
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>Service type</p></dd><dt class="param">f</dt><dd class="cmt"><p>Handler</p></dd><dt>returns</dt><dd class="cmt"><p>Underlying service tracker
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_watching/ServiceWatching.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching">ServiceWatching</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#whenServicesPresent" visbl="pub" data-isabs="false" fullComment="yes" group="WaitForServices">
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef,S3&lt;:AnyRef,S4&lt;:AnyRef,S5&lt;:AnyRef](f:(S1,S2,S3,S4,S5)=&gt;Unit)(implicitevidence$14:ClassManifest[S1],implicitevidence$15:ClassManifest[S2],implicitevidence$16:ClassManifest[S3],implicitevidence$17:ClassManifest[S4],implicitevidence$18:ClassManifest[S5]):org.osgi.util.tracker.ServiceTracker[S1,S1]"></a>
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef,S3&lt;:AnyRef,S4&lt;:AnyRef,S5&lt;:AnyRef]((S1,S2,S3,S4,S5)⇒Unit)(ClassManifest[S1],ClassManifest[S2],ClassManifest[S3],ClassManifest[S4],ClassManifest[S5]):ServiceTracker[S1,S1]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenServicesPresent</span><span class="tparams">[<span name="S1">S1 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S2">S2 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S3">S3 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S4">S4 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S5">S5 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S3">S3</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S4">S4</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S5">S5</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>, <span name="arg1">arg1: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>]</span>, <span name="arg2">arg2: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S3">S3</span>]</span>, <span name="arg3">arg3: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S4">S4</span>]</span>, <span name="arg4">arg4: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S5">S5</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_watching/ServiceWatching.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching">ServiceWatching</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#whenServicesPresent" visbl="pub" data-isabs="false" fullComment="yes" group="WaitForServices">
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef,S3&lt;:AnyRef,S4&lt;:AnyRef](f:(S1,S2,S3,S4)=&gt;Unit)(implicitevidence$10:ClassManifest[S1],implicitevidence$11:ClassManifest[S2],implicitevidence$12:ClassManifest[S3],implicitevidence$13:ClassManifest[S4]):org.osgi.util.tracker.ServiceTracker[S1,S1]"></a>
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef,S3&lt;:AnyRef,S4&lt;:AnyRef]((S1,S2,S3,S4)⇒Unit)(ClassManifest[S1],ClassManifest[S2],ClassManifest[S3],ClassManifest[S4]):ServiceTracker[S1,S1]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenServicesPresent</span><span class="tparams">[<span name="S1">S1 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S2">S2 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S3">S3 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S4">S4 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S3">S3</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S4">S4</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>, <span name="arg1">arg1: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>]</span>, <span name="arg2">arg2: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S3">S3</span>]</span>, <span name="arg3">arg3: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S4">S4</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_watching/ServiceWatching.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching">ServiceWatching</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#whenServicesPresent" visbl="pub" data-isabs="false" fullComment="yes" group="WaitForServices">
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef,S3&lt;:AnyRef](f:(S1,S2,S3)=&gt;Unit)(implicitevidence$7:ClassManifest[S1],implicitevidence$8:ClassManifest[S2],implicitevidence$9:ClassManifest[S3]):org.osgi.util.tracker.ServiceTracker[S1,S1]"></a>
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef,S3&lt;:AnyRef]((S1,S2,S3)⇒Unit)(ClassManifest[S1],ClassManifest[S2],ClassManifest[S3]):ServiceTracker[S1,S1]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenServicesPresent</span><span class="tparams">[<span name="S1">S1 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S2">S2 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S3">S3 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S3">S3</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>, <span name="arg1">arg1: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>]</span>, <span name="arg2">arg2: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S3">S3</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_watching/ServiceWatching.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching">ServiceWatching</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#whenServicesPresent" visbl="pub" data-isabs="false" fullComment="yes" group="WaitForServices">
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef](f:(S1,S2)=&gt;Unit)(implicitevidence$5:ClassManifest[S1],implicitevidence$6:ClassManifest[S2]):org.osgi.util.tracker.ServiceTracker[S1,S1]"></a>
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef]((S1,S2)⇒Unit)(ClassManifest[S1],ClassManifest[S2]):ServiceTracker[S1,S1]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenServicesPresent</span><span class="tparams">[<span name="S1">S1 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S2">S2 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>, <span name="arg1">arg1: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_watching/ServiceWatching.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching">ServiceWatching</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_consuming.ServiceConsuming#withAdvancedService" visbl="pub" data-isabs="false" fullComment="yes" group="GetServices">
+      <a id="withAdvancedService[S&lt;:AnyRef,R](filter:String)(f:Option[S]=&gt;R)(implicitevidence$2:ClassManifest[S]):R"></a>
+      <a id="withAdvancedService[S&lt;:AnyRef,R](String)((Option[S])⇒R)(ClassManifest[S]):R"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withAdvancedService</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="R">R</span>]</span><span class="params">(<span name="filter">filter: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.withAdvancedService.S">S</span>]) ⇒ <span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.withAdvancedService.R">R</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.withAdvancedService.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.withAdvancedService.R">R</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Executes the given handler with the first available service of the specified class which satisfies the filter
+if available.</p><div class="fullcomment"><div class="comment cmt"><p>Executes the given handler with the first available service of the specified class which satisfies the filter
+if available. If it's not available, it still executes it but with <span class="extype" name="scala.None">scala.None</span>.</p><p>When the handler returns, the service is released using <span class="extype" name="org.osgi.framework.BundleContext#ungetService">org.osgi.framework.BundleContext#ungetService</span>.
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>service type</p></dd><dt class="tparam">R</dt><dd class="cmt"><p>function result type</p></dd><dt class="param">filter</dt><dd class="cmt"><p>filter expression</p></dd><dt class="param">f</dt><dd class="cmt"><p>handler that uses the service</p></dd><dt>returns</dt><dd class="cmt"><p>handler result
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_consuming/ServiceConsuming.html" class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming">ServiceConsuming</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_consuming.ServiceConsuming#withService" visbl="pub" data-isabs="false" fullComment="yes" group="GetServices">
+      <a id="withService[S&lt;:AnyRef,R](f:Option[S]=&gt;R)(implicitevidence$1:ClassManifest[S]):R"></a>
+      <a id="withService[S&lt;:AnyRef,R]((Option[S])⇒R)(ClassManifest[S]):R"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withService</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="R">R</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.Option">Option</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.withService.S">S</span>]) ⇒ <span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.withService.R">R</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.withService.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming.withService.R">R</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Executes the given handler with the highest-ranked service of the specified type.</p><div class="fullcomment"><div class="comment cmt"><p>Executes the given handler with the highest-ranked service of the specified type. If it's not available,
+it still executes it but with <span class="extype" name="scala.None">scala.None</span>.</p><p>When the handler returns, the service is released using <span class="extype" name="org.osgi.framework.BundleContext#ungetService">org.osgi.framework.BundleContext#ungetService</span>.
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>service type</p></dd><dt class="tparam">R</dt><dd class="cmt"><p>function result type</p></dd><dt class="param">f</dt><dd class="cmt"><p>handler that uses the service</p></dd><dt>returns</dt><dd class="cmt"><p>handler result
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="service_consuming/ServiceConsuming.html" class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming">ServiceConsuming</a></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="org.helgoboss.domino.service_watching.ServiceWatching">
+              <h3>Inherited from <a href="service_watching/ServiceWatching.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching">ServiceWatching</a></h3>
+            </div><div class="parent" name="org.helgoboss.domino.service_providing.ServiceProviding">
+              <h3>Inherited from <a href="service_providing/ServiceProviding.html" class="extype" name="org.helgoboss.domino.service_providing.ServiceProviding">ServiceProviding</a></h3>
+            </div><div class="parent" name="org.helgoboss.domino.logging.Logging">
+              <h3>Inherited from <a href="logging/Logging.html" class="extype" name="org.helgoboss.domino.logging.Logging">Logging</a></h3>
+            </div><div class="parent" name="org.helgoboss.domino.service_consuming.ServiceConsuming">
+              <h3>Inherited from <a href="service_consuming/ServiceConsuming.html" class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming">ServiceConsuming</a></h3>
+            </div><div class="parent" name="org.helgoboss.domino.DominoImplicits">
+              <h3>Inherited from <a href="DominoImplicits.html" class="extype" name="org.helgoboss.domino.DominoImplicits">DominoImplicits</a></h3>
+            </div><div class="parent" name="org.helgoboss.domino.configuration_watching.ConfigurationWatching">
+              <h3>Inherited from <a href="configuration_watching/ConfigurationWatching.html" class="extype" name="org.helgoboss.domino.configuration_watching.ConfigurationWatching">ConfigurationWatching</a></h3>
+            </div><div class="parent" name="org.helgoboss.domino.bundle_watching.BundleWatching">
+              <h3>Inherited from <a href="bundle_watching/BundleWatching.html" class="extype" name="org.helgoboss.domino.bundle_watching.BundleWatching">BundleWatching</a></h3>
+            </div><div class="parent" name="org.helgoboss.capsule.CapsuleConvenience">
+              <h3>Inherited from <a href="../capsule/CapsuleConvenience.html" class="extype" name="org.helgoboss.capsule.CapsuleConvenience">CapsuleConvenience</a></h3>
+            </div><div class="parent" name="org.helgoboss.domino.OsgiContext">
+              <h3>Inherited from <a href="OsgiContext.html" class="extype" name="org.helgoboss.domino.OsgiContext">OsgiContext</a></h3>
+            </div><div class="parent" name="org.helgoboss.domino.EmptyBundleActivator">
+              <h3>Inherited from <a href="EmptyBundleActivator.html" class="extype" name="org.helgoboss.domino.EmptyBundleActivator">EmptyBundleActivator</a></h3>
+            </div><div class="parent" name="org.osgi.framework.BundleActivator">
+              <h3>Inherited from <span class="extype" name="org.osgi.framework.BundleActivator">BundleActivator</span></h3>
+            </div><div class="parent" name="org.helgoboss.capsule.DynamicCapsuleContext">
+              <h3>Inherited from <a href="../capsule/DynamicCapsuleContext.html" class="extype" name="org.helgoboss.capsule.DynamicCapsuleContext">DynamicCapsuleContext</a></h3>
+            </div><div class="parent" name="org.helgoboss.capsule.CapsuleContext">
+              <h3>Inherited from <a href="../capsule/CapsuleContext.html" class="extype" name="org.helgoboss.capsule.CapsuleContext">CapsuleContext</a></h3>
+            </div><div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Basics">
+              <h3>Basics</h3>
+              <div class="comment cmt"><p>Basic methods</p></div>
+            </div><div class="group" name="GetServiceReferences">
+              <h3>Consume service references</h3>
+              <div class="comment cmt"><p>Methods for obtaining access to OSGi service references
+</p></div>
+            </div><div class="group" name="GetServices">
+              <h3>Consume services</h3>
+              <div class="comment cmt"><p>Methods for obtaining access to OSGi services</p></div>
+            </div><div class="group" name="LogMessages">
+              <h3>Log messages</h3>
+              <div class="comment cmt"><p>Functionality related to logging
+</p></div>
+            </div><div class="group" name="ProvideServices">
+              <h3>Provide services</h3>
+              <div class="comment cmt"><p>Functionality for exposing arbitrary objects in the OSGi service registry.
+</p></div>
+            </div><div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div><div class="group" name="WaitForServices">
+              <h3>Wait for services</h3>
+              <div class="comment cmt"><p>Methods for waiting until services become available
+</p></div>
+            </div><div class="group" name="WatchBundles">
+              <h3>Watch bundles</h3>
+              <div class="comment cmt"><p>Methods for reacting to bundle events
+</p></div>
+            </div><div class="group" name="WatchConfigurations">
+              <h3>Watch configurations</h3>
+              <div class="comment cmt"><p>Methods for listening to configuration updates</p></div>
+            </div><div class="group" name="WatchFactoryConfigurations">
+              <h3>Watch factory configurations</h3>
+              <div class="comment cmt"><p>Methods for listening to factory configuration additions, updates and removals
+</p></div>
+            </div><div class="group" name="WatchServices">
+              <h3>Watch services</h3>
+              <div class="comment cmt"><p>Methods for reacting to service events</p></div>
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

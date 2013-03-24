@@ -1,0 +1,207 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>service_watching - Domino 1.0.0-SNAPSHOT API - org.helgoboss.domino.service_watching</title>
+          <meta name="description" content="service watching - Domino 1.0.0 - SNAPSHOT API - org.helgoboss.domino.service watching" />
+          <meta name="keywords" content="service watching Domino 1.0.0 SNAPSHOT API org.helgoboss.domino.service watching" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../index.html';
+            var hash = 'org.helgoboss.domino.service_watching.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.helgoboss">helgoboss</a>.<a href="../package.html" class="extype" name="org.helgoboss.domino">domino</a></p>
+        <h1>service_watching</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">service_watching</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Contains functionality related to watching OSGi services coming and going.
+</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="org.helgoboss.domino.service_watching"><span>service_watching</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.helgoboss.domino.service_watching.ServiceWatcherCapsule" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ServiceWatcherCapsule[S&lt;:AnyRef]extendsCapsule"></a>
+      <a id="ServiceWatcherCapsule[S&lt;:AnyRef]:ServiceWatcherCapsule[S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ServiceWatcherCapsule.html"><span class="name">ServiceWatcherCapsule</span></a><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="result"> extends <a href="../../capsule/Capsule.html" class="extype" name="org.helgoboss.capsule.Capsule">Capsule</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">A capsule which executes the given event handlers on service state transitions while the current scope is active.</p>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatcherContext" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ServiceWatcherContext[S&lt;:AnyRef]extendsProductwithSerializable"></a>
+      <a id="ServiceWatcherContext[S&lt;:AnyRef]:ServiceWatcherContext[S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ServiceWatcherContext.html"><span class="name">ServiceWatcherContext</span></a><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="tracker">tracker: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatcherContext.S">S</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatcherContext.S">S</span>]</span>, <span name="ref">ref: <span class="extype" name="org.osgi.framework.ServiceReference">ServiceReference</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatcherContext.S">S</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Contains details about the current service event.</p>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatcherEvent" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ServiceWatcherEvent[S&lt;:AnyRef]extendsObject"></a>
+      <a id="ServiceWatcherEvent[S&lt;:AnyRef]:ServiceWatcherEvent[S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ServiceWatcherEvent.html"><span class="name">ServiceWatcherEvent</span></a><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Super class for service watcher events.</p>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ServiceWatchingextendsDominoImplicits"></a>
+      <a id="ServiceWatching:ServiceWatching"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ServiceWatching.html"><span class="name">ServiceWatching</span></a><span class="result"> extends <a href="../DominoImplicits.html" class="extype" name="org.helgoboss.domino.DominoImplicits">DominoImplicits</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Provides convenient methods to add a service watcher to the current scope or wait until services are present.</p>
+    </li><li name="org.helgoboss.domino.service_watching.SimpleServiceWatching" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SimpleServiceWatchingextendsServiceWatching"></a>
+      <a id="SimpleServiceWatching:SimpleServiceWatching"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SimpleServiceWatching.html"><span class="name">SimpleServiceWatching</span></a><span class="result"> extends <a href="ServiceWatching.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching">ServiceWatching</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">A class that mixes in the <a href="ServiceWatching.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching">ServiceWatching</a> trait.</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.helgoboss.domino.service_watching.ServiceWatcherEvent" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ServiceWatcherEvent"></a>
+      <a id="ServiceWatcherEvent:ServiceWatcherEvent"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ServiceWatcherEvent$.html"><span class="name">ServiceWatcherEvent</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Contains the possible service watcher events.</p>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

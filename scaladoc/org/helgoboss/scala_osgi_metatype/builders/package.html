@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>builders - Domino 1.0.0-SNAPSHOT API - org.helgoboss.scala_osgi_metatype.builders</title>
+          <meta name="description" content="builders - Domino 1.0.0 - SNAPSHOT API - org.helgoboss.scala osgi metatype.builders" />
+          <meta name="keywords" content="builders Domino 1.0.0 SNAPSHOT API org.helgoboss.scala osgi metatype.builders" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../index.html';
+            var hash = 'org.helgoboss.scala_osgi_metatype.builders.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.helgoboss">helgoboss</a>.<a href="../package.html" class="extype" name="org.helgoboss.scala_osgi_metatype">scala_osgi_metatype</a></p>
+        <h1>builders</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">builders</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Contains builder objects for easily creating Scala OSGi metatypes.</p><h4> Example </h4><p>The following example demonstrates how you can describe configuration parameters for a service.</p><pre><span class="kw">import</span> org.helgoboss.scala_osgi_metatype.builders._
+
+<span class="kw">val</span> myObjectClass = ObjectClass(
+  id = <span class="lit">"org.helgoboss.my_service"</span>,
+  name = <span class="lit">"My configurable service"</span>,
+  requiredAttributes = <span class="std">List</span>(
+    ElementaryAttribute[<span class="std">Int</span>](id = <span class="lit">"size"</span>, name = <span class="lit">"Size"</span>, default = <span class="std">Some</span>(<span class="num">5</span>)),
+    ElementaryAttribute[<span class="std">String</span>](id = <span class="lit">"user"</span>, name = <span class="lit">"User"</span>, default = <span class="std">Some</span>(<span class="lit">"root"</span>))
+  )
+)</pre></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="org.helgoboss.scala_osgi_metatype.builders"><span>builders</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.helgoboss.scala_osgi_metatype.builders.ObjectClassDefinitionConvenience" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ObjectClassDefinitionConvenienceextendsObject"></a>
+      <a id="ObjectClassDefinitionConvenience:ObjectClassDefinitionConvenience"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ObjectClassDefinitionConvenience.html"><span class="name">ObjectClassDefinitionConvenience</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Adds some convenience methods to the given object class definition.</p>
+    </li><li name="org.helgoboss.scala_osgi_metatype.builders.SingleMetaTypeProvider" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SingleMetaTypeProviderextendsMetaTypeProvider"></a>
+      <a id="SingleMetaTypeProvider:SingleMetaTypeProvider"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SingleMetaTypeProvider.html"><span class="name">SingleMetaTypeProvider</span></a><span class="result"> extends <a href="../interfaces/MetaTypeProvider.html" class="extype" name="org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider">MetaTypeProvider</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">A meta type provider which provides an object class definition for one id.</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.helgoboss.scala_osgi_metatype.builders.ElementaryAttribute" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ElementaryAttribute"></a>
+      <a id="ElementaryAttribute:ElementaryAttribute"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ElementaryAttribute$.html"><span class="name">ElementaryAttribute</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Convenient builder for elementary attribute definitions without advanced validation
+(type validation is done).</p>
+    </li><li name="org.helgoboss.scala_osgi_metatype.builders.ListAttribute" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ListAttribute"></a>
+      <a id="ListAttribute:ListAttribute"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ListAttribute$.html"><span class="name">ListAttribute</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Convenient builder for list attribute definitions without advanced validation (type validation is done).</p>
+    </li><li name="org.helgoboss.scala_osgi_metatype.builders.ObjectClass" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ObjectClass"></a>
+      <a id="ObjectClass:ObjectClass"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ObjectClass$.html"><span class="name">ObjectClass</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Convenient builder for object class definitions.</p>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

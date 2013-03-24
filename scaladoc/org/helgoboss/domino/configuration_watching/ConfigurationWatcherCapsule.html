@@ -1,0 +1,631 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>ConfigurationWatcherCapsule - Domino 1.0.0-SNAPSHOT API - org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule</title>
+          <meta name="description" content="ConfigurationWatcherCapsule - Domino 1.0.0 - SNAPSHOT API - org.helgoboss.domino.configuration watching.ConfigurationWatcherCapsule" />
+          <meta name="keywords" content="ConfigurationWatcherCapsule Domino 1.0.0 SNAPSHOT API org.helgoboss.domino.configuration watching.ConfigurationWatcherCapsule" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../index.html';
+            var hash = 'org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="type">
+      <div id="definition">
+        <img src="../../../../lib/class_big.png" />
+        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.helgoboss">helgoboss</a>.<a href="../package.html" class="extype" name="org.helgoboss.domino">domino</a>.<a href="package.html" class="extype" name="org.helgoboss.domino.configuration_watching">configuration_watching</a></p>
+        <h1>ConfigurationWatcherCapsule</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ConfigurationWatcherCapsule</span><span class="result"> extends <a href="AbstractConfigurationWatcherCapsule.html" class="extype" name="org.helgoboss.domino.configuration_watching.AbstractConfigurationWatcherCapsule">AbstractConfigurationWatcherCapsule</a> with <span class="extype" name="org.osgi.service.cm.ManagedService">ManagedService</span></span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A capsule which allows easy access to the <span class="extype" name="org.osgi.service.cm.ConfigurationAdmin">org.osgi.service.cm.ConfigurationAdmin</span> functionality related
+to normal configurations (not factory configurations).
+</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="org.osgi.service.cm.ManagedService">ManagedService</span>, <a href="AbstractConfigurationWatcherCapsule.html" class="extype" name="org.helgoboss.domino.configuration_watching.AbstractConfigurationWatcherCapsule">AbstractConfigurationWatcherCapsule</a>, <span class="extype" name="org.osgi.service.metatype.MetaTypeProvider">MetaTypeProvider</span>, <a href="../../capsule/Capsule.html" class="extype" name="org.helgoboss.capsule.Capsule">Capsule</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule"><span>ConfigurationWatcherCapsule</span></li><li class="in" name="org.osgi.service.cm.ManagedService"><span>ManagedService</span></li><li class="in" name="org.helgoboss.domino.configuration_watching.AbstractConfigurationWatcherCapsule"><span>AbstractConfigurationWatcherCapsule</span></li><li class="in" name="org.osgi.service.metatype.MetaTypeProvider"><span>MetaTypeProvider</span></li><li class="in" name="org.helgoboss.capsule.Capsule"><span>Capsule</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(servicePid:String,f:Map[String,Any]=&gt;Unit,metaTypeProvider:Option[org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider],serviceConsuming:org.helgoboss.domino.service_consuming.ServiceConsuming,bundleContext:org.osgi.framework.BundleContext,capsuleContext:org.helgoboss.capsule.CapsuleContext):org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule"></a>
+      <a id="&lt;init&gt;:ConfigurationWatcherCapsule"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ConfigurationWatcherCapsule</span><span class="params">(<span name="servicePid">servicePid: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="f">f: (<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Any">Any</span>]) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>, <span name="metaTypeProvider">metaTypeProvider: <span class="extype" name="scala.Option">Option</span>[<a href="../../scala_osgi_metatype/interfaces/MetaTypeProvider.html" class="extype" name="org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider">MetaTypeProvider</a>]</span>, <span name="serviceConsuming">serviceConsuming: <a href="../service_consuming/ServiceConsuming.html" class="extype" name="org.helgoboss.domino.service_consuming.ServiceConsuming">ServiceConsuming</a></span>, <span name="bundleContext">bundleContext: <span class="extype" name="org.osgi.framework.BundleContext">BundleContext</span></span>, <span name="capsuleContext">capsuleContext: <a href="../../capsule/CapsuleContext.html" class="extype" name="org.helgoboss.capsule.CapsuleContext">CapsuleContext</a></span>)</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">servicePid</dt><dd class="cmt"><p>Service PID</p></dd><dt class="param">f</dt><dd class="cmt"><p>Handler which is executed initially and on every configuration change</p></dd><dt class="param">metaTypeProvider</dt><dd class="cmt"><p>Optional metatype provider</p></dd><dt class="param">serviceConsuming</dt><dd class="cmt"><p>Dependency</p></dd><dt class="param">bundleContext</dt><dd class="cmt"><p>Dependency</p></dd><dt class="param">capsuleContext</dt><dd class="cmt"><p>Dependency
+</p></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:AnyRef):Boolean"></a>
+      <a id="!=(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:AnyRef):Boolean"></a>
+      <a id="==(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule#_reg" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="_reg:org.osgi.framework.ServiceRegistration[org.osgi.service.cm.ManagedService]"></a>
+      <a id="_reg:ServiceRegistration[ManagedService]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">var</span>
+      </span>
+      <span class="symbol">
+        <span class="name">_reg</span><span class="result">: <span class="extype" name="org.osgi.framework.ServiceRegistration">ServiceRegistration</span>[<span class="extype" name="org.osgi.service.cm.ManagedService">ManagedService</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<span class="extype" name="java.lang">java.lang</span>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule#executeBlockWithConf" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="executeBlockWithConf(optConf:Option[java.util.Dictionary[String,_]]):Unit"></a>
+      <a id="executeBlockWithConf(Option[Dictionary[String,_]]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">executeBlockWithConf</span><span class="params">(<span name="optConf">optConf: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.util.Dictionary">Dictionary</span>[<span class="extype" name="scala.Predef.String">String</span>, _]]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Executes the handler with the given configuration and saves it for future comparison.</p><div class="fullcomment"><div class="comment cmt"><p>Executes the handler with the given configuration and saves it for future comparison.
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule#executeBlockWithConfIfChanged" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="executeBlockWithConfIfChanged(optConf:Option[java.util.Dictionary[String,_]]):Unit"></a>
+      <a id="executeBlockWithConfIfChanged(Option[Dictionary[String,_]]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">executeBlockWithConfIfChanged</span><span class="params">(<span name="optConf">optConf: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.util.Dictionary">Dictionary</span>[<span class="extype" name="scala.Predef.String">String</span>, _]]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Executes the handler only if the configuration has changed compared to the one which was used last.</p><div class="fullcomment"><div class="comment cmt"><p>Executes the handler only if the configuration has changed compared to the one which was used last.
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<span class="extype" name="java.lang">java.lang</span>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule#getConfigDirectly" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getConfigDirectly():Option[java.util.Dictionary[String,_]]"></a>
+      <a id="getConfigDirectly():Option[Dictionary[String,_]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getConfigDirectly</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.util.Dictionary">Dictionary</span>[<span class="extype" name="scala.Predef.String">String</span>, _]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Pulls the current configuration from the configuration admin.</p><div class="fullcomment"><div class="comment cmt"><p>Pulls the current configuration from the configuration admin.
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.AbstractConfigurationWatcherCapsule#getLocales" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getLocales():Array[String]"></a>
+      <a id="getLocales():Array[String]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getLocales</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AbstractConfigurationWatcherCapsule.html" class="extype" name="org.helgoboss.domino.configuration_watching.AbstractConfigurationWatcherCapsule">AbstractConfigurationWatcherCapsule</a> → MetaTypeProvider</dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.AbstractConfigurationWatcherCapsule#getObjectClassDefinition" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getObjectClassDefinition(id:String,locale:String):org.osgi.service.metatype.ObjectClassDefinition"></a>
+      <a id="getObjectClassDefinition(String,String):ObjectClassDefinition"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getObjectClassDefinition</span><span class="params">(<span name="id">id: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="locale">locale: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="org.osgi.service.metatype.ObjectClassDefinition">ObjectClassDefinition</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AbstractConfigurationWatcherCapsule.html" class="extype" name="org.helgoboss.domino.configuration_watching.AbstractConfigurationWatcherCapsule">AbstractConfigurationWatcherCapsule</a> → MetaTypeProvider</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule#interfacesArray" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="interfacesArray:Array[String]"></a>
+      <a id="interfacesArray:Array[String]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">interfacesArray</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Contains the interfaces under which this object will be put in the service registry.</p><div class="fullcomment"><div class="comment cmt"><p>Contains the interfaces under which this object will be put in the service registry.
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.AbstractConfigurationWatcherCapsule#metaTypeProviderAdapter" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="metaTypeProviderAdapter:Option[org.helgoboss.scala_osgi_metatype.adapters.MetaTypeProviderAdapter]"></a>
+      <a id="metaTypeProviderAdapter:Option[MetaTypeProviderAdapter]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">metaTypeProviderAdapter</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../../scala_osgi_metatype/adapters/MetaTypeProviderAdapter.html" class="extype" name="org.helgoboss.scala_osgi_metatype.adapters.MetaTypeProviderAdapter">MetaTypeProviderAdapter</a>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Contains the adapter which translates the Scala OSGi metatype definition into a native OSGi metatype definition.</p><div class="fullcomment"><div class="comment cmt"><p>Contains the adapter which translates the Scala OSGi metatype definition into a native OSGi metatype definition.
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="AbstractConfigurationWatcherCapsule.html" class="extype" name="org.helgoboss.domino.configuration_watching.AbstractConfigurationWatcherCapsule">AbstractConfigurationWatcherCapsule</a></dd></dl></div>
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule#newCapsuleScope" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newCapsuleScope:Option[org.helgoboss.capsule.CapsuleScope]"></a>
+      <a id="newCapsuleScope:Option[CapsuleScope]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">var</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newCapsuleScope</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../../capsule/CapsuleScope.html" class="extype" name="org.helgoboss.capsule.CapsuleScope">CapsuleScope</a>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Contains the new capsule scope.</p><div class="fullcomment"><div class="comment cmt"><p>Contains the new capsule scope.
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule#oldOptConf" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="oldOptConf:Option[java.util.Dictionary[String,_]]"></a>
+      <a id="oldOptConf:Option[Dictionary[String,_]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">var</span>
+      </span>
+      <span class="symbol">
+        <span class="name">oldOptConf</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.util.Dictionary">Dictionary</span>[<span class="extype" name="scala.Predef.String">String</span>, _]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Contains the previous configuration map.</p><div class="fullcomment"><div class="comment cmt"><p>Contains the previous configuration map. Used to determine whether the configuration has changed.
+</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule#reg" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="reg:org.osgi.framework.ServiceRegistration[org.osgi.service.cm.ManagedService]"></a>
+      <a id="reg:ServiceRegistration[ManagedService]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">reg</span><span class="result">: <span class="extype" name="org.osgi.framework.ServiceRegistration">ServiceRegistration</span>[<span class="extype" name="org.osgi.service.cm.ManagedService">ManagedService</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns the service registration of the configuration listener as long as the current scope is active.</p>
+    </li><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule#start" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="start():Unit"></a>
+      <a id="start():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">start</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Starts the capsule.</p><div class="fullcomment"><div class="comment cmt"><p>Starts the capsule. After that, the capsule is active.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule">ConfigurationWatcherCapsule</a> → <a href="../../capsule/Capsule.html" class="extype" name="org.helgoboss.capsule.Capsule">Capsule</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule#stop" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="stop():Unit"></a>
+      <a id="stop():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">stop</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Stops the capsule.</p><div class="fullcomment"><div class="comment cmt"><p>Stops the capsule. After that, the capsule is inactive.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule">ConfigurationWatcherCapsule</a> → <a href="../../capsule/Capsule.html" class="extype" name="org.helgoboss.capsule.Capsule">Capsule</a></dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule#updated" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="updated(conf:java.util.Dictionary[String,_]):Unit"></a>
+      <a id="updated(Dictionary[String,_]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">updated</span><span class="params">(<span name="conf">conf: <span class="extype" name="java.util.Dictionary">Dictionary</span>[<span class="extype" name="scala.Predef.String">String</span>, _]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.helgoboss.domino.configuration_watching.ConfigurationWatcherCapsule">ConfigurationWatcherCapsule</a> → ManagedService</dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="org.osgi.service.cm.ManagedService">
+              <h3>Inherited from <span class="extype" name="org.osgi.service.cm.ManagedService">ManagedService</span></h3>
+            </div><div class="parent" name="org.helgoboss.domino.configuration_watching.AbstractConfigurationWatcherCapsule">
+              <h3>Inherited from <a href="AbstractConfigurationWatcherCapsule.html" class="extype" name="org.helgoboss.domino.configuration_watching.AbstractConfigurationWatcherCapsule">AbstractConfigurationWatcherCapsule</a></h3>
+            </div><div class="parent" name="org.osgi.service.metatype.MetaTypeProvider">
+              <h3>Inherited from <span class="extype" name="org.osgi.service.metatype.MetaTypeProvider">MetaTypeProvider</span></h3>
+            </div><div class="parent" name="org.helgoboss.capsule.Capsule">
+              <h3>Inherited from <a href="../../capsule/Capsule.html" class="extype" name="org.helgoboss.capsule.Capsule">Capsule</a></h3>
+            </div><div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

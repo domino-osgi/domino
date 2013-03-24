@@ -1,0 +1,587 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>ServiceWatching - Domino 1.0.0-SNAPSHOT API - org.helgoboss.domino.service_watching.ServiceWatching</title>
+          <meta name="description" content="ServiceWatching - Domino 1.0.0 - SNAPSHOT API - org.helgoboss.domino.service watching.ServiceWatching" />
+          <meta name="keywords" content="ServiceWatching Domino 1.0.0 SNAPSHOT API org.helgoboss.domino.service watching.ServiceWatching" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../index.html';
+            var hash = 'org.helgoboss.domino.service_watching.ServiceWatching';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="type">
+      <div id="definition">
+        <img src="../../../../lib/trait_big.png" />
+        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.helgoboss">helgoboss</a>.<a href="../package.html" class="extype" name="org.helgoboss.domino">domino</a>.<a href="package.html" class="extype" name="org.helgoboss.domino.service_watching">service_watching</a></p>
+        <h1>ServiceWatching</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ServiceWatching</span><span class="result"> extends <a href="../DominoImplicits.html" class="extype" name="org.helgoboss.domino.DominoImplicits">DominoImplicits</a></span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Provides convenient methods to add a service watcher to the current scope or wait until services are present.
+</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><a href="../DominoImplicits.html" class="extype" name="org.helgoboss.domino.DominoImplicits">DominoImplicits</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div><div class="toggleContainer block">
+          <span class="toggle">Known Subclasses</span>
+          <div class="subClasses hiddenContent"><a href="../DominoActivator.html" class="extype" name="org.helgoboss.domino.DominoActivator">DominoActivator</a>, <a href="SimpleServiceWatching.html" class="extype" name="org.helgoboss.domino.service_watching.SimpleServiceWatching">SimpleServiceWatching</a></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                <li class="group out"><span>Grouped</span></li>
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="org.helgoboss.domino.service_watching.ServiceWatching"><span>ServiceWatching</span></li><li class="in" name="org.helgoboss.domino.DominoImplicits"><span>DominoImplicits</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        
+
+        <div id="values" class="values members">
+              <h3>Abstract Value Members</h3>
+              <ol><li name="org.helgoboss.domino.service_watching.ServiceWatching#bundleContext" visbl="prt" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="bundleContext:org.osgi.framework.BundleContext"></a>
+      <a id="bundleContext:BundleContext"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">bundleContext</span><span class="result">: <span class="extype" name="org.osgi.framework.BundleContext">BundleContext</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Dependency</p><div class="fullcomment"><div class="comment cmt"><p>Dependency</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching">ServiceWatching</a> → <a href="../DominoImplicits.html" class="extype" name="org.helgoboss.domino.DominoImplicits">DominoImplicits</a></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#capsuleContext" visbl="prt" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="capsuleContext:org.helgoboss.capsule.CapsuleContext"></a>
+      <a id="capsuleContext:CapsuleContext"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">capsuleContext</span><span class="result">: <a href="../../capsule/CapsuleContext.html" class="extype" name="org.helgoboss.capsule.CapsuleContext">CapsuleContext</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Dependency</p><div class="fullcomment"><div class="comment cmt"><p>Dependency</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li></ol>
+            </div>
+
+        <div id="values" class="values members">
+              <h3>Concrete Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:AnyRef):Boolean"></a>
+      <a id="!=(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:AnyRef):Boolean"></a>
+      <a id="==(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<span class="extype" name="java.lang">java.lang</span>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<span class="extype" name="java.lang">java.lang</span>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.helgoboss.domino.DominoImplicits#serviceRefToRichServiceRef" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="serviceRefToRichServiceRef[S&lt;:AnyRef](serviceRef:org.osgi.framework.ServiceReference[S])(implicitevidence$1:ClassManifest[S]):org.helgoboss.domino.RichServiceReference[S]"></a>
+      <a id="serviceRefToRichServiceRef[S&lt;:AnyRef](ServiceReference[S])(ClassManifest[S]):RichServiceReference[S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">serviceRefToRichServiceRef</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="serviceRef">serviceRef: <span class="extype" name="org.osgi.framework.ServiceReference">ServiceReference</span>[<span class="extype" name="org.helgoboss.domino.DominoImplicits.serviceRefToRichServiceRef.S">S</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.DominoImplicits.serviceRefToRichServiceRef.S">S</span>]</span>)</span><span class="result">: <a href="../RichServiceReference.html" class="extype" name="org.helgoboss.domino.RichServiceReference">RichServiceReference</a>[<span class="extype" name="org.helgoboss.domino.DominoImplicits.serviceRefToRichServiceRef.S">S</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Converts a service reference to a rich service reference so one can easily obtain the
+corresponding service by calling <code>service</code>, for example.</p><div class="fullcomment"><div class="comment cmt"><p>Converts a service reference to a rich service reference so one can easily obtain the
+corresponding service by calling <code>service</code>, for example.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../DominoImplicits.html" class="extype" name="org.helgoboss.domino.DominoImplicits">DominoImplicits</a></dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#watchAdvancedServices" visbl="pub" data-isabs="false" fullComment="yes" group="WatchServices">
+      <a id="watchAdvancedServices[S&lt;:AnyRef](filter:String)(f:org.helgoboss.domino.service_watching.ServiceWatcherEvent[S]=&gt;Unit)(implicitevidence$2:ClassManifest[S]):org.osgi.util.tracker.ServiceTracker[S,S]"></a>
+      <a id="watchAdvancedServices[S&lt;:AnyRef](String)((ServiceWatcherEvent[S])⇒Unit)(ClassManifest[S]):ServiceTracker[S,S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">watchAdvancedServices</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="filter">filter: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="f">f: (<a href="ServiceWatcherEvent.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatcherEvent">ServiceWatcherEvent</a>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchAdvancedServices.S">S</span>]) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchAdvancedServices.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchAdvancedServices.S">S</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchAdvancedServices.S">S</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Lets you react to service events for services with the specified type which match the given filter.</p><div class="fullcomment"><div class="comment cmt"><p>Lets you react to service events for services with the specified type which match the given filter.
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>Service type</p></dd><dt class="param">f</dt><dd class="cmt"><p>Service event handler</p></dd><dt>returns</dt><dd class="cmt"><p>Underlying service tracker
+</p></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#watchServices" visbl="pub" data-isabs="false" fullComment="yes" group="WatchServices">
+      <a id="watchServices[S&lt;:AnyRef](f:org.helgoboss.domino.service_watching.ServiceWatcherEvent[S]=&gt;Unit)(implicitevidence$1:ClassManifest[S]):org.osgi.util.tracker.ServiceTracker[S,S]"></a>
+      <a id="watchServices[S&lt;:AnyRef]((ServiceWatcherEvent[S])⇒Unit)(ClassManifest[S]):ServiceTracker[S,S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">watchServices</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="f">f: (<a href="ServiceWatcherEvent.html" class="extype" name="org.helgoboss.domino.service_watching.ServiceWatcherEvent">ServiceWatcherEvent</a>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchServices.S">S</span>]) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchServices.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchServices.S">S</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.watchServices.S">S</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Lets you react to service events for services with the specified type.</p><div class="fullcomment"><div class="comment cmt"><p>Lets you react to service events for services with the specified type.
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>Service type</p></dd><dt class="param">f</dt><dd class="cmt"><p>Service event handler</p></dd><dt>returns</dt><dd class="cmt"><p>Underlying service tracker
+</p></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#whenAdvancedServicePresent" visbl="pub" data-isabs="false" fullComment="yes" group="WaitForServices">
+      <a id="whenAdvancedServicePresent[S&lt;:AnyRef](filter:String)(f:S=&gt;Unit)(implicitevidence$4:ClassManifest[S]):org.osgi.util.tracker.ServiceTracker[S,S]"></a>
+      <a id="whenAdvancedServicePresent[S&lt;:AnyRef](String)((S)⇒Unit)(ClassManifest[S]):ServiceTracker[S,S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenAdvancedServicePresent</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="filter">filter: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span name="f">f: (<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenAdvancedServicePresent.S">S</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenAdvancedServicePresent.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenAdvancedServicePresent.S">S</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenAdvancedServicePresent.S">S</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Activates the given inner logic as long as the first service of the given type is present.</p><div class="fullcomment"><div class="comment cmt"><p>Activates the given inner logic as long as the first service of the given type is present. This implements the concept of
+required services. The inner logic is started as soon as a service s of the given type gets present and stopped when s is removed.
+</p></div><dl class="attributes block"> <dt>To do</dt><dd><span class="cmt"><p>Idea for roadmap: Fallback to another service if s is removed and another service of the type is available
+      (reevaluate capsule).
+</p></span></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#whenServicePresent" visbl="pub" data-isabs="false" fullComment="yes" group="WaitForServices">
+      <a id="whenServicePresent[S&lt;:AnyRef](f:S=&gt;Unit)(implicitevidence$3:ClassManifest[S]):org.osgi.util.tracker.ServiceTracker[S,S]"></a>
+      <a id="whenServicePresent[S&lt;:AnyRef]((S)⇒Unit)(ClassManifest[S]):ServiceTracker[S,S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenServicePresent</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicePresent.S">S</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicePresent.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicePresent.S">S</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicePresent.S">S</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Waits until a service of the specified type is available and executes the given event handler with it.</p><div class="fullcomment"><div class="comment cmt"><p>Waits until a service of the specified type is available and executes the given event handler with it.
+When the service disappears, the capsules added in the handlers are stopped.
+You can wait on a bunch of services if you nest <code>whenServicePresent</code> methods.
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>Service type</p></dd><dt class="param">f</dt><dd class="cmt"><p>Handler</p></dd><dt>returns</dt><dd class="cmt"><p>Underlying service tracker
+</p></dd></dl></div>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#whenServicesPresent" visbl="pub" data-isabs="false" fullComment="no" group="WaitForServices">
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef,S3&lt;:AnyRef,S4&lt;:AnyRef,S5&lt;:AnyRef](f:(S1,S2,S3,S4,S5)=&gt;Unit)(implicitevidence$14:ClassManifest[S1],implicitevidence$15:ClassManifest[S2],implicitevidence$16:ClassManifest[S3],implicitevidence$17:ClassManifest[S4],implicitevidence$18:ClassManifest[S5]):org.osgi.util.tracker.ServiceTracker[S1,S1]"></a>
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef,S3&lt;:AnyRef,S4&lt;:AnyRef,S5&lt;:AnyRef]((S1,S2,S3,S4,S5)⇒Unit)(ClassManifest[S1],ClassManifest[S2],ClassManifest[S3],ClassManifest[S4],ClassManifest[S5]):ServiceTracker[S1,S1]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenServicesPresent</span><span class="tparams">[<span name="S1">S1 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S2">S2 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S3">S3 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S4">S4 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S5">S5 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S3">S3</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S4">S4</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S5">S5</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>, <span name="arg1">arg1: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>]</span>, <span name="arg2">arg2: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S3">S3</span>]</span>, <span name="arg3">arg3: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S4">S4</span>]</span>, <span name="arg4">arg4: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S5">S5</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt"></p>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#whenServicesPresent" visbl="pub" data-isabs="false" fullComment="no" group="WaitForServices">
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef,S3&lt;:AnyRef,S4&lt;:AnyRef](f:(S1,S2,S3,S4)=&gt;Unit)(implicitevidence$10:ClassManifest[S1],implicitevidence$11:ClassManifest[S2],implicitevidence$12:ClassManifest[S3],implicitevidence$13:ClassManifest[S4]):org.osgi.util.tracker.ServiceTracker[S1,S1]"></a>
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef,S3&lt;:AnyRef,S4&lt;:AnyRef]((S1,S2,S3,S4)⇒Unit)(ClassManifest[S1],ClassManifest[S2],ClassManifest[S3],ClassManifest[S4]):ServiceTracker[S1,S1]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenServicesPresent</span><span class="tparams">[<span name="S1">S1 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S2">S2 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S3">S3 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S4">S4 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S3">S3</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S4">S4</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>, <span name="arg1">arg1: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>]</span>, <span name="arg2">arg2: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S3">S3</span>]</span>, <span name="arg3">arg3: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S4">S4</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt"></p>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#whenServicesPresent" visbl="pub" data-isabs="false" fullComment="no" group="WaitForServices">
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef,S3&lt;:AnyRef](f:(S1,S2,S3)=&gt;Unit)(implicitevidence$7:ClassManifest[S1],implicitevidence$8:ClassManifest[S2],implicitevidence$9:ClassManifest[S3]):org.osgi.util.tracker.ServiceTracker[S1,S1]"></a>
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef,S3&lt;:AnyRef]((S1,S2,S3)⇒Unit)(ClassManifest[S1],ClassManifest[S2],ClassManifest[S3]):ServiceTracker[S1,S1]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenServicesPresent</span><span class="tparams">[<span name="S1">S1 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S2">S2 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S3">S3 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S3">S3</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>, <span name="arg1">arg1: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>]</span>, <span name="arg2">arg2: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S3">S3</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt"></p>
+    </li><li name="org.helgoboss.domino.service_watching.ServiceWatching#whenServicesPresent" visbl="pub" data-isabs="false" fullComment="no" group="WaitForServices">
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef](f:(S1,S2)=&gt;Unit)(implicitevidence$5:ClassManifest[S1],implicitevidence$6:ClassManifest[S2]):org.osgi.util.tracker.ServiceTracker[S1,S1]"></a>
+      <a id="whenServicesPresent[S1&lt;:AnyRef,S2&lt;:AnyRef]((S1,S2)⇒Unit)(ClassManifest[S1],ClassManifest[S2]):ServiceTracker[S1,S1]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">whenServicesPresent</span><span class="tparams">[<span name="S1">S1 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>, <span name="S2">S2 &lt;: <span class="extype" name="scala.AnyRef">AnyRef</span></span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>, <span name="arg1">arg1: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S2">S2</span>]</span>)</span><span class="result">: <span class="extype" name="org.osgi.util.tracker.ServiceTracker">ServiceTracker</span>[<span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>, <span class="extype" name="org.helgoboss.domino.service_watching.ServiceWatching.whenServicesPresent.S1">S1</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt"></p>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="org.helgoboss.domino.DominoImplicits">
+              <h3>Inherited from <a href="../DominoImplicits.html" class="extype" name="org.helgoboss.domino.DominoImplicits">DominoImplicits</a></h3>
+            </div><div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div><div class="group" name="WaitForServices">
+              <h3>Wait for services</h3>
+              <div class="comment cmt"><p>Methods for waiting until services become available
+</p></div>
+            </div><div class="group" name="WatchServices">
+              <h3>Watch services</h3>
+              <div class="comment cmt"><p>Methods for reacting to service events</p></div>
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
