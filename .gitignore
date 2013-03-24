@@ -14,3 +14,4 @@ project/plugins/project/
 
 # IntelliJ-IDEA specific
 *.iml
+.idea
