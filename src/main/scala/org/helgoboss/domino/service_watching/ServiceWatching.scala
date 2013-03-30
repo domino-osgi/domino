@@ -1,10 +1,10 @@
 package org.helgoboss.domino.service_watching
 
-import org.helgoboss.domino.service_providing.ServiceProviding
 import org.helgoboss.capsule.{CapsuleScope, CapsuleContext}
-import org.osgi.framework.{Bundle, ServiceRegistration, BundleContext}
+import org.osgi.framework.BundleContext
 import org.osgi.util.tracker.ServiceTracker
-import org.helgoboss.domino.{DominoImplicits, DominoUtil, DominoActivator, OsgiContext}
+import org.helgoboss.domino.{DominoImplicits, DominoUtil}
+import scala.reflect.runtime.universe._
 
 /**
  * Provides convenient methods to add a service watcher to the current scope or wait until services are present.
@@ -30,7 +30,7 @@ trait ServiceWatching extends DominoImplicits {
    * @tparam S Service type
    * @return Underlying service tracker
    */
-  def watchServices[S <: AnyRef: ClassManifest](f: ServiceWatcherEvent[S] => Unit): ServiceTracker[S, S] = {
+  def watchServices[S <: AnyRef: TypeTag](f: ServiceWatcherEvent[S] => Unit): ServiceTracker[S, S] = {
     watchAdvancedServices[S](null)(f)
   }
 
@@ -42,8 +42,8 @@ trait ServiceWatching extends DominoImplicits {
    * @tparam S Service type
    * @return Underlying service tracker
    */
-  def watchAdvancedServices[S <: AnyRef: ClassManifest](filter: String)(f: ServiceWatcherEvent[S] => Unit): ServiceTracker[S, S] = {
-    val combinedFilter = DominoUtil.createCompleteFilter(classManifest[S], filter)
+  def watchAdvancedServices[S <: AnyRef: TypeTag](filter: String)(f: ServiceWatcherEvent[S] => Unit): ServiceTracker[S, S] = {
+    val combinedFilter = DominoUtil.createCompleteFilter(typeTag[S].tpe, filter)
     val typedFilter = bundleContext.createFilter(combinedFilter)
     val sw = new ServiceWatcherCapsule[S](typedFilter, f, bundleContext)
     capsuleContext.addCapsule(sw)
@@ -60,7 +60,7 @@ trait ServiceWatching extends DominoImplicits {
    * @tparam S Service type
    * @return Underlying service tracker
    */
-  def whenServicePresent[S <: AnyRef: ClassManifest](f: (S) => Unit): ServiceTracker[S, S] = {
+  def whenServicePresent[S <: AnyRef: TypeTag](f: (S) => Unit): ServiceTracker[S, S] = {
     whenAdvancedServicePresent[S](null)(f)
   }
 
@@ -72,7 +72,7 @@ trait ServiceWatching extends DominoImplicits {
    * @todo Idea for roadmap: Fallback to another service if s is removed and another service of the type is available 
    *       (reevaluate capsule).
    */
-  def whenAdvancedServicePresent[S <: AnyRef: ClassManifest](filter: String)(f: S => Unit): ServiceTracker[S, S] = {
+  def whenAdvancedServicePresent[S <: AnyRef: TypeTag](filter: String)(f: S => Unit): ServiceTracker[S, S] = {
     case class ActivationState(watchedService: S, servicePresentCapsuleScope: CapsuleScope)
     var optActivationState: Option[ActivationState] = None
 
@@ -105,8 +105,8 @@ trait ServiceWatching extends DominoImplicits {
    * @group WaitForServices
    */
   def whenServicesPresent[
-      S1 <: AnyRef: ClassManifest,
-      S2 <: AnyRef: ClassManifest](f: (S1, S2) => Unit): ServiceTracker[S1, S1] = {
+      S1 <: AnyRef: TypeTag,
+      S2 <: AnyRef: TypeTag](f: (S1, S2) => Unit): ServiceTracker[S1, S1] = {
 
     whenServicePresent[S1] { (service1: S1) =>
       whenServicePresent[S2] { (service2: S2) =>
@@ -119,9 +119,9 @@ trait ServiceWatching extends DominoImplicits {
    * @group WaitForServices
    */
   def whenServicesPresent[
-      S1 <: AnyRef: ClassManifest,
-      S2 <: AnyRef: ClassManifest,
-      S3 <: AnyRef: ClassManifest](f: (S1, S2, S3) => Unit): ServiceTracker[S1, S1] = {
+      S1 <: AnyRef: TypeTag,
+      S2 <: AnyRef: TypeTag,
+      S3 <: AnyRef: TypeTag](f: (S1, S2, S3) => Unit): ServiceTracker[S1, S1] = {
 
     whenServicesPresent[S1, S2] { (service1: S1, service2: S2) =>
       whenServicePresent[S3] { (service3: S3) =>
@@ -134,10 +134,10 @@ trait ServiceWatching extends DominoImplicits {
    * @group WaitForServices
    */
   def whenServicesPresent[
-      S1 <: AnyRef: ClassManifest,
-      S2 <: AnyRef: ClassManifest,
-      S3 <: AnyRef: ClassManifest,
-      S4 <: AnyRef: ClassManifest](f: (S1, S2, S3, S4) => Unit): ServiceTracker[S1, S1] = {
+      S1 <: AnyRef: TypeTag,
+      S2 <: AnyRef: TypeTag,
+      S3 <: AnyRef: TypeTag,
+      S4 <: AnyRef: TypeTag](f: (S1, S2, S3, S4) => Unit): ServiceTracker[S1, S1] = {
 
     whenServicesPresent[S1, S2, S3] { (service1: S1, service2: S2, service3: S3) =>
       whenServicePresent[S4] { (service4: S4) =>
@@ -150,11 +150,11 @@ trait ServiceWatching extends DominoImplicits {
    * @group WaitForServices
    */
   def whenServicesPresent[
-      S1 <: AnyRef: ClassManifest,
-      S2 <: AnyRef: ClassManifest,
-      S3 <: AnyRef: ClassManifest,
-      S4 <: AnyRef: ClassManifest,
-      S5 <: AnyRef: ClassManifest](f: (S1, S2, S3, S4, S5) => Unit): ServiceTracker[S1, S1] = {
+      S1 <: AnyRef: TypeTag,
+      S2 <: AnyRef: TypeTag,
+      S3 <: AnyRef: TypeTag,
+      S4 <: AnyRef: TypeTag,
+      S5 <: AnyRef: TypeTag](f: (S1, S2, S3, S4, S5) => Unit): ServiceTracker[S1, S1] = {
 
     whenServicesPresent[S1, S2, S3, S4] { (service1: S1, service2: S2, service3: S3, service4: S4) =>
       whenServicePresent[S5] { (service5: S5) =>

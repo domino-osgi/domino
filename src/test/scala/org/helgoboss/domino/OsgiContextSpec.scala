@@ -4,8 +4,6 @@ import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.WordSpec
 import org.scalatest.matchers.ShouldMatchers
-import service_watching.ServiceWatcherEvent._
-import bundle_watching.BundleWatcherEvent._
 
 /**
  * Currently tests only the DSL grammar and signatures but doesn't execute it.

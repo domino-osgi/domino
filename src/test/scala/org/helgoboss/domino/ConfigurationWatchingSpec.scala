@@ -4,7 +4,7 @@ import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.WordSpec
 import org.scalatest.matchers.ShouldMatchers
-import org.osgi.framework.{ServiceRegistration, ServiceReference, BundleContext}
+import org.osgi.framework.ServiceRegistration
 import org.helgoboss.scala_osgi_metatype.builders.ObjectClass
 import org.osgi.service.cm.{ManagedServiceFactory, ManagedService}
 

@@ -4,7 +4,6 @@ import org.helgoboss.capsule.CapsuleContext
 import org.osgi.framework.{ServiceRegistration, BundleContext}
 import org.helgoboss.scala_osgi_metatype.interfaces.{ObjectClassDefinition, MetaTypeProvider}
 import org.helgoboss.scala_osgi_metatype.builders.SingleMetaTypeProvider
-import org.helgoboss.domino.{DominoActivator, OsgiContext}
 import org.helgoboss.domino.service_consuming.ServiceConsuming
 import org.osgi.service.cm.{ManagedServiceFactory, ManagedService}
 

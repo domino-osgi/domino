@@ -4,8 +4,6 @@ import org.helgoboss.capsule.Capsule
 import org.osgi.service.metatype.{MetaTypeProvider => JMetaTypeProvider}
 import org.helgoboss.scala_osgi_metatype.adapters.MetaTypeProviderAdapter
 import org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider
-import org.osgi.framework.ServiceRegistration
-import org.osgi.service.cm.ManagedService
 
 
 /**

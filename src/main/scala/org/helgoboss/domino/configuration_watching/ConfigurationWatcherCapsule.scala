@@ -1,10 +1,9 @@
 package org.helgoboss.domino.configuration_watching
 
 import org.osgi.service.cm.{ConfigurationAdmin, ManagedService}
-import org.helgoboss.capsule.{CapsuleContext, CapsuleScope, Capsule}
+import org.helgoboss.capsule.{CapsuleContext, CapsuleScope}
 import org.osgi.service.metatype.{MetaTypeProvider => JMetaTypeProvider}
 import org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider
-import org.helgoboss.scala_osgi_metatype.adapters.MetaTypeProviderAdapter
 import org.osgi.framework.{BundleContext, Constants, ServiceRegistration}
 import java.util.Dictionary
 import org.helgoboss.domino.DominoUtil
@@ -58,7 +57,7 @@ class ConfigurationWatcherCapsule(
     val propertiesMap = Map(Constants.SERVICE_PID -> servicePid)
 
     // Find out current configuration by pulling it
-    val optConf = getConfigDirectly()
+    val optConf = getConfigDirectly
 
     // At first execute inner block synchronously with current configuration. Even if configuration admin is not present.
     executeBlockWithConf(optConf)
@@ -82,7 +81,7 @@ class ConfigurationWatcherCapsule(
   def updated(conf: Dictionary[String, _]) {
     // We query the config admin directly because the user can make sure then that the config value is already set.
     // See http://www.mail-archive.com/users@felix.apache.org/msg06764.html
-    val safeOptConf = Option(conf) orElse getConfigDirectly()
+    val safeOptConf = Option(conf) orElse getConfigDirectly
 
     // Execute handler only if configuration has changed
     executeBlockWithConfIfChanged(safeOptConf)
@@ -124,7 +123,7 @@ class ConfigurationWatcherCapsule(
   /**
    * Pulls the current configuration from the configuration admin.
    */
-  protected def getConfigDirectly(): Option[Dictionary[String, _]] = {
+  protected def getConfigDirectly: Option[Dictionary[String, _]] = {
     serviceConsuming.withService[ConfigurationAdmin, Option[Dictionary[String, _]]] {
       case Some(confAdmin) =>
         Option(confAdmin.getConfiguration(servicePid)) match {

@@ -1,11 +1,10 @@
 package org.helgoboss.domino.configuration_watching
 
 import org.osgi.service.cm.{Configuration, ConfigurationAdmin, ManagedServiceFactory}
-import org.helgoboss.capsule.{CapsuleContext, CapsuleScope, Capsule}
+import org.helgoboss.capsule.{CapsuleContext, CapsuleScope}
 import org.osgi.service.metatype.{MetaTypeProvider => JMetaTypeProvider}
 import org.helgoboss.scala_osgi_metatype.interfaces.MetaTypeProvider
 import org.osgi.framework.{BundleContext, Constants, ServiceRegistration}
-import org.helgoboss.scala_osgi_metatype.adapters.MetaTypeProviderAdapter
 import java.util.Dictionary
 import org.helgoboss.domino.DominoUtil
 import org.helgoboss.domino.service_consuming.ServiceConsuming
@@ -62,7 +61,7 @@ class FactoryConfigurationWatcherCapsule(
     val propertiesMap = Map(Constants.SERVICE_PID -> servicePid)
 
     // Find out current configurations by pulling them
-    val configurations = getConfigsDirectly()
+    val configurations = getConfigsDirectly
 
     // At first execute inner block synchronously with each configuration
     configurations foreach { configuration =>
@@ -127,7 +126,7 @@ class FactoryConfigurationWatcherCapsule(
   /**
    * Pulls the current configurations from the configuration admin.
    */
-  protected def getConfigsDirectly() = {
+  protected def getConfigsDirectly = {
     serviceConsuming.withService[ConfigurationAdmin, Traversable[Configuration]] {
       case Some(confAdmin) =>
         Option(confAdmin.listConfigurations("(service.pid=" + servicePid + ")")) match {

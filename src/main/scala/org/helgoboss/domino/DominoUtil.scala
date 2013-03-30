@@ -2,6 +2,7 @@ package org.helgoboss.domino
 
 import java.util.{Vector, Hashtable, Dictionary}
 import org.osgi.framework.Constants
+import scala.reflect.runtime.universe._
 
 /**
  * Contains utility methods used throughout Domino.
@@ -43,8 +44,8 @@ object DominoUtil {
   }
 
   /**
-   * Creates an expression which describes the complete type information of the given class manifests
-   * including generic type parameters. If none of the given manifests contains type parameters,
+   * Creates an expression which describes the complete type information of the given types
+   * including generic type parameters. If none of the given types contains type parameters,
    * it returns `None`.
    *
    * The resulting expression is supposed to be registered as OSGi service property so it can be
@@ -59,16 +60,30 @@ object DominoUtil {
    *    
    * @note A semicolon is used instead of a comma to separate the types.
    *
-   * @param classManifests Manifests which contain the type information
+   * @param types Type objects which might contain information about generic type arguments
    * @return types expression if generic type parameters are used
    */
-  def createGenericsExpression(classManifests: List[ClassManifest[_]]): Option[String] = {
-    if (classManifests exists { _.typeArguments.size > 0 }) {
+  def createGenericsExpression(types: Traversable[Type]): Option[String] = {
+    if (types exists { hasTypeArguments }) {
       val sep = ";"
-      Some(classManifests.mkString(sep, sep, sep))
+      Some(types.mkString(sep, sep, sep))
     } else {
       None
     }
+  }
+
+  /**
+   * Returns whether the given type tag has type parameters.
+   */
+  def hasTypeArguments(tpe: Type): Boolean = {
+    !tpe.asInstanceOf[TypeRefApi].args.isEmpty
+  }
+
+  /**
+   * Returns the qualified name of the given type.
+   */
+  def getFullTypeName(tpe: Type): String = {
+    tpe.asInstanceOf[TypeRefApi].typeSymbol.fullName
   }
 
   /**
@@ -76,10 +91,10 @@ object DominoUtil {
    * Uses wildcards because the service can be registered under several types. That would result
    * in several generic type expressions separated by semicolon.
    *
-   * If no generic type is used in the manifest, returns `None`.
+   * If no generic type is used in the type, returns `None`.
    */
-  def createGenericsFilter(cm: ClassManifest[_]): Option[String] = {
-    val expression = createGenericsExpression(List(cm))
+  def createGenericsFilter(tpe: Type): Option[String] = {
+    val expression = createGenericsExpression(List(tpe))
     expression match {
       case Some(e) =>
         if (e.isEmpty) {
@@ -93,16 +108,16 @@ object DominoUtil {
   }
 
   /**
-   * Creates a filter criteria expression which matches the given generic type and the given custom filter.
+   * Creates a filter criteria expression which matches the given type and the given custom filter.
    * Doesn't include the main `OBJECTCLASS` filter criteria. If no custom filter is given and
    * generic types are not used, returns `None`.
    *
-   * @param cm Type information
+   * @param tpe Type information
    * @param customFilter A custom filter expression
    */
-  def createGenericsAndCustomFilter(cm: ClassManifest[_], customFilter: String): Option[String] = {
+  def createGenericsAndCustomFilter(tpe: Type, customFilter: String): Option[String] = {
     // Create the generic type filter criteria
-    val completeTypeExpressionFilter = DominoUtil.createGenericsFilter(cm)
+    val completeTypeExpressionFilter = createGenericsFilter(tpe)
 
     // Link it with the custom filter
     DominoUtil.linkFiltersWithAnd(completeTypeExpressionFilter, Option(customFilter))
@@ -112,13 +127,14 @@ object DominoUtil {
    * Creates a filter criteria expression which matches the given main type, the generic type and the given custom filter.
    * Thus, it includes the main `OBJECTCLASS` filter criteria.
    *
-   * @param cm Type information
+   * @param tpe Type information
    * @param customFilter A custom filter expression
    */
-  def createCompleteFilter(cm: ClassManifest[_], customFilter: String): String = {
+  def createCompleteFilter(tpe: Type, customFilter: String): String = {
     // Create object class and generics and custom filter
-    val objectClassFilter = createObjectClassFilter(cm.erasure)
-    val genericsAndCustomFilter = createGenericsAndCustomFilter(cm, customFilter)
+    val className = getFullTypeName(tpe)
+    val objectClassFilter = createObjectClassFilter(className)
+    val genericsAndCustomFilter = createGenericsAndCustomFilter(tpe, customFilter)
 
     // Combine
     DominoUtil.linkFiltersWithAnd(Some(objectClassFilter), genericsAndCustomFilter).get
@@ -127,8 +143,8 @@ object DominoUtil {
   /**
    * Creates an `OBJECTCLASS` filter for the given class.
    */
-  def createObjectClassFilter(clazz: Class[_]): String = {
-    "(" + Constants.OBJECTCLASS + "=" + clazz.getName + ")"
+  def createObjectClassFilter(typeName: String): String = {
+    s"(${Constants.OBJECTCLASS}=$typeName)"
   }
 
 

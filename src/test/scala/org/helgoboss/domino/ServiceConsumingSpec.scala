@@ -4,7 +4,7 @@ import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.WordSpec
 import org.scalatest.matchers.ShouldMatchers
-import org.osgi.framework.{ServiceReference, BundleContext}
+import org.osgi.framework.ServiceReference
 
 /**
  * Currently tests only the DSL grammar and signatures but doesn't execute it.

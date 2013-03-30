@@ -2,6 +2,7 @@ package org.helgoboss.domino.service_providing
 
 import org.osgi.framework.{ BundleContext, ServiceRegistration }
 import org.helgoboss.capsule._
+import scala.reflect.runtime.universe._
 
 /**
  * Offers methods to register the wrapped service as OSGi service.
@@ -19,9 +20,9 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S1 Type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: ClassManifest](properties: (String, Any)*): ServiceRegistration[S] = {
+  def providesService[S1 >: S: TypeTag](properties: (String, Any)*): ServiceRegistration[S] = {
     providesServiceInternal(
-      List(classManifest[S1]),
+      List(typeTag[S1]),
       properties
     )
   }
@@ -32,7 +33,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S1 Type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: ClassManifest]: ServiceRegistration[S] = {
+  def providesService[S1 >: S: TypeTag]: ServiceRegistration[S] = {
     providesService[S1]()
   }
 
@@ -43,7 +44,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S1 Type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: ClassManifest](properties: Map[String, Any]): ServiceRegistration[S] = {
+  def providesService[S1 >: S: TypeTag](properties: Map[String, Any]): ServiceRegistration[S] = {
     providesService[S1](properties.toSeq: _*)
   }
 
@@ -55,9 +56,9 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S2 Second type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: ClassManifest, S2 >: S: ClassManifest](properties: (String, Any)*): ServiceRegistration[S] = {
+  def providesService[S1 >: S: TypeTag, S2 >: S: TypeTag](properties: (String, Any)*): ServiceRegistration[S] = {
     providesServiceInternal(
-      List(classManifest[S1], classManifest[S2]),
+      List(typeTag[S1], typeTag[S2]),
       properties
     )
   }
@@ -69,7 +70,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S2 Second type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: ClassManifest, S2 >: S: ClassManifest]: ServiceRegistration[S] = {
+  def providesService[S1 >: S: TypeTag, S2 >: S: TypeTag]: ServiceRegistration[S] = {
     providesService[S1, S2]()
   }
 
@@ -81,7 +82,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S2 Second type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: ClassManifest, S2 >: S: ClassManifest]
+  def providesService[S1 >: S: TypeTag, S2 >: S: TypeTag]
       (properties: Map[String, Any]): ServiceRegistration[S] = {
 
     providesService[S1, S2](properties.toSeq: _*)
@@ -96,11 +97,11 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S3 Third type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: ClassManifest, S2 >: S: ClassManifest, S3 >: S: ClassManifest]
+  def providesService[S1 >: S: TypeTag, S2 >: S: TypeTag, S3 >: S: TypeTag]
       (properties: (String, Any)*): ServiceRegistration[S] = {
 
     providesServiceInternal(
-      List(classManifest[S1], classManifest[S2], classManifest[S3]),
+      List(typeTag[S1], typeTag[S2], typeTag[S3]),
       properties
     )
   }
@@ -113,7 +114,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S3 Third type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: ClassManifest, S2 >: S: ClassManifest, S3 >: S: ClassManifest]: ServiceRegistration[S] = {
+  def providesService[S1 >: S: TypeTag, S2 >: S: TypeTag, S3 >: S: TypeTag]: ServiceRegistration[S] = {
     providesService[S1, S2, S3]()
   }
 
@@ -126,14 +127,15 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S3 Third type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: ClassManifest, S2 >: S: ClassManifest, S3 >: S: ClassManifest]
+  def providesService[S1 >: S: TypeTag, S2 >: S: TypeTag, S3 >: S: TypeTag]
       (properties: Map[String, Any]): ServiceRegistration[S] = {
 
     providesService[S1, S2, S3](properties.toSeq: _*)
   }
 
-  protected def providesServiceInternal(manifests: List[ClassManifest[_]], properties: Seq[(String, Any)]): ServiceRegistration[S] = {
-    val sp = new ServiceProviderCapsule(manifests, properties, bundleContext, service)
+  protected def providesServiceInternal(typeTags: Traversable[TypeTag[_]], properties: Seq[(String, Any)]): ServiceRegistration[S] = {
+    val types = typeTags.view map { _.tpe }
+    val sp = new ServiceProviderCapsule(types, properties, bundleContext, service)
     capsuleContext.addCapsule(sp)
     sp.reg
   }

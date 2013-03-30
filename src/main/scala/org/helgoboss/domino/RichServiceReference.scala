@@ -9,7 +9,7 @@ import org.osgi.framework.{ ServiceReference, BundleContext }
  * @param ref Wrapped service reference
  * @param bundleContext Bundle context for resolving the service
  */
-class RichServiceReference[S <: AnyRef: ClassManifest](val ref: ServiceReference[S], bundleContext: BundleContext) {
+class RichServiceReference[S <: AnyRef](val ref: ServiceReference[S], bundleContext: BundleContext) {
   /**
    * Returns the service for this reference if available.
    */

@@ -2,8 +2,7 @@ package org.helgoboss.domino.service_watching
 
 import org.helgoboss.capsule.Capsule
 import org.osgi.util.tracker.ServiceTracker
-import org.osgi.framework.{Filter, BundleContext, ServiceReference, Constants}
-import org.helgoboss.domino.{DominoUtil, RichServiceReference}
+import org.osgi.framework.{Filter, BundleContext, ServiceReference}
 
 /**
  * A capsule which executes the given event handlers on service state transitions while the current scope is active.
@@ -15,7 +14,7 @@ import org.helgoboss.domino.{DominoUtil, RichServiceReference}
  * @param bundleContext Bundle context
  * @tparam S Service type to be tracked
  */
-class ServiceWatcherCapsule[S <: AnyRef: ClassManifest](
+class ServiceWatcherCapsule[S <: AnyRef](
     filter: Filter,
     f: ServiceWatcherEvent[S] => Unit,
     bundleContext: BundleContext) extends Capsule {

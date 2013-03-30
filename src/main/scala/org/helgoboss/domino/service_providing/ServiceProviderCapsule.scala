@@ -3,19 +3,20 @@ package org.helgoboss.domino.service_providing
 import org.helgoboss.capsule.Capsule
 import org.osgi.framework.{BundleContext, ServiceRegistration}
 import org.helgoboss.domino.DominoUtil
+import scala.reflect.runtime.universe._
 
 
 /**
  * A capsule which registers an object in the OSGi service registry while the current capsule scope is active.
  *
- * @param manifests Manifests for types under which to register the given service in the OSGi registry
+ * @param types Types under which to register the given service in the OSGi registry
  * @param properties Service properties
  * @param bundleContext Bundle context
  * @param service The object to be registered
  * @tparam S Service type
  */
 class ServiceProviderCapsule[S](
-    manifests: List[ClassManifest[_]],
+    types: Traversable[Type],
     properties: Seq[(String, Any)],
     bundleContext: BundleContext,
     service: S) extends Capsule {
@@ -29,10 +30,10 @@ class ServiceProviderCapsule[S](
 
   def start() {
     // Create array of class names under which the service shall be registered
-    val interfaceArray = manifests map { _.erasure.getName } toArray
+    val typeArray = types map { DominoUtil.getFullTypeName } toArray
 
     // Add generic types expression to properties if necessary
-    val extendedProperties = DominoUtil.createGenericsExpression(manifests) match {
+    val extendedProperties = DominoUtil.createGenericsExpression(types) match {
       case Some(exp) =>
         (DominoUtil.GenericsExpressionKey -> exp) +: properties
 
@@ -47,7 +48,7 @@ class ServiceProviderCapsule[S](
     }
 
     // Register service
-    val tmp = bundleContext.registerService(interfaceArray, service, javaPropertiesHashtable)
+    val tmp = bundleContext.registerService(typeArray, service, javaPropertiesHashtable)
     _reg = tmp.asInstanceOf[ServiceRegistration[S]]
   }
 

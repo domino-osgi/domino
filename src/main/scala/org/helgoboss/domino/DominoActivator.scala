@@ -1,6 +1,6 @@
 package org.helgoboss.domino
 
-import bundle_watching.{BundleWatching}
+import bundle_watching.BundleWatching
 import configuration_watching.ConfigurationWatching
 import logging.Logging
 import org.helgoboss.capsule._

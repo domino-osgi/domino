@@ -2,7 +2,6 @@ package org.helgoboss.domino.service_providing
 
 import org.osgi.framework.BundleContext
 import org.helgoboss.capsule.CapsuleContext
-import org.helgoboss.domino.OsgiContext
 
 /**
  * Provides an implicit conversion to make any object easily exposable in the OSGi service registry.
