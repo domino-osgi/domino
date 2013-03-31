@@ -54,7 +54,7 @@ trait ServiceConsuming extends DominoImplicits {
    * @tparam R function result type
    * @return handler result
    */
-  def withAdvancedService[S <: AnyRef: TypeTag, R](filter: String)(f: Option[S] => R): R = {
+  def withAdvancedService[S <: AnyRef: TypeTag: ClassTag, R](filter: String)(f: Option[S] => R): R = {
     serviceRef[S](filter) match {
       case Some(ref) =>
         val service = bundleContext.getService(ref)
@@ -99,7 +99,7 @@ trait ServiceConsuming extends DominoImplicits {
    * @tparam S service type
    * @return service if available
    */
-  def service[S <: AnyRef: TypeTag](filter: String): Option[S] = {
+  def service[S <: AnyRef: TypeTag: ClassTag](filter: String): Option[S] = {
     serviceRef[S](filter) map { bundleContext.getService(_) }
   }
 
@@ -108,7 +108,7 @@ trait ServiceConsuming extends DominoImplicits {
    *
    * @group GetServiceReferences
    */
-  def serviceRef[S <: AnyRef: TypeTag](filter: String): Option[ServiceReference[S]] = {
+  def serviceRef[S <: AnyRef: TypeTag: ClassTag](filter: String): Option[ServiceReference[S]] = {
     val refs = serviceRefs[S](filter)
     refs.lift(0)
   }
@@ -119,7 +119,7 @@ trait ServiceConsuming extends DominoImplicits {
    * @group GetServices
    * @tparam S service type
    */
-  def services[S <: AnyRef: TypeTag]: Seq[S] = {
+  def services[S <: AnyRef: TypeTag: ClassTag]: Seq[S] = {
     services[S](null.asInstanceOf[String])
   }
 
@@ -128,7 +128,7 @@ trait ServiceConsuming extends DominoImplicits {
    *
    * @group GetServiceReferences
    */
-  def serviceRefs[S <: AnyRef: TypeTag]: Seq[ServiceReference[S]] = {
+  def serviceRefs[S <: AnyRef: TypeTag: ClassTag]: Seq[ServiceReference[S]] = {
     serviceRefs[S](null.asInstanceOf[String])
   }
 
@@ -140,7 +140,7 @@ trait ServiceConsuming extends DominoImplicits {
    * @tparam S service type
    * @return services
    */
-  def services[S <: AnyRef: TypeTag](filter: String): Seq[S] = {
+  def services[S <: AnyRef: TypeTag: ClassTag](filter: String): Seq[S] = {
     serviceRefs[S](filter) map { bundleContext.getService(_) }
   }
 
@@ -149,7 +149,7 @@ trait ServiceConsuming extends DominoImplicits {
    *
    * @group GetServiceReferences
    */
-  def serviceRefs[S <: AnyRef: TypeTag](filter: String): Seq[ServiceReference[S]] = {
+  def serviceRefs[S <: AnyRef: TypeTag: ClassTag](filter: String): Seq[ServiceReference[S]] = {
     if (bundleContext == null) {
       Nil
     } else {

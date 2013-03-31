@@ -3,6 +3,7 @@ package org.helgoboss.domino.service_providing
 import org.osgi.framework.{ BundleContext, ServiceRegistration }
 import org.helgoboss.capsule._
 import scala.reflect.runtime.universe._
+import reflect.ClassTag
 
 /**
  * Offers methods to register the wrapped service as OSGi service.
@@ -20,7 +21,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S1 Type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: TypeTag](properties: (String, Any)*): ServiceRegistration[S] = {
+  def providesService[S1 >: S: TypeTag: ClassTag](properties: (String, Any)*): ServiceRegistration[S] = {
     providesServiceInternal(
       List(typeTag[S1]),
       properties
@@ -33,7 +34,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S1 Type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: TypeTag]: ServiceRegistration[S] = {
+  def providesService[S1 >: S: TypeTag: ClassTag]: ServiceRegistration[S] = {
     providesService[S1]()
   }
 
@@ -44,7 +45,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S1 Type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: TypeTag](properties: Map[String, Any]): ServiceRegistration[S] = {
+  def providesService[S1 >: S: TypeTag: ClassTag](properties: Map[String, Any]): ServiceRegistration[S] = {
     providesService[S1](properties.toSeq: _*)
   }
 
@@ -56,7 +57,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S2 Second type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: TypeTag, S2 >: S: TypeTag](properties: (String, Any)*): ServiceRegistration[S] = {
+  def providesService[S1 >: S: TypeTag: ClassTag, S2 >: S: TypeTag: ClassTag](properties: (String, Any)*): ServiceRegistration[S] = {
     providesServiceInternal(
       List(typeTag[S1], typeTag[S2]),
       properties
@@ -70,7 +71,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S2 Second type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: TypeTag, S2 >: S: TypeTag]: ServiceRegistration[S] = {
+  def providesService[S1 >: S: TypeTag: ClassTag, S2 >: S: TypeTag: ClassTag]: ServiceRegistration[S] = {
     providesService[S1, S2]()
   }
 
@@ -82,7 +83,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S2 Second type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: TypeTag, S2 >: S: TypeTag]
+  def providesService[S1 >: S: TypeTag: ClassTag, S2 >: S: TypeTag: ClassTag]
       (properties: Map[String, Any]): ServiceRegistration[S] = {
 
     providesService[S1, S2](properties.toSeq: _*)
@@ -97,7 +98,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S3 Third type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: TypeTag, S2 >: S: TypeTag, S3 >: S: TypeTag]
+  def providesService[S1 >: S: TypeTag: ClassTag, S2 >: S: TypeTag: ClassTag, S3 >: S: TypeTag: ClassTag]
       (properties: (String, Any)*): ServiceRegistration[S] = {
 
     providesServiceInternal(
@@ -114,7 +115,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S3 Third type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: TypeTag, S2 >: S: TypeTag, S3 >: S: TypeTag]: ServiceRegistration[S] = {
+  def providesService[S1 >: S: TypeTag: ClassTag, S2 >: S: TypeTag: ClassTag, S3 >: S: TypeTag: ClassTag]: ServiceRegistration[S] = {
     providesService[S1, S2, S3]()
   }
 
@@ -127,7 +128,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    * @tparam S3 Third type in OSGi service registry
    * @return Service registration
    */
-  def providesService[S1 >: S: TypeTag, S2 >: S: TypeTag, S3 >: S: TypeTag]
+  def providesService[S1 >: S: TypeTag: ClassTag, S2 >: S: TypeTag: ClassTag, S3 >: S: TypeTag: ClassTag]
       (properties: Map[String, Any]): ServiceRegistration[S] = {
 
     providesService[S1, S2, S3](properties.toSeq: _*)
