@@ -5,13 +5,13 @@
     <parent>
         <groupId>org.helgoboss</groupId>
         <artifactId>my-scala-oss-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-        <relativePath></relativePath>
+        <version>1.0.0</version>
+        <relativePath />
     </parent>
     
     <groupId>org.helgoboss</groupId>
     <artifactId>domino</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>bundle</packaging>
     <name>Domino</name>
     <description>A lightweight Scala library for writing elegant OSGi bundle activators</description>
@@ -62,12 +62,12 @@
         <dependency>
             <groupId>org.helgoboss</groupId>
             <artifactId>scala-osgi-metatype</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.helgoboss</groupId>
             <artifactId>scala-logging</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -84,7 +84,7 @@
         <dependency>
             <groupId>org.helgoboss</groupId>
             <artifactId>capsule</artifactId>
-            <version>1.1.0-SNAPSHOT</version>
+            <version>1.1.0</version>
         </dependency>
     </dependencies>
     <build>
