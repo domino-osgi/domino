@@ -2,9 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
         <head>
-          <title>DominoUtil - Domino 1.0.0-SNAPSHOT API - org.helgoboss.domino.DominoUtil</title>
-          <meta name="description" content="DominoUtil - Domino 1.0.0 - SNAPSHOT API - org.helgoboss.domino.DominoUtil" />
-          <meta name="keywords" content="DominoUtil Domino 1.0.0 SNAPSHOT API org.helgoboss.domino.DominoUtil" />
+          <title>DominoUtil - Domino 1.0.0 API - org.helgoboss.domino.DominoUtil</title>
+          <meta name="description" content="DominoUtil - Domino 1.0.0 API - org.helgoboss.domino.DominoUtil" />
+          <meta name="keywords" content="DominoUtil Domino 1.0.0 API org.helgoboss.domino.DominoUtil" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -225,84 +225,84 @@
       </h4>
       <p class="shortcomment cmt">Converts the given Java Dictionary to a Scala Map.</p>
     </li><li name="org.helgoboss.domino.DominoUtil#createCompleteFilter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="createCompleteFilter(cm:ClassManifest[_],customFilter:String):String"></a>
-      <a id="createCompleteFilter(ClassManifest[_],String):String"></a>
+      <a id="createCompleteFilter(tpe:reflect.runtime.universe.Type,customFilter:String):String"></a>
+      <a id="createCompleteFilter(scala.reflect.api.JavaUniverse.Type,String):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">createCompleteFilter</span><span class="params">(<span name="cm">cm: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[_]</span>, <span name="customFilter">customFilter: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">createCompleteFilter</span><span class="params">(<span name="tpe">tpe: <span class="extype" name="scala.reflect.api.Types.Type">scala.reflect.api.JavaUniverse.Type</span></span>, <span name="customFilter">customFilter: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4>
       <p class="shortcomment cmt">Creates a filter criteria expression which matches the given main type, the generic type and the given custom filter.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a filter criteria expression which matches the given main type, the generic type and the given custom filter.
 Thus, it includes the main <code>OBJECTCLASS</code> filter criteria.
-</p></div><dl class="paramcmts block"><dt class="param">cm</dt><dd class="cmt"><p>Type information</p></dd><dt class="param">customFilter</dt><dd class="cmt"><p>A custom filter expression
+</p></div><dl class="paramcmts block"><dt class="param">tpe</dt><dd class="cmt"><p>Type information</p></dd><dt class="param">customFilter</dt><dd class="cmt"><p>A custom filter expression
 </p></dd></dl></div>
     </li><li name="org.helgoboss.domino.DominoUtil#createGenericsAndCustomFilter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="createGenericsAndCustomFilter(cm:ClassManifest[_],customFilter:String):Option[String]"></a>
-      <a id="createGenericsAndCustomFilter(ClassManifest[_],String):Option[String]"></a>
+      <a id="createGenericsAndCustomFilter(tpe:reflect.runtime.universe.Type,customFilter:String):Option[String]"></a>
+      <a id="createGenericsAndCustomFilter(scala.reflect.api.JavaUniverse.Type,String):Option[String]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">createGenericsAndCustomFilter</span><span class="params">(<span name="cm">cm: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[_]</span>, <span name="customFilter">customFilter: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+        <span class="name">createGenericsAndCustomFilter</span><span class="params">(<span name="tpe">tpe: <span class="extype" name="scala.reflect.api.Types.Type">scala.reflect.api.JavaUniverse.Type</span></span>, <span name="customFilter">customFilter: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>
       </span>
       </h4>
-      <p class="shortcomment cmt">Creates a filter criteria expression which matches the given generic type and the given custom filter.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a filter criteria expression which matches the given generic type and the given custom filter.
+      <p class="shortcomment cmt">Creates a filter criteria expression which matches the given type and the given custom filter.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a filter criteria expression which matches the given type and the given custom filter.
 Doesn't include the main <code>OBJECTCLASS</code> filter criteria. If no custom filter is given and
-generic types are not used, returns <span class="extype" name="None">None</span>.
-</p></div><dl class="paramcmts block"><dt class="param">cm</dt><dd class="cmt"><p>Type information</p></dd><dt class="param">customFilter</dt><dd class="cmt"><p>A custom filter expression
+generic types are not used, returns <code>None</code>.
+</p></div><dl class="paramcmts block"><dt class="param">tpe</dt><dd class="cmt"><p>Type information</p></dd><dt class="param">customFilter</dt><dd class="cmt"><p>A custom filter expression
 </p></dd></dl></div>
     </li><li name="org.helgoboss.domino.DominoUtil#createGenericsExpression" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="createGenericsExpression(classManifests:List[ClassManifest[_]]):Option[String]"></a>
-      <a id="createGenericsExpression(List[ClassManifest[_]]):Option[String]"></a>
+      <a id="createGenericsExpression(types:Traversable[reflect.runtime.universe.Type]):Option[String]"></a>
+      <a id="createGenericsExpression(Traversable[scala.reflect.api.JavaUniverse.Type]):Option[String]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">createGenericsExpression</span><span class="params">(<span name="classManifests">classManifests: <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[_]]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+        <span class="name">createGenericsExpression</span><span class="params">(<span name="types">types: <span class="extype" name="scala.Traversable">Traversable</span>[<span class="extype" name="scala.reflect.api.Types.Type">scala.reflect.api.JavaUniverse.Type</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>
       </span>
       </h4>
-      <p class="shortcomment cmt">Creates an expression which describes the complete type information of the given class manifests
-including generic type parameters.</p><div class="fullcomment"><div class="comment cmt"><p>Creates an expression which describes the complete type information of the given class manifests
-including generic type parameters. If none of the given manifests contains type parameters,
-it returns <span class="extype" name="None">None</span>.</p><p>The resulting expression is supposed to be registered as OSGi service property so it can be
+      <p class="shortcomment cmt">Creates an expression which describes the complete type information of the given types
+including generic type parameters.</p><div class="fullcomment"><div class="comment cmt"><p>Creates an expression which describes the complete type information of the given types
+including generic type parameters. If none of the given types contains type parameters,
+it returns <code>None</code>.</p><p>The resulting expression is supposed to be registered as OSGi service property so it can be
 used as a criteria in a service query.</p><p>Example input:</p><ul><li><code>Map[String, Map[String, Integer]]</code></li><li><code>List[Number]</code></li><li><code>String</code></li></ul><p>Example result: <code>&quot;;Map[String, Map[String, Integer]];List[Number];String;&quot;</code> (package names omitted)
-</p></div><dl class="paramcmts block"><dt class="param">classManifests</dt><dd class="cmt"><p>Manifests which contain the type information</p></dd><dt>returns</dt><dd class="cmt"><p>types expression if generic type parameters are used
+</p></div><dl class="paramcmts block"><dt class="param">types</dt><dd class="cmt"><p>Type objects which might contain information about generic type arguments</p></dd><dt>returns</dt><dd class="cmt"><p>types expression if generic type parameters are used
 </p></dd></dl><dl class="attributes block"> <dt>Note</dt><dd><span class="cmt"><p>A semicolon is used instead of a comma to separate the types.
 </p></span></dd></dl></div>
     </li><li name="org.helgoboss.domino.DominoUtil#createGenericsFilter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="createGenericsFilter(cm:ClassManifest[_]):Option[String]"></a>
-      <a id="createGenericsFilter(ClassManifest[_]):Option[String]"></a>
+      <a id="createGenericsFilter(tpe:reflect.runtime.universe.Type):Option[String]"></a>
+      <a id="createGenericsFilter(scala.reflect.api.JavaUniverse.Type):Option[String]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">createGenericsFilter</span><span class="params">(<span name="cm">cm: <span class="extype" name="scala.Predef.ClassManifest">ClassManifest</span>[_]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+        <span class="name">createGenericsFilter</span><span class="params">(<span name="tpe">tpe: <span class="extype" name="scala.reflect.api.Types.Type">scala.reflect.api.JavaUniverse.Type</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>
       </span>
       </h4>
       <p class="shortcomment cmt">Creates a filter expression that would match the given type with its generic type parameters.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a filter expression that would match the given type with its generic type parameters.
 Uses wildcards because the service can be registered under several types. That would result
-in several generic type expressions separated by semicolon.</p><p>If no generic type is used in the manifest, returns <code>None</code>.
+in several generic type expressions separated by semicolon.</p><p>If no generic type is used in the type, returns <code>None</code>.
 </p></div></div>
     </li><li name="org.helgoboss.domino.DominoUtil#createObjectClassFilter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="createObjectClassFilter(clazz:Class[_]):String"></a>
-      <a id="createObjectClassFilter(Class[_]):String"></a>
+      <a id="createObjectClassFilter(typeName:String):String"></a>
+      <a id="createObjectClassFilter(String):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">createObjectClassFilter</span><span class="params">(<span name="clazz">clazz: <span class="extype" name="scala.Predef.Class">Class</span>[_]</span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">createObjectClassFilter</span><span class="params">(<span name="typeName">typeName: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4>
       <p class="shortcomment cmt">Creates an <code>OBJECTCLASS</code> filter for the given class.</p>
@@ -361,6 +361,32 @@ in several generic type expressions separated by semicolon.</p><p>If no generic 
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.helgoboss.domino.DominoUtil#getFullTypeName" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getFullTypeName(tpe:reflect.runtime.universe.Type):String"></a>
+      <a id="getFullTypeName(scala.reflect.api.JavaUniverse.Type):String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getFullTypeName</span><span class="params">(<span name="tpe">tpe: <span class="extype" name="scala.reflect.api.Types.Type">scala.reflect.api.JavaUniverse.Type</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns the qualified name of the given type.</p>
+    </li><li name="org.helgoboss.domino.DominoUtil#hasTypeArguments" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="hasTypeArguments(tpe:reflect.runtime.universe.Type):Boolean"></a>
+      <a id="hasTypeArguments(scala.reflect.api.JavaUniverse.Type):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hasTypeArguments</span><span class="params">(<span name="tpe">tpe: <span class="extype" name="scala.reflect.api.Types.Type">scala.reflect.api.JavaUniverse.Type</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns whether the given type tag has type parameters.</p>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <a id="hashCode():Int"></a>
