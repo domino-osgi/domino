@@ -1,7 +1,9 @@
 package org.helgoboss.domino
 
 import bundle_watching.BundleWatcherContext
-import bundle_watching.BundleWatcherEvent._
+import bundle_watching.BundleWatcherEvent.AddingBundle
+import bundle_watching.BundleWatcherEvent.RemovedBundle
+import bundle_watching.BundleWatcherEvent.ModifiedBundle
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.{WordSpecLike, ShouldMatchers}

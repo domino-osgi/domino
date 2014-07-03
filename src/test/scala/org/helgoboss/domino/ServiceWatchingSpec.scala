@@ -2,10 +2,13 @@ package org.helgoboss.domino
 
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
-import org.scalatest._
+import org.scalatest.WordSpecLike
+import org.scalatest.ShouldMatchers
 import org.osgi.util.tracker.ServiceTracker
 import service_watching.ServiceWatcherContext
-import service_watching.ServiceWatcherEvent._
+import service_watching.ServiceWatcherEvent.AddingService
+import service_watching.ServiceWatcherEvent.ModifiedService
+import service_watching.ServiceWatcherEvent.RemovedService
 
 /**
  * Currently tests only the DSL grammar and signatures but doesn't execute it.

@@ -2,7 +2,8 @@ package org.helgoboss.domino
 
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
-import org.scalatest._
+import org.scalatest.WordSpecLike
+import org.scalatest.ShouldMatchers
 import org.osgi.framework.ServiceRegistration
 import org.helgoboss.scala_osgi_metatype.builders.ObjectClass
 import org.osgi.service.cm.{ManagedServiceFactory, ManagedService}
