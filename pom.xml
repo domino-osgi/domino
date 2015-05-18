@@ -36,7 +36,7 @@
         </developer>
     </developers>
     <properties>
-        <scala.version>2.10.0</scala.version>
+        <scala.version>2.11.6</scala.version>
     </properties>
     <dependencies>
         <dependency>
@@ -106,7 +106,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Import-Package>scala*;version="[2.10,2.11)",*</Import-Package>
+                        <Import-Package>scala*;version="[2.11,2.12)",*</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
