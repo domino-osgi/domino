@@ -106,7 +106,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Import-Package>scala*;version="[2.10,2.11)",*</Import-Package>
+                        <Import-Package>scala*;version="[2.11,2.12)",*</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
