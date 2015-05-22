@@ -4,4 +4,10 @@ env:
  - SCALA_VERSION=2.10.5
  - SCALA_VERSION=2.11.6
 
+jdk:
+ - oraclejdk8
+ - oraclejdk7
+ - openjdk7
+ - openjdk6
+
 script: mvn package
