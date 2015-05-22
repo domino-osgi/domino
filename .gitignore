@@ -1,17 +1,9 @@
-*.class
-*.log
-
-# sbt specific
-dist/*
-target/
-lib_managed/
-src_managed/
-project/boot/
-project/plugins/project/
-
-# Scala-IDE specific
+.classpath
+.project
+.settings/
+.cache-main
+.cache-tests
 .scala_dependencies
-
-# IntelliJ-IDEA specific
 *.iml
 .idea
+target/

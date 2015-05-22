@@ -10,7 +10,7 @@ As such, Domino is a lightweight alternative to OSGi component models like [iPOJ
 ### Wait for service and register service 
 
 ```scala
-import org.helgoboss.domino.DominoActivator
+import domino.DominoActivator
 import org.osgi.service.http.HttpService
 
 class MyService(httpService: HttpService)
@@ -30,7 +30,7 @@ class Activator extends DominoActivator {
 ### Listen for configuration updates
 
 ```scala
-import org.helgoboss.domino.DominoActivator
+import domino.DominoActivator
 
 class KeyService(key: String)
 
