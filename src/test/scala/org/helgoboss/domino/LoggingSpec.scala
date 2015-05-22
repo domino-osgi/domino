@@ -4,7 +4,7 @@ import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest._
 
-/**.;
+/**
  * Currently tests only the DSL grammar and signatures but doesn't execute it.
  */
 @RunWith(classOf[JUnitRunner])
