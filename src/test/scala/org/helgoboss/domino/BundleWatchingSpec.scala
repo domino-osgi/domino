@@ -6,7 +6,8 @@ import bundle_watching.BundleWatcherEvent.RemovedBundle
 import bundle_watching.BundleWatcherEvent.ModifiedBundle
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
-import org.scalatest.{WordSpecLike, ShouldMatchers}
+import org.scalatest.WordSpecLike
+import org.scalatest.ShouldMatchers
 import org.osgi.util.tracker.BundleTracker
 import org.osgi.framework.Bundle
 

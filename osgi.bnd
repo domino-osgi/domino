@@ -1,0 +1,7 @@
+Import-Pakage: \
+  scala*;version="[${scalaBinVersion},${scalaBinVersion}.50)", \
+  *
+
+Include-Resource: \
+  LICENSE, \
+  README.md
