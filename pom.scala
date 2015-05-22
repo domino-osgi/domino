@@ -55,6 +55,7 @@ ScalaModel(
     "org.helgoboss" % "scala-osgi-metatype" % "1.0.0",
     "org.helgoboss" % "scala-logging" % "1.0.0",
     "org.helgoboss" % "capsule" % "1.1.0",
+    // test dependencies
     "junit" % "junit" % "4.11" % "test",
     "org.scalatest" %% "scalatest" % "2.2.0" % "test"
   ),
@@ -66,7 +67,6 @@ ScalaModel(
         configuration = Config(
           instructions = Config(
             _include = "osgi.bnd"
-            // `Import-Pakage` = s"""scala*;version="[${scalaVersion.binaryVersion},${scalaVersion.binaryVersion}.50)",*"""
           )
         )
       )
