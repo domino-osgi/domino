@@ -2,14 +2,14 @@ package org.helgoboss.domino
 
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
-import org.scalatest.WordSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.WordSpecLike
+import org.scalatest.ShouldMatchers
 
 /**
  * Currently tests only the DSL grammar and signatures but doesn't execute it.
  */
 @RunWith(classOf[JUnitRunner])
-class LoggingSpec extends DominoActivator with WordSpec with ShouldMatchers {
+class LoggingSpec extends DominoActivator with WordSpecLike with ShouldMatchers {
 
   "Logging" should {
 

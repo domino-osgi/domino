@@ -2,8 +2,8 @@ package org.helgoboss.domino
 
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
-import org.scalatest.WordSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.WordSpecLike
+import org.scalatest.ShouldMatchers
 import org.osgi.framework.ServiceRegistration
 import org.helgoboss.scala_osgi_metatype.builders.ObjectClass
 import org.osgi.service.cm.{ManagedServiceFactory, ManagedService}
@@ -12,7 +12,7 @@ import org.osgi.service.cm.{ManagedServiceFactory, ManagedService}
  * Currently tests only the DSL grammar and signatures but doesn't execute it.
  */
 @RunWith(classOf[JUnitRunner])
-class ConfigurationWatchingSpec extends DominoActivator with WordSpec with ShouldMatchers {
+class ConfigurationWatchingSpec extends DominoActivator with WordSpecLike with ShouldMatchers {
   val objectClass = ObjectClass(id = "org.helgoboss.test", name = "Test")
 
   "Configuration watching" should {

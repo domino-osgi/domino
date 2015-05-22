@@ -2,8 +2,8 @@ package org.helgoboss.domino
 
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
-import org.scalatest.WordSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.WordSpecLike
+import org.scalatest.ShouldMatchers
 import org.osgi.util.tracker.ServiceTracker
 import service_watching.ServiceWatcherContext
 import service_watching.ServiceWatcherEvent._
@@ -12,7 +12,7 @@ import service_watching.ServiceWatcherEvent._
  * Currently tests only the DSL grammar and signatures but doesn't execute it.
  */
 @RunWith(classOf[JUnitRunner])
-class ServiceWatchingSpec extends DominoActivator with WordSpec with ShouldMatchers {
+class ServiceWatchingSpec extends DominoActivator with WordSpecLike with ShouldMatchers {
 
   trait MyService {
     def doIt()

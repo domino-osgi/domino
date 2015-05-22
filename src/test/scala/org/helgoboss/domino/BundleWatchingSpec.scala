@@ -4,8 +4,8 @@ import bundle_watching.BundleWatcherContext
 import bundle_watching.BundleWatcherEvent._
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
-import org.scalatest.WordSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.WordSpecLike
+import org.scalatest.ShouldMatchers
 import org.osgi.util.tracker.BundleTracker
 import org.osgi.framework.Bundle
 
@@ -13,7 +13,7 @@ import org.osgi.framework.Bundle
  * Currently tests only the DSL grammar and signatures but doesn't execute it.
  */
 @RunWith(classOf[JUnitRunner])
-class BundleWatchingSpec extends DominoActivator with WordSpec with ShouldMatchers {
+class BundleWatchingSpec extends DominoActivator with WordSpecLike with ShouldMatchers {
 
   "Bundle watching" should {
 
