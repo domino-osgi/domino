@@ -56,7 +56,7 @@ ScalaModel(
     // "org.helgoboss" % "scala-logging" % "1.0.0",
     // "org.helgoboss" % "capsule" % "1.1.0",
     // test dependencies
-    "junit" % "junit" % "4.11" % "test",
+    // "junit" % "junit" % "4.11" % "test",
     "org.scalatest" %% "scalatest" % "2.2.0" % "test"
   ),
   build = Build(
@@ -68,6 +68,20 @@ ScalaModel(
           instructions = Config(
             _include = "osgi.bnd"
           )
+        )
+      ),
+      Plugin(
+        "org.apache.maven.plugins" % "maven-surefire-plugin" % "2.17",
+        configuration = Config(
+          skipTests = true
+        )
+      ),
+      Plugin(
+        "org.scalatest" % "scalatest-maven-plugin" % "1.0",
+        executions = Seq(Execution(id = "test", goals = Seq("test"))),
+        configuration = Config(
+          reportsDirectory = "${project.build.directory}/surefire-reports",
+          junitxml = "."
         )
       )
     )

@@ -1,7 +1,5 @@
 package domino
 
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
 import org.scalatest.WordSpecLike
 import org.scalatest.ShouldMatchers
 import org.osgi.framework.ServiceReference
@@ -9,7 +7,6 @@ import org.osgi.framework.ServiceReference
 /**
  * Currently tests only the DSL grammar and signatures but doesn't execute it.
  */
-@RunWith(classOf[JUnitRunner])
 class ServiceConsumingSpec extends DominoActivator with WordSpecLike with ShouldMatchers {
 
   trait MyService {
@@ -22,12 +19,14 @@ class ServiceConsumingSpec extends DominoActivator with WordSpecLike with Should
       whenBundleActive {
         val myService: Option[MyService] = service[MyService]
       }
+      pending
     }
 
     "offer optional service restricted by filter" in {
       whenBundleActive {
         val myService: Option[MyService] = service[MyService](filter = "(myProp=myValue)")
       }
+      pending
     }
 
     "offer optional scoped service" in {
@@ -37,6 +36,7 @@ class ServiceConsumingSpec extends DominoActivator with WordSpecLike with Should
           case None => 5
         }
       }
+      pending
     }
 
     "offer implicit withService on reference" in {
@@ -47,6 +47,7 @@ class ServiceConsumingSpec extends DominoActivator with WordSpecLike with Should
           }
         }
       }
+      pending
     }
 
     "offer optional scoped service restricted by filter" in {
@@ -56,6 +57,7 @@ class ServiceConsumingSpec extends DominoActivator with WordSpecLike with Should
           case None => 5
         }
       }
+      pending
     }
 
     "offer optional service reference" in {
@@ -64,6 +66,7 @@ class ServiceConsumingSpec extends DominoActivator with WordSpecLike with Should
 
         }
       }
+      pending
     }
 
     "offer implicit service on reference" in {
@@ -72,36 +75,42 @@ class ServiceConsumingSpec extends DominoActivator with WordSpecLike with Should
           val myService: Option[MyService] = r.service
         }
       }
+      pending
     }
 
     "offer optional service reference restricted by filter" in {
       whenBundleActive {
         val ref: Option[ServiceReference[MyService]] = serviceRef[MyService]("(myProp=myValue)")
       }
+      pending
     }
 
     "offer multiple services" in {
       whenBundleActive {
         val s: Traversable[MyService] = services[MyService]
       }
+      pending
     }
 
     "offer multiple services restricted by filter" in {
       whenBundleActive {
         val s: Traversable[MyService] = services[MyService]("(myProp=MyValue)")
       }
+      pending
     }
 
     "offer multiple service references" in {
       whenBundleActive {
         val refs: Traversable[ServiceReference[MyService]] = serviceRefs[MyService]
       }
+      pending
     }
 
     "offer multiple service references restricted by filter" in {
       whenBundleActive {
         val refs: Traversable[ServiceReference[MyService]] = serviceRefs[MyService]("(myProp=MyValue)")
       }
+      pending
     }
 
   }

@@ -1,7 +1,5 @@
 package domino
 
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
 import org.scalatest.WordSpecLike
 import org.scalatest.ShouldMatchers
 import org.osgi.util.tracker.ServiceTracker
@@ -13,7 +11,6 @@ import service_watching.ServiceWatcherEvent.RemovedService
 /**
  * Currently tests only the DSL grammar and signatures but doesn't execute it.
  */
-@RunWith(classOf[JUnitRunner])
 class ServiceWatchingSpec extends DominoActivator with WordSpecLike with ShouldMatchers {
 
   trait MyService {
@@ -30,6 +27,7 @@ class ServiceWatchingSpec extends DominoActivator with WordSpecLike with ShouldM
         val tracker: ServiceTracker[MyService, MyService] = whenServicePresent[MyService] { myService: MyService =>
         }
       }
+      pending
     }
 
     "enable waiting until a particular service restricted with a filter expression becomes available" in {
@@ -37,6 +35,7 @@ class ServiceWatchingSpec extends DominoActivator with WordSpecLike with ShouldM
         val tracker: ServiceTracker[MyService, MyService] = whenAdvancedServicePresent[MyService]("(transactional=true)") { myService: MyService =>
         }
       }
+      pending
     }
 
     "enable waiting until several particular services are available implicitly" in {
@@ -46,6 +45,7 @@ class ServiceWatchingSpec extends DominoActivator with WordSpecLike with ShouldM
           }
         }
       }
+      pending
     }
 
     "enable waiting until several particular services are available explicitly" in {
@@ -53,6 +53,7 @@ class ServiceWatchingSpec extends DominoActivator with WordSpecLike with ShouldM
         val myServiceTracker: ServiceTracker[MyService, MyService] = whenServicesPresent[MyService, MyOtherService] { (myService: MyService, myOtherService: MyOtherService) =>
         }
       }
+      pending
     }
 
     "let you react to every possible event" in {
@@ -63,6 +64,7 @@ class ServiceWatchingSpec extends DominoActivator with WordSpecLike with ShouldM
           case ModifiedService(s: MyService, c: ServiceWatcherContext[MyService]) =>
         }
       }
+      pending
     }
 
     "let you react to every possible event with filters" in {
@@ -73,6 +75,7 @@ class ServiceWatchingSpec extends DominoActivator with WordSpecLike with ShouldM
           case ModifiedService(s: MyService, c: ServiceWatcherContext[MyService]) =>
         }
       }
+      pending
     }
   }
 

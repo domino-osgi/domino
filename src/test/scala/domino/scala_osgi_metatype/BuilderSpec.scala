@@ -2,8 +2,6 @@ package domino.scala_osgi_metatype
 
 import builders.{ObjectClass, ListAttribute, ElementaryAttribute}
 import interfaces._
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
 import org.scalatest.WordSpecLike
 import org.scalatest.ShouldMatchers
 import scala.Some
@@ -11,7 +9,6 @@ import scala.Some
 /**
  * Tests the builders.
  */
-@RunWith(classOf[JUnitRunner])
 class BuilderSpec extends WordSpecLike with ShouldMatchers {
 
   "ObjectClass builder" should {

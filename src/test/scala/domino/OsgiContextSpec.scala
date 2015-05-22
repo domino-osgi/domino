@@ -1,14 +1,11 @@
 package domino
 
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
 import org.scalatest.WordSpecLike
 import org.scalatest.ShouldMatchers
 
 /**
  * Currently tests only the DSL grammar and signatures but doesn't execute it.
  */
-@RunWith(classOf[JUnitRunner])
 class OsgiContextSpec extends DominoActivator with WordSpecLike with ShouldMatchers {
 
   trait Service1
@@ -27,6 +24,7 @@ class OsgiContextSpec extends DominoActivator with WordSpecLike with ShouldMatch
           println("end")
         }
       }
+      pending
     }
   }
 

@@ -1,7 +1,5 @@
 package domino
 
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
 import org.scalatest.WordSpecLike
 import org.scalatest.ShouldMatchers
 import org.osgi.framework.ServiceRegistration
@@ -9,7 +7,6 @@ import org.osgi.framework.ServiceRegistration
 /**
  * Currently tests only the DSL grammar and signatures but doesn't execute it.
  */
-@RunWith(classOf[JUnitRunner])
 class ServiceProvidingSpec extends DominoActivator with WordSpecLike with ShouldMatchers {
 
   trait MyService {
@@ -28,8 +25,6 @@ class ServiceProvidingSpec extends DominoActivator with WordSpecLike with Should
 
   val combinedService = new CombinedService
 
-
-
   val serviceProps = Map("prop1" -> "value1", "prop2" -> 3)
 
   "Service providing" should {
@@ -38,6 +33,7 @@ class ServiceProvidingSpec extends DominoActivator with WordSpecLike with Should
       whenBundleActive {
         val reg: ServiceRegistration[CombinedService] = combinedService.providesService[CombinedService]
       }
+      pending
     }
 
     "allow specifying just one interface and passing service properties" in {
@@ -47,18 +43,21 @@ class ServiceProvidingSpec extends DominoActivator with WordSpecLike with Should
           "prop2" -> 3
         )
       }
+      pending
     }
 
     "allow specifying just one interface and passing service properties in a map" in {
       whenBundleActive {
         val reg: ServiceRegistration[_] = exampleService.providesService[MyService](serviceProps)
       }
+      pending
     }
 
     "allow specifying several interfaces" in {
       whenBundleActive {
         val reg: ServiceRegistration[_] = exampleService.providesService[MyService, MyService2]
       }
+      pending
     }
 
     "allow specifying several interfaces and passing service properties" in {
@@ -68,18 +67,21 @@ class ServiceProvidingSpec extends DominoActivator with WordSpecLike with Should
           "prop2" -> 3
         )
       }
+      pending
     }
 
     "allow specifying several interfaces and passing service properties in a map" in {
       whenBundleActive {
         val reg: ServiceRegistration[_] = exampleService.providesService[MyService, MyService2](serviceProps)
       }
+      pending
     }
 
     "allow specifying generic types" in {
       whenBundleActive {
         val reg: ServiceRegistration[_] = List(exampleService).providesService[List[MyService]]
       }
+      pending
     }
   }
 }

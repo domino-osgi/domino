@@ -1,7 +1,5 @@
 package domino
 
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
 import org.scalatest.WordSpecLike
 import org.scalatest.ShouldMatchers
 import org.osgi.framework.ServiceRegistration
@@ -11,7 +9,6 @@ import org.osgi.service.cm.{ManagedServiceFactory, ManagedService}
 /**
  * Currently tests only the DSL grammar and signatures but doesn't execute it.
  */
-@RunWith(classOf[JUnitRunner])
 class ConfigurationWatchingSpec extends DominoActivator with WordSpecLike with ShouldMatchers {
   val objectClass = ObjectClass(id = "domino.test", name = "Test")
 
@@ -22,6 +19,7 @@ class ConfigurationWatchingSpec extends DominoActivator with WordSpecLike with S
         val reg: ServiceRegistration[ManagedService] = whenConfigurationActive("domino.test") { conf: Map[String, Any] =>
         }
       }
+      pending
     }
 
     "work with normal configurations and metatypes" in {
@@ -29,6 +27,7 @@ class ConfigurationWatchingSpec extends DominoActivator with WordSpecLike with S
         val reg: ServiceRegistration[ManagedService] = whenConfigurationActive(objectClass) { conf: Map[String, Any] =>
         }
       }
+      pending
     }
 
     "work with factory configurations" in {
@@ -37,6 +36,7 @@ class ConfigurationWatchingSpec extends DominoActivator with WordSpecLike with S
           (conf: Map[String, Any], pid: String) =>
         }
       }
+      pending
     }
 
     "work with factory configurations and metatypes" in {
@@ -45,6 +45,7 @@ class ConfigurationWatchingSpec extends DominoActivator with WordSpecLike with S
           (conf: Map[String, Any], pid: String) =>
         }
       }
+      pending
     }
 
   }
