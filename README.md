@@ -47,4 +47,4 @@ class Activator extends DominoActivator {
 
 ## Further reading
 
-Learn more on [Domino's project website](http://www.helgoboss.org/projects/domino/).
+Learn more on [Domino's OLD project website](http://www.helgoboss.org/projects/domino/).
