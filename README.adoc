@@ -10,7 +10,7 @@ As such, Domino is a lightweight alternative to OSGi component models like http:
 
 [source,scala]
 ----
-import org.helgoboss.domino.DominoActivator
+import domino.DominoActivator
 import org.osgi.service.http.HttpService
 
 class MyService(httpService: HttpService)
@@ -31,7 +31,7 @@ class Activator extends DominoActivator {
 
 [source,scala]
 ----
-import org.helgoboss.domino.DominoActivator
+import domino.DominoActivator
 
 class KeyService(key: String)
 

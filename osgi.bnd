@@ -4,4 +4,4 @@ Import-Pakage: \
 
 Include-Resource: \
   LICENSE, \
-  README.md
+  README.adoc
