@@ -1,6 +1,7 @@
 = Domino
 
 image:https://travis-ci.org/domino-osgi/domino.svg?branch=master["Travis CI Build Status", link="https://travis-ci.org/domino-osgi/domino"]
+image:https://www.codacy.com/project/badge/afcdfefe80494be4bf729437dc3e2a9b["Codacy code quality", link="https://www.codacy.com/app/lefou/domino"]
 image:https://badges.gitter.im/Join%20Chat.svg["Gitter chat", link="https://gitter.im/domino-osgi/domino?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge"]
 
 Domino is a small library for the programming language http://www.scala-lang.org[Scala] designed to support developers in writing http://www.osgi.org/javadoc/r4v43/core/org/osgi/framework/BundleActivator.html[bundle activators] for the Java module system http://www.osgi.org/Technology/WhyOSGi[OSGi]. It strives to make writing complex and highly-dynamic bundle activators as easy as possible without sacrificing the power of the OSGi API.
