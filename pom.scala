@@ -1,7 +1,6 @@
 import org.sonatype.maven.polyglot.scala.model._
 import scala.collection.immutable._
 
-
 implicit val scalaVersion = System.getenv("SCALA_VERSION") match {
   case null => ScalaVersion("2.10.5")
   case v => ScalaVersion(v)
@@ -62,11 +61,19 @@ ScalaModel(
   build = Build(
     plugins = Seq(
       Plugin(
-        "org.apache.felix" % "maven-bundle-plugin" % "2.5.0",
+        "org.apache.felix" % "maven-bundle-plugin" % "2.5.4",
         extensions = true,
         configuration = Config(
           instructions = Config(
             _include = "osgi.bnd"
+          )
+        )
+      ),
+      Plugin(
+        "org.apache.maven.plugins" % "maven-jar-plugin" % "2.5",
+        configuration = Config(
+          archive = Config(
+            addMavenDescriptor = false
           )
         )
       ),
