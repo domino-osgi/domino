@@ -12,4 +12,4 @@ jdk:
 before_script:
  - ./mvnw -version
 
-script: ./mvnw package
+script: ./mvnw source:jar scala:doc-jar install
