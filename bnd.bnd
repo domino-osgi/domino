@@ -2,6 +2,9 @@ Import-Pakage: \
   scala*;version="[${scalaBinVersion},${scalaBinVersion}.50)", \
   *
 
-Include-Resource: \
+Export-Package: \
+  domino.*
+
+-includeresource: \
   LICENSE, \
   README.adoc

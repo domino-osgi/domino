@@ -13,7 +13,7 @@ val url = "https:/github.com/domino-osgi/domino"
 ScalaModel(
   gav = "com.github.domino-osgi" %% "domino" % "1.0.1-SNAPSHOT",
   modelVersion = "4.0.0",
-  packaging = "bundle",
+  packaging = "jar",
   prerequisites = Prerequisites(
     maven = "3.3.1"
   ),
@@ -62,11 +62,16 @@ ScalaModel(
   build = Build(
     plugins = Seq(
       Plugin(
-        "org.apache.felix" % "maven-bundle-plugin" % "2.5.0",
-        extensions = true,
+        "biz.aQute.bnd" % "bnd-maven-plugin" % "2.4.1",
+        executions = Seq(
+          Execution(goals = Seq("bnd-process"))
+        )
+      ),
+      Plugin(
+        "org.apache.maven.plugins" % "maven-jar-plugin",
         configuration = Config(
-          instructions = Config(
-            _include = "osgi.bnd"
+          archive = Config(
+            manifestFile = "${project.build.outputDirectory}/META-INF/MANIFEST.MF"
           )
         )
       ),
