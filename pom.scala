@@ -23,9 +23,10 @@ ScalaModel(
     "maven.compiler.target" -> "1.6",
     "project.build.sourceEncoding" -> "UTF-8",
     "scalaBinVersion" -> scalaVersion.binaryVersion,
-    "namespace" -> "domino"
+    "bundle.symbolicName" -> "${project.artifactId}",
+    "bundle.namespace" -> "domino"
   ),
-  name = "Domino",
+  name = "Domino for Scala " + scalaVersion.binaryVersion,
   description = "A lightweight Scala library for writing elegant OSGi bundle activators",
   url = url,
   scm = Scm(

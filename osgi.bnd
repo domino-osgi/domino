@@ -1,9 +1,11 @@
-Import-Pakage: \
-  scala*;version="[${scalaBinVersion},${scalaBinVersion}.50)", \
+Bundle-SymbolicName: ${bundle.symbolicName}
+
+Import-Package: \
+  scala.*;version="[${scalaBinVersion},${scalaBinVersion}.50)", \
   *
 
 Export-Package: \
-  ${namespace}.*
+  ${bundle.namespace}.*
 
 Include-Resource: \
   LICENSE, \
