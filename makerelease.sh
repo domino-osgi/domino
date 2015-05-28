@@ -8,7 +8,7 @@ if [ ! -f "staging-settings.xml" ]; then
 <settings>
   <servers>
     <server>
-      <id>sonatype-nexus-staging</id>
+      <id>ossrh</id>
       <username>your-username</username>
       <password>your-password</password>
     </server>
