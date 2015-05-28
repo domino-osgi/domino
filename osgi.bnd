@@ -2,6 +2,9 @@ Import-Pakage: \
   scala*;version="[${scalaBinVersion},${scalaBinVersion}.50)", \
   *
 
+Export-Package: \
+  ${namespace}.*
+
 Include-Resource: \
   LICENSE, \
   README.adoc

@@ -20,7 +20,8 @@ ScalaModel(
     "maven.compiler.source" -> "1.6",
     "maven.compiler.target" -> "1.6",
     "project.build.sourceEncoding" -> "UTF-8",
-    "scalaBinVersion" -> scalaVersion.binaryVersion
+    "scalaBinVersion" -> scalaVersion.binaryVersion,
+    "namespace" -> "domino"
   ),
   name = "Domino",
   description = "A lightweight Scala library for writing elegant OSGi bundle activators",
@@ -89,6 +90,22 @@ ScalaModel(
         configuration = Config(
           reportsDirectory = "${project.build.directory}/surefire-reports",
           junitxml = "."
+        )
+      )
+    )
+  ),
+  profiles = Seq(
+    Profile(
+      id = "deploy",
+      build = Build(
+        plugins = Seq(
+          Plugin(
+            "org.apache.maven.plugins" % "maven-gpg-plugin" % "1.6",
+            configuration = Config(
+              repositoryId = "ossrh",
+              url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            )
+          )
         )
       )
     )

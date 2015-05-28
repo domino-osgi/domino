@@ -53,3 +53,53 @@ class Activator extends DominoActivator {
 == Further reading
 
 Learn more on http://www.helgoboss.org/projects/domino/[Domino's OLD project website].
+
+== Building Domino
+
+Domino is build with Apache Maven and the Polygot Scala Extension. At least Maven 3.3.1 is required.
+
+To cleanly build domino, use:
+
+----
+mvn clean package
+----
+
+
+To build domino for another Scala version, e.g. 2.11.6 (under a Unix-like OS), use:
+
+----
+SCALA_VERSION=2.11.6 mvn clean package
+----
+
+== Creating a Release
+
+* Bump version in pom file
+* Update Changelog
+* Review documentation
+* Create a git tag with the version
+* Upload the release artifacts up to Maven Central
+
+=== Deploy to Maven Central / Sonatype Open Source Respository (OSSRH)
+
+Unfortunately, not all Maven plugins are ready yet for a Polyglot Maven setup, thus the current version 1.6.3 of the Maven Staging Plugin simply doen't work.
+
+To deploy a release to , use the shell script `makerelase.sh`.
+
+Please review the variables in the script, namely the `DOMINO_VERSION` and the `SCALA_VERSIONS`.
+
+When executed the script will create a `staging-settings.xml` (to which you should add your login credentials) and wait. After pressing enter it will build all artifatcs and upload them to the OSSRH Nexus where you must log-in and manually release these artifacts.
+
+
+== Changelog
+
+=== Domino 1.1.0 - __not released yet__
+
+* Switched Maintainer to Tobias Roeser
+* Renamed base package from `org.helgoboss.domino` to `domino`
+* Embedded former dependencies (`org.helgoboss.capsule`, `org.helgoboss.scala-osgi-metatype`, `org.helgoboss.scala-logging`) as sub packages
+* Switched to Polyglot Scala extension for Maven 3.3
+* Cross-Release for Scala 2.10 and 2.11
+
+=== Domino 1.0.0 - 2013-03-31
+
+* Initial release for Scala 2.10
