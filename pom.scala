@@ -1,6 +1,8 @@
 import org.sonatype.maven.polyglot.scala.model._
 import scala.collection.immutable._
 
+val dominoVersion = "1.1.0"
+
 implicit val scalaVersion = System.getenv("SCALA_VERSION") match {
   case null => ScalaVersion("2.11.6")
   case v => ScalaVersion(v)
@@ -10,7 +12,7 @@ println("Using Scala version: " + scalaVersion.version)
 val url = "https:/github.com/domino-osgi/domino"
 
 ScalaModel(
-  gav = "com.github.domino-osgi" %% "domino" % "1.0.1-SNAPSHOT",
+  gav = "com.github.domino-osgi" %% "domino" % dominoVersion,
   modelVersion = "4.0.0",
   packaging = "bundle",
   prerequisites = Prerequisites(
