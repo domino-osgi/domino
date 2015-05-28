@@ -1,6 +1,7 @@
 = Domino
 :toc: 
 :toc-placement: preamble
+// also adapt the version in xml blocks
 :stable-version: 1.1.0
 
 image:https://travis-ci.org/domino-osgi/domino.svg?branch=master["Travis CI Build Status", link="https://travis-ci.org/domino-osgi/domino"]
@@ -112,13 +113,13 @@ Gradle::
 Manual::
 [horizontal]
 Scala 2.10:::
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/1.1.0/domino_2.10-{stable-version}.jar[`domino-{stable-version}.jar`], 
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/1.1.0/domino_2.10-{stable-version}-sources.jar[`domino-{stable-version}-sources.jar`], 
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/1.1.0/domino_2.10-{stable-version}-javadoc.jar[`domino-{stable-version}-scaladoc.jar`]
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/1.1.0/domino_2.10-{stable-version}.jar[domino-{stable-version}.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/1.1.0/domino_2.10-{stable-version}-sources.jar[domino-{stable-version}-sources.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/1.1.0/domino_2.10-{stable-version}-javadoc.jar[domino-{stable-version}-scaladoc.jar]
 Scala 2.11:::
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/1.1.0/domino_2.11-{stable-version}.jar[`domino-{stable-version}.jar`],
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/1.1.0/domino_2.11-{stable-version}-sources.jar[`domino-{stable-version}-sources.jar`],
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/1.1.0/domino_2.11-{stable-version}-javadoc.jar[`domino-{stable-version}-scaladoc.jar`]
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/1.1.0/domino_2.11-{stable-version}.jar[domino-{stable-version}.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/1.1.0/domino_2.11-{stable-version}-sources.jar[domino-{stable-version}-sources.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/1.1.0/domino_2.11-{stable-version}-javadoc.jar[domino-{stable-version}-scaladoc.jar]
 
 
 == Documentation
@@ -152,10 +153,10 @@ mvn clean package
 ----
 
 
-To build domino for another Scala version, e.g. 2.11.6 (under a Unix-like OS), use:
+To build domino for another Scala version, e.g. 2.10.5 (under a Unix-like OS), use:
 
 ----
-SCALA_VERSION=2.11.6 mvn clean package
+SCALA_VERSION=2.10.5 mvn clean package
 ----
 
 === Creating a Release
@@ -179,7 +180,7 @@ When executed the script will create a `staging-settings.xml` (to which you shou
 
 == Changelog
 
-=== Domino 1.1.0 - __not released yet__
+=== Domino 1.1.0 - 2015-05-28
 
 * Switched Maintainer to Tobias Roeser
 * Renamed base package from `org.helgoboss.domino` to `domino`
