@@ -8,3 +8,5 @@
 .idea
 target/
 staging-settings.xml
+.polyglot.pom.scala
+.polyglot.pom.scala.asc
