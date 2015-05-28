@@ -2,7 +2,7 @@ import org.sonatype.maven.polyglot.scala.model._
 import scala.collection.immutable._
 
 implicit val scalaVersion = System.getenv("SCALA_VERSION") match {
-  case null => ScalaVersion("2.10.5")
+  case null => ScalaVersion("2.11.6")
   case v => ScalaVersion(v)
 }
 println("Using Scala version: " + scalaVersion.version)
@@ -60,6 +60,7 @@ ScalaModel(
     "org.scalatest" %% "scalatest" % "2.2.0" % "test"
   ),
   build = Build(
+    outputDirectory = "${project.build.directory}/classes_" + scalaVersion.binaryVersion,
     plugins = Seq(
       Plugin(
         "org.apache.felix" % "maven-bundle-plugin" % "2.5.4",
