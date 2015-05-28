@@ -1,14 +1,49 @@
 = Domino
+:toc: 
+:toc-placement: preamble
+:stable-version: 1.1.0
 
 image:https://travis-ci.org/domino-osgi/domino.svg?branch=master["Travis CI Build Status", link="https://travis-ci.org/domino-osgi/domino"]
 image:https://www.codacy.com/project/badge/afcdfefe80494be4bf729437dc3e2a9b["Codacy code quality", link="https://www.codacy.com/app/lefou/domino"]
 image:https://badges.gitter.im/Join%20Chat.svg["Gitter chat", link="https://gitter.im/domino-osgi/domino?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge"]
 
+
 Domino is a small library for the programming language http://www.scala-lang.org[Scala] designed to support developers in writing http://www.osgi.org/javadoc/r4v43/core/org/osgi/framework/BundleActivator.html[bundle activators] for the Java module system http://www.osgi.org/Technology/WhyOSGi[OSGi]. It strives to make writing complex and highly-dynamic bundle activators as easy as possible without sacrificing the power of the OSGi API.
 
 As such, Domino is a lightweight alternative to OSGi component models like http://ipojo.org[iPOJO], http://wiki.osgi.org/wiki/Blueprint[Blueprint] and http://wiki.osgi.org/wiki/Declarative_Services[Declarative Services]. Especially for those who want to leverage the power of pure code instead of reverting to an XML- or annotation-based approach.
 
-== Examples
+== Features
+
+Expressive::
+Domino offers an expressive http://en.wikipedia.org/wiki/Domain-specific_language[DSL] which reflects the event-driven nature of OSGi and allows you to define very easily when your logic is made available and when it is revoked.
+// Most importantly, it let's you encapsulates the code for activating logic and for deactivating logic in one unit. It's not separated in start() and stop() method anymore. That greatly enhances the cohesion of your logic.
+
+Unrestrictive::
+Some libraries just cover the most common use cases and let you fall deeply whenever you need to do something more special.
+Then you suddenly find yourself bypassing the library completely.
+Domino tries to prevent this by staying close to the low-level OSGi API.
+// You can access the bundle context at any time. Many methods expose the underlying low-level API objects. Domino tries to scale with your needs, much like Scala.
+
+Type safe::
+Most features in Domino benefit from static typing.
+That means the compiler and your IDE can help you write correct code.
+Additionally, there's support for using generic type parameters in the service registry.
+
+Familiar::
+Instead of inventing a completely foreign DSL, Domino tries to use familiar Scala data types such as http://www.scala-lang.org/api/current/scala/Option.html[Option], http://www.scala-lang.org/api/current/scala/collection/immutable/List.html[List] etc. whenever possible so you can make use of those many nice methods like `filter` or `map` you probably fell in love with.
+
+Extensible::
+If the Domino core DSL is not enough for you, simply extend it.
+Do you want to run a job as long as a certain service is available?
+Such things can be easily integrated.
+
+Comprehensive::
+Many of OSGi's core features are natively supported by the DSL (services, configuration, bundles, meta types).
+
+
+== Getting started
+
+Some lines of code often say more than 1000 words.
 
 === Wait for service and register service 
 
@@ -50,11 +85,63 @@ class Activator extends DominoActivator {
 }
 ----
 
-== Further reading
+== Resources
 
-Learn more on http://www.helgoboss.org/projects/domino/[Domino's OLD project website].
+=== Download
 
-== Building Domino
+The latest stable version is {stable-version} and can be downloaded from http://search.maven.org/#search|ga|1|g%3A%22com.github.domino-osgi%22[Maven Central].
+
+Maven::
+[source,xml]
+----
+<dependency>
+  <groupId>com.github.domino-osgi</groupId>
+  <artifactId>domino_${scala.version}</artifactId>
+  <version>1.1.0</version>
+</dependency>
+----
+
+SBT::
+[source,scala,subs="attributes"]
+"com.github.domino-osgi" %% "domino" % "{stable-version}"
+
+Gradle::
+[source,groovy,subs="attributes"]
+"com.github.domino-osgi:domino:{stable-version}"
+
+Manual::
+[horizontal]
+Scala 2.10:::
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/1.1.0/domino_2.10-{stable-version}.jar[`domino-{stable-version}.jar`], 
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/1.1.0/domino_2.10-{stable-version}-sources.jar[`domino-{stable-version}-sources.jar`], 
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/1.1.0/domino_2.10-{stable-version}-javadoc.jar[`domino-{stable-version}-scaladoc.jar`]
+Scala 2.11:::
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/1.1.0/domino_2.11-{stable-version}.jar[`domino-{stable-version}.jar`],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/1.1.0/domino_2.11-{stable-version}-sources.jar[`domino-{stable-version}-sources.jar`],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/1.1.0/domino_2.11-{stable-version}-javadoc.jar[`domino-{stable-version}-scaladoc.jar`]
+
+
+== Documentation
+
+* link:UserGuide.adoc[User Guide]
+* Scaladoc
+* link:FAQ.adoc[FAQ]
+* https://gitter.im/domino-osgi/domino[Gitter chat]
+
+== Development
+
+=== Contribute
+
+If you want to report a bug or suggest a feature, please do it in the https://github.com/domino-osgi/domino/issues[GitHub issues section].
+
+If you want to provide a fix or improvement, please fork Domino and send us a pull request on https://github.com/domino-osgi/domino[GitHub]. Thank you!
+
+If you want to give general feedback, please do it in the https://gitter.im/domino-osgi/domino[Gitter chat].
+
+If you want to show appreciation for the project, please "star" it on https://github.com/domino-osgi/domino[GitHub]. That helps us setting our priorities.
+
+
+=== Building Domino
 
 Domino is build with Apache Maven and the Polygot Scala Extension. At least Maven 3.3.1 is required.
 
@@ -71,7 +158,7 @@ To build domino for another Scala version, e.g. 2.11.6 (under a Unix-like OS), u
 SCALA_VERSION=2.11.6 mvn clean package
 ----
 
-== Creating a Release
+=== Creating a Release
 
 * Bump version in pom file
 * Update Changelog
@@ -79,7 +166,7 @@ SCALA_VERSION=2.11.6 mvn clean package
 * Create a git tag with the version
 * Upload the release artifacts up to Maven Central
 
-=== Deploy to Maven Central / Sonatype Open Source Respository (OSSRH)
+==== Deploy to Maven Central / Sonatype Open Source Respository (OSSRH)
 
 Unfortunately, not all Maven plugins are ready yet for a Polyglot Maven setup, thus the current version 1.6.3 of the Maven Staging Plugin simply doen't work.
 

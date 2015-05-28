@@ -1,0 +1,77 @@
+= FAQ - Domino
+:toc:
+:toc-placement: preamble
+:toc-title: Questions
+
+Frequently Asked Questions
+
+== Don't I tie my bundles to the OSGi API if I use Domino? Isn't that what component models like Blueprint want to prevent?
+
+You tie your bundle to the OSGi API, that's right.
+In particular the bundle activator.
+And as stated http://wiki.osgi.org/wiki/Bundle-Activator[here], this is something component models try to avoid. 
+
+But tying your code to the OSGi API is not necessarily a bad thing.
+Whether it's good or bad depends on the kind of code.
+You see, if you tie your _core logic_ to OSGi, you significantly lower its potential for reuse - which is in most cases indeed bad.
+But if you just couple your _activation logic_ to OSGi, that's a completely different thing.
+It makes sense because you can leverage all OSGi features and you don't have to learn another abstraction layer. 
+
+That's why I recommend following approach: If your core logic is non-trivial and shall be widely reusable, implement it *without any dependencies to the OSGi API*. And then, write a small bundle activator which tailors your core logic to OSGi by instantiating and activating it as you desire (for example using Domino). 
+
+Sometimes it even makes sense to put the bundle activator into a separate bundle. Then you can have multiple bundle activators which activate your logic in different ways.
+
+== Why the name "Domino"?
+
+The deployment of an OSGi bundle often triggers a series of cascading events:
+A service gets available, another bundle has been waiting for it and makes an own service available which in turn activates another service and so on ... 
+This strongly reminded me of the http://en.wikipedia.org/wiki/Domino_effect[Domino effect].
+The analogy is not perfect though because the Domino Effect cannot easily be made undone whereas in OSGi, the chain reaction will automatically be "reverted" as soon as the bundle is plugged out.
+      
+== I've seen that `DominoActivator` is made of several traits each of which implements a part of the DSL. Can't I just mix in one of these traits instead of extending `DominoActivator` if I don't need the complete DSL but only a little part?
+
+Well, indeed you can, but I strongly discourage it because of the way traits are implemented in Scala!
+If you do it, chances are quite high your bundle doesn't work with future versions of Domino -- even if it's only a minor version update.
+Why?
+Let's assume, a Domino update adds a new private method to the `ServiceWatching` trait.
+This is commonly considered a minor change since it doesn't break backward compatibility ...
+**assumed** you extend from the class `DominoActivator`.
+But if you have mixed in the `ServiceWatching` trait, your bundle won't work anymore because that new private method cannot be found in your activator.
+      
+If your bundle gets incompatible with a minor Domino update, you have two options: 
+Either restrict the version range for the Domino package import or recompile and rerelease your bundle.
+The first option has the downside that you cannot benefit from Domino bugfix releases. The second option involves much work. 
+      
+In both cases your bundle gets significantly less upward compatible.
+And that attracts negative attention especially in OSGi applications where people are used to hot swapping bundle versions.
+
+If you really want to use only a part of the DSL, use the approach outlined in the link:UserGuide.adoc#extending-domino[User Guide, section "Extending Domino"].
+Extend from `EmptyBundleActivator` (an abstract class), create a `SimpleServiceWatching` object in your activator as a `val` and import its members. 
+That's it.
+It's almost as convenient as mixing in the trait but doesn't lower the compatibility of your bundle.
+
+== Is it possible to use unresolved type parameters when querying or providing services?
+
+It is possible but there are serious limitations.
+Have a look at the following contrived example in bundle *A*: 
+
+[source,scala]
+----
+def provideAsList[S: ClassTag: TypeTag](service: S) {
+  List(service).providesService[List[S]]
+}
+----
+
+First, it is important to define the context bounds `ClassTag` and `TypeTag` for `S`.
+The `ClassTag` bound ensures that a client bundle *B* using your method actually uses the class referenced by `S` (so BND generates the correct `Package-Import` directive).
+The `TypeTag` bound makes sure that the complete type information for `S` is preserved.
+
+At runtime, this works only if the actual class substituted for the unresolved type parameter `S` is visible to bundle *A* at runtime.
+Otherwise you get a `scala.reflect.internal.MissingRequirementError` telling you that it cannot find the class.
+However, in most practical use cases, this class is not visible to bundle *A*
+but instead to bundle *B* because bundle *B* depends on bundle *A* and not the other way around.
+A quick workaround would be to add the `DynamicImport-Package: *` directive to bundle *A*, but that's really bad practice.
+      
+In future, Scala reflection hopefully doesn't reevaluate the type information for `S` but uses the one which is implicitly given.
+Then it wouldn't be necessary anymore to access the actual class substituted for `S`.
+      

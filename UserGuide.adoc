@@ -1,0 +1,851 @@
+= User Guide - Domino
+:toc: 
+:toc-placement: preamble
+
+User Guide for Domino, a Scala DSL for OSGi.
+
+== Introduction
+
+OSGi is the number one technology in the Java world to write highly modular systems. It allows the user to plug in and plug out modules at runtime without interrupting the system.
+
+In OSGi a module is called a bundle. The main entry and exit point of every bundle is the so called bundle activator. The bundle activator is the basic mean to tell the system what it should do when the bundle is plugged in and what it should do when it is plugged out.
+
+By writing a good bundle activator, you can make sure your module integrates seamlessly into the system - no matter in which order the modules are deployed. For example, it is good practice to wait for a service on which your logic depends instead of throwing an exception if this service is not available at the bundle start time. Similarly, you probably want your bundle to gracefully revoke its functionality as soon as the required service disappears. 
+
+The OSGi core API gives you all the flexibility to achieve such a level of dynamics (and much more). However, the core API is rather low-level, so implementing things like this quickly results in unmanageable code which is difficult to understand.
+
+As an answer to that, different declarative component models and dependency injection frameworks such as http://ipojo.org[iPOJO], http://wiki.osgi.org/wiki/Blueprint[Blueprint] and http://wiki.osgi.org/wiki/Declarative_Services[Declarative Services] popped up. They simplify bundle development with the help of XML and/or annotations. Unfortunately, they not only make things easier but also hide much of the flexibility that OSGi offers.
+
+Fortunately, with an expressive language like Scala at your disposal, you don't need to revert to an annotation- or XML-based approach. Domino enables you to write complex bundle activators and still have very intuitive and readable code.
+
+== Setup
+
+To make Domino available in your project, add it as a dependency and you are ready to go.
+
+If you don't know how to write OSGi bundles in Scala in general, you might want to have a look at the following resources:
+
+* http://scala-tools.org/mvnsites/maven-scala-plugin/[Maven Scala Plugin]
+* http://felix.apache.org/site/apache-felix-maven-bundle-plugin-bnd.html[Maven Bundle Plugin]
+
+== Basics
+
+=== Reacting on bundle start
+
+Let's start with a very simple bundle activator written in the native OSGi API (without Domino).
+
+[source,scala]
+----
+import org.osgi.framework._
+
+class MyActivator extends BundleActivator {
+  def start(context: BundleContext) {
+    println("Bundle started")
+    println(bundleContext.getBundle.getSymbolicName)
+  }
+  
+  def stop(context: BundleContext) {
+  }
+}
+----
+
+This simply outputs "Bundle started" and the bundle's symbolic name when the bundle gets started. 
+
+With Domino, you would write:
+
+[source,scala]
+----
+import domino._
+
+class MyActivator extends DominoActivator { //<1>
+  whenBundleActive { //<2>
+    println("Bundle started")
+    println(bundleContext.getBundle.getSymbolicName)
+  }
+}
+----
+
+
+Let's walk through the code step by step:
+
+<1> By inheriting from `DominoActivator`, you get immediate access to the Domino DSL.
+<2> `whenBundleActive` is already part of the DSL (Actually, it's just a method which expects a function as argument.) +
+By calling `whenBundleActive` with a function `f`, you are basically saying "Execute `f` as soon as the bundle gets started".
+Within `f`, you always have access to `bundleContext`.
+
+=== Reacting on bundle stop
+
+NOTE: From now on, we will omit the `import` statement.
+
+What if we want to execute some code as soon as the bundle gets stopped?
+In native OSGi, you would implement the `stop()` method accordingly.
+
+In Domino you go:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    println("Bundle started")
+    
+    onStop {
+      println("Bundle stopped")
+    }
+  }
+}
+----
+
+If you love symmetry, you can also write:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    onStart {
+      println("Bundle started")
+    }
+    
+    onStop {
+      println("Bundle stopped")
+    }
+  }
+}
+----
+
+=== Capsules
+
+Okay, so far this is not a big thing. The previous examples can easily be implemented with the native OSGi API, it's just another writing style. 
+
+This new writing style has an advantage though: You can now put related start and stop logic close together:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    printStartAndStop()
+  }
+  
+  private def printStartAndStop() {
+    onStart {
+      println("Bundle started")
+    }
+    
+    onStop {
+      println("Bundle stopped")
+    }
+  }
+}
+----
+
+In this example, we have factored out start and stop logic that naturally belongs together into a separate method. 
+
+You can also make such cohesive logic widely reusable by factoring it out into completely different objects, into so called *capsules*. Capsules are cohesive, reusable units which simply consist of a `start` and a `stop` method. Factoring out start and stop logic into such capsules often makes sense. A good example is the method `providesService` which is part of the core DSL and uses capsules internally:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    new MyService().providesService[MyService]
+  }
+}
+    
+class MyService
+----
+
+`providesService` is an implicit method available on any object.
+It just registers this object with the given object class in the OSGi service registry. And _most important_, it unregisters the service as soon as the bundle gets stopped.
+
+Learn more about writing your own capsules in section link:#extending-domino[Extending Domino].
+
+=== Capsule scopes
+
+Okay, in the previous example, the OSGi framework would have unregistered the service automatically on bundle stop if `providesService` wouldn't have done it explicitly.
+It's a special case. But have a look at the following example:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    whenServicePresent[OtherService] { os =>
+      new MyService(os).providesService[MyService]
+    }
+  }
+}
+
+class MyService(os: OtherService)
+----
+
+`whenServicePresent` is another part of the DSL.
+By calling it, you are saying "As soon as the service with the given object class gets available, execute the given function with the service as argument".
+So in our case, `MyService` will be registered as soon as `OtherService` gets available.
+
+_And here's the interesting thing:_ The `MyService` object will be unregistered as soon as `OtherService` disappears.
+
+This is probably exactly what you would expect if you look at the code, right?
+An extremely common use case in OSGi. But try implementing that using the native OSGi API and you will see that your code quickly gets bloated and unreadable.
+Finally an example where Domino really makes sense!
+
+So how's that possible? 
+
+In order to understand that, you need to understand the concept of *capsule scopes*. You can think of a capsule scope 
+as a container in which you throw capsules, that is, start and stop logic. Both methods, `whenBundleActive` and `whenServicePresent` create their own capsule scope and execute the given function in it. Every start and stop logic which is added within the function relates to that new scope: 
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {                                       // Scope 1
+    whenServicePresent[OtherService] { os =>  // Scope 2   // 
+      // ...                                  //           // 
+    }                                         //           // 
+  }                                                        // 
+}
+----
+
+This concept is the very core of Domino.
+It allows you to easily define start and stop logic within a particular capsule scope. 
+
+NOTE:   It's a convention that DSL methods whose name starts with "`when`" introduce a new capsule scope.
+
+
+=== The cascading effect
+
+Take a look at the following example to get an idea how you can express complex behavior with the capsule scope concept in just a few lines of codes:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  // A (Scope 1)
+  whenBundleActive {
+    
+    // B (Scope 2)
+    whenServicePresent[OtherService] { os =>
+      // C
+      new MyService(os).provideService[MyService]
+    
+      // D (Scope 3)
+      whenServicePresent[PersonService] { ps =>
+        // E
+        new MySecondService(os, ps).providesService[MySecondService]
+      }
+    }
+  }
+}
+
+class MyService(os: OtherService)
+class MySecondService(os: OtherService, ps: PersonService)
+----
+
+
+As you can see here, scopes can be deeply nested.
+This is like saying: "When the bundle is active (A) and `OtherService` 
+is available (B), register `MyService` (C).
+When additionally `PersonService` is available (D), also register `MySecondService` (E)."
+
+So let's assume, the bundle is active, `OtherService` is available 
+and `PersonService` as well.
+Then our bundle registers both `MyService` and `MySecondService`. 
+
+Now, `OtherService` suddenly disappears.
+That means, scope 2 will be stopped. As an effect, scope 3 also will be stopped because it
+is nested in scope 2.
+Hence, both `MySecondService` and `MyService` will be unregistered.
+Do you recognize the cascading effect?
+Exactly, hello http://en.wikipedia.org/wiki/Composite_pattern[composite pattern]!
+
+
+== DSL reference
+
+The Domino DSL covers many core features of OSGi.
+Often you don't even need to use the `onStart` or `onStop` methods because Domino brings frequently used start and stop logic as part of the core DSL, encapsulated in simple methods.
+
+
+=== Register services
+
+We have already learned how to register services.
+Here's a more complete example in which a service is registered under multiple interfaces and in which service properties are defined.
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    new MyService().providesService[MyService, Service](
+      "name" -> "My Service",
+      "description" -> "A good service",
+      "transactional" -> false
+    )
+  }
+}
+
+class MyService extends Service
+
+trait Service
+----
+
+
+You can even provide generic type parameters in the interface list:
+
+    class MyActivator extends DominoActivator {
+      whenBundleActive {
+        val myStringService = new MyService[String]() 
+        myStringService.providesService[MyService[String]]
+      }
+    }
+    
+    class MyService[T]
+
+The type parameters are automatically added as service property to enable finding services
+distinguished by their generic type.
+
+
+### Wait until a particular service becomes available
+
+If you want to consume a service, it is often advisable to wait until the service becomes available and then use it.
+We have already learned how to wait on _one_ service. But how to wait on multiple services?
+
+One perfectly valid way would be to nest `whenServicePresent` calls.
+But there's also a shortcut:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    whenServicesPresent[OtherService, PersonService] {
+      new MyService(_, _).providesService[MyService]
+    }
+  }
+}
+
+class MyService(os: OtherService, ps: PersonService)
+----
+
+The function passed to `whenServicePresent` is executed as soon as all given service dependencies are available.
+The stop logic is executed as soon as one dependency or several dependencies disappear.
+
+NOTE: You can wait for services with particular generic types by just providing
+their type parameters in the type list.
+This only works though if the service has been registered with `providesService`.
+
+
+You can provide an OSGi http://www.osgi.org/javadoc/r4v43/core/org/osgi/framework/Filter.html[filter expression] to restrict the set of services that come into question.
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    whenAdvancedServicePresent[OtherService]("(transactional=true)") {
+      new MyService(_).providesService[MyService]
+    }
+  }
+}
+
+class MyService(os: OtherService)
+----
+
+
+=== Obtain optional or multiple services
+
+Sometimes you don't really need a service but you want to use it if it's available.
+`service` simply returns an `Option` so you can use familiar functions like
+`foreach` or `map` to use the service if it is available.
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    val optName = service[MyService] map { _.name }
+  }
+}
+
+class MyService {
+  def name = "Bob"
+}
+----
+
+
+If you also need access to the service references, use `serviceRef`.
+There's an implicit method `service` available on service references which returns the actual service.
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    serviceRef[MyService] foreach { myServiceRef =>
+      val transactional = myServiceRef.getProperty("transactional").asInstanceOf[Boolean]
+      val myService = myServiceRef.service
+    }
+  }
+}
+
+class MyService
+----
+
+Both methods also have a variant that accepts filters.
+
+
+If you need a service just for a specific call, you can use `withService`:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    val result = withService[MyService] {
+      case Some(myService) => myService.addThree(4)
+      case None => 7
+    }
+  }
+}
+
+class MyService {
+  def addThree(i: Int) = i + 3
+}
+----
+
+The advantage is that Domino can release the service right after you used it by calling `ungetService`.
+Note that releasing the service is not strictly necessary, so you have no disadvantage using the other ways.
+See http://www.coderanch.com/t/527472/oa/OSGi-services-practices[this] forum thread to read what's the effect of not calling `ungetService`.
+
+Occasionally you need a list of services of one type.
+`services` returns a sequence of matching services:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    services[MyService] foreach { myService =>
+      println(myService.name)
+    }
+  }
+}
+
+case class MyService(name: String)
+----
+
+If you also need access to the service references, use `serviceRefs` (analogously to `serviceRef`).
+Both methods have variants that accept filters.
+
+Domino by intention doesn't provide a method `requiredService`.
+You could call `service` and then `get` to achieve the same result.
+But we strongly discourage that.
+In case you really require a service, you should wait for it. Otherwise bundle deployment order gets relevant and that's something you want to avoid.
+
+
+=== Watch services
+
+If you want to react when a service comes and goes, use `watchServices`.
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    watchServices[MyService] {
+      case AddingService(s, context) =>
+        println("Adding service " + s)
+        val serviceRef = context.ref
+        val serviceTracker = context.tracker
+      
+      case ModifiedService(s, _) =>
+        println("Service modified")
+      
+      case RemovedService(s, _) =>
+        println("Service removed")
+    }
+  }
+}
+
+case class MyService(name: String)
+----
+
+`watchServices` will stop listening to services as soon as the outer capsule scope stops.
+
+Note that you have access to the underlying service tracker and service reference in the context object. You don't need to distinguish between the service events because `watchServices` doesn't expect a partial function. If you don't want to react to all events, for example to `AddingService` and `RemovedService` only, don't forget the default case!
+
+In case you primarily want to watch the service references, use `watchServiceRefs`. This can save some resources because the service is not looked up for each service reference.
+
+
+=== Listen to configuration changes
+
+OSGi provides a flexible http://www.osgi.org/javadoc/r4v43/residential/org/osgi/service/cm/ConfigurationAdmin.html[configuration API].
+Bundles can query configuration values and listen to configuration changes.
+It's a very comprehensive and comfortable configuration mechanism.
+There are frontends for setting bundle configurations.
+For example, http://felix.apache.org/site/apache-felix-web-console.html[Apache Felix Web Console] provides a nice 
+http://felix.apache.org/site/apache-felix-web-console.data/console-config.png[web-based user interface].
+http://felix.apache.org/site/apache-felix-file-install.html[Felix File Install] offers a convenient way to provide configuration in property files.
+
+In native OSGi, you have to register a `ManagedService` to listen to changes.
+Domino makes working with configurations a breeze:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    whenConfigurationActive("myServicePid") { confMap =>
+      val path = confMap("path").asInstanceOf[String]
+    }
+  }
+}
+----
+
+The method `whenConfigurationActive` has following features:
+
+* When called, it synchronously checks whether a configuration is available for the given PID.
+* It immediately calls the passed function in a new capsule scope, either with an existing configuration map or with an empty map.
+* It starts listening for configuration changes.
+* Whenever the configuration for that PID gets changed, it stops the capsules in the new capsule scope and executes the passed function again.
+* As soon as the outer capsule scope stops, the inner capsule scope is also stopped and it doesn't listen to configuration changes anymore.
+  
+That the function is called in a new capsule scope has an important effect.
+For example, it enables one to easily reinstantiate and reregister services whenever a configuration has changed.
+This is especially useful in the Scala world where immutable services are quite popular:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    whenConfigurationActive("myServicePid") { confMap =>
+      val path = confMap("path").asInstanceOf[String]
+      
+      // Will get unregistered and reregistered when the configuration has changed
+      new MyService(path).providesService[MyService]
+    }
+  }
+}
+
+class MyService(path: String)
+----
+
+
+However, if you have a mutable service and you want to use its setters methods to configure it, you can proceed like this:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    val myService = new MyService
+  
+    whenConfigurationActive("myServicePid") { confMap =>
+      myService.path = confMap("path").asInstanceOf[String]
+    }
+    
+    myService.providesService[MyService]
+  }
+}
+
+class MyService {
+  var path: String = _
+}
+----
+
+
+=== Listen to factory configuration changes
+
+The configuration mechanism in OSGi provides an awesome feature: Managed service factories.
+You can add and remove configurations of a certain type.
+
+Imagine a little file server.
+The user shall be able to create and remove an arbitrary amount of file server instances in the configuration user interface, each with a different root directory. A perfect use case for managed service factories!
+
+In pure OSGi, you would register a `ManagedServiceFactory` and do the heavy lifting yourself.
+In Domino, you go:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    whenFactoryConfigurationActive("myServiceFactoryPid", "My factory name") { (confMap, servicePid) =>
+      val rootPath = confMap("rootPath").asInstanceOf[String]
+      
+      val fs = new FileServer(rootPath)
+      fs.start()
+      
+      onStop {
+        fs.stop()
+      }
+    }
+  }
+}
+
+class FileServer(rootPath: String) {
+  def start() {
+    // ...
+  }
+  
+  def stop() {
+    // ...
+  }
+}
+----
+
+So changing `whenConfigurationActive` to `whenFactoryConfigurationActive` is all we have to do! When the user creates a new configuration for the given factory PID, a new capsule scope is created and the given function passed is executed.
+The logic keeps track of the created configurations and capsule scopes.
+It automatically stops the capsules in the correct scope as soon as a configuration is changed or removed.
+
+
+=== Define and expose configuration meta types
+
+Listening to configuration changes is nice but that's not enough information for the configuration frontends to generate a good user interface.
+If we want that, we can use the OSGi metatype API.
+OSGi Metatypes describe which configuration parameters exist and which types they have.
+For instance, a frontend should render a checkbox for a boolean parameter instead of a text field.
+
+Conventionally, bundles provide such metatypes in an XML file.
+Domino doesn't go the XML way and provides builders instead:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    // Listen to configuration changes as usual and also register the metatype
+    whenConfigurationActive(objectClass) { conf =>
+      // Object class can return the default config as a Map.
+      // Here we simply merge the default config with the given config.
+      val mergedConf = objectClass.defaultConfig ++ conf
+      
+      // ...
+    }
+  }
+
+  // Create metatype
+  val objectClass = ObjectClass(
+    id = "org.helgoboss.file_server",
+    name = "File Server",
+    requiredAttributes = List(
+      ElementaryAttribute[String](id = "rootPath", name = "Root path")),
+      ElementaryAttribute[Boolean](id = "ignoreExtensions", name = "Ignore extensions", default = Some(false))
+    )
+  )
+}
+----
+
+If you use this functionality and the metatype service is present, Apache Felix Web Console will generate a nice web-based http://felix.apache.org/site/apache-felix-web-console.data/console-config.png[configuration interface] for your bundle.
+
+NOTE: In future, Domino might provide a way to extract configuration values in a type safe way with the help of the metatype.
+
+=== Watch bundles
+
+Like services, you can also watch bundles coming and going:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    watchBundles {
+      case AddingBundle(b, context) =>
+        println("Adding bundle " + b)
+        val bundleTracker = context.tracker
+      
+      case ModifiedBundle(b, _) =>
+        println("Bundle modified")
+      
+      case RemovedBundle(b, _) =>
+        println("Bundle removed")
+    }
+  }
+}
+----
+
+=== Write OSGi log messages
+
+`DominoActivator` offers a `log` property which let's you access the OSGi logging facility.
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    log.debug("Bundle started")
+  }
+}
+----
+
+[#extending-domino]
+== Extending Domino
+
+=== Providing basic start and stop logic
+
+Sometimes you want to factor out start and stop behavior into a separate bundle 
+to reuse it among many bundle activators.
+You can do that by implementing the trait `Capsule` which simply contains two operations: `start()` and `stop()`.
+
+Let's say you want to provide a plugin which outputs the bundle name when the surrounding capsule scope starts and when it stops.
+
+[source,scala]
+----
+import domino.capsule._
+
+class PrintBundleNameCapsule(ctx: BundleContext) extends Capsule {
+  def start() {
+    println("Started " + ctx.getBundle.getName)
+  }
+  
+  def stop() {
+    println("Stopped " + ctx.getBundle.getName)
+  }
+}
+----
+
+Now we could already use the capsule in our bundle activator:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    val m = new PrintBundleNameCapsule(bundleContext)
+    addCapsule(m)
+  }
+}
+----
+
+`addCapsule` is available because `DominoActivator` extends the `CapsuleContext` class.
+It basically adds the the start and stop logic contained in the capsule to the current capsule scope.
+
+Please note that `Capsule` is a very generic trait.
+It has actually nothing to do with Domino.
+It resides in the `capsule` bundle which provides the core implementation of the capsule scope concept.
+It also doesn't depend on the OSGi core API.
+So you don't have to couple your start and stop logic to OSGi - maybe not so bad
+if Java will provide an own module framework one day that is incompatible with OSGi. In our case however, we want the bundle context to get the bundle name, so we need a dependency to the OSGi core.
+
+
+If you want to provide short method names for adding start and stop logic, much like in the Domino DSL, add something like this to your reusable bundle:
+
+[source,scala]
+----
+class BundleNamePrinting(dominoActivator: DominoActivator) {
+  def printBundleName() {
+    val m = new PrintBundleNameCapsule(dominoActivator.bundleContext)
+    dominoActivator.addCapsule(m)
+  }
+}
+----
+
+Then you can use it like this:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  val p = new BundleNamePrinting(this)
+  import p._
+
+  whenBundleActive {
+    printBundleName()
+  }
+}
+----
+
+You could also create a trait and mix it into the bundle activator but I discourage that because of the way traits are implemented in Scala.
+A little change in your trait and the bundle activator which depends on it has to be recompiled.
+That also means, its bundle version should be raised, so even a minor change can have significant consequences on compatibility then.
+
+By the way, Domino itself uses exactly the same mechanism to provide methods like `providesService`, `onStart` and `onStop`.
+
+
+=== Creating new capsule scopes
+
+You can not only provide start and stop logic but also open new capsule scopes, much like `whenBundleActive()` or `whenServicePresent()`.
+
+Let's say you want to write a plugin which enables the developer to define behavior which gets active as long as the user is connected to the Internet
+-- in the same style like the Domino core DSL.
+As in following usage example:
+
+[source,scala]
+----
+class MyActivator extends DominoActivator {
+  val w = new InternetWatching(this)
+  import w._
+
+  whenBundleActive {
+    whenServicePresent[UrlService] { urlService =>
+      whenConnectedToInternet {
+        new DownloadService(urlService).providesService[DownloadService]
+      }
+    }
+  }
+}
+
+class DownloadService(urlService: UrlService)
+
+trait UrlService
+----
+
+We want following effect: The `DownloadService` shall be made available 
+as long as there is an internet connection and the `UrlService` dependency is available. 
+
+That would be a perfect use case for creating a new capsule scope! `whenConnectedToInternet` must create a new capsule scope in which capsules
+can be placed, like the one contributed by `providesService` in the example.
+
+Besides, we have to make the plugin a capsule itself, so it can be bound to the surrounding capsule scope (in the example the one created by `whenServicePresent`).
+
+The capsule could look like this:
+
+[source,scala]
+----
+import org.helgoboss.capsule._
+
+class InternetWatcherCapsule(capsuleContext: CapsuleContext, f: () => Unit) extends Capsule {
+  var optCapsuleScope: Option[CapsuleScope] = None
+  var optInternetListener: Option[InternetListener] = None
+
+  /**
+   * Starts listening to the internet connection.
+   */
+  def start() {
+      // Adapt the InternetListener events to the capsule scope concept
+      val il = new InternetListener {
+        def onConnected() {
+          if (optCapsuleScope.isDefined) {
+            // Execute the given function in a new capsule scope
+            val newCapsuleScope = capsuleContext.executeWithinNewCapsuleScope {
+              f()
+            }
+            
+            // Save reference to the new capsule scope so we can stop the contained capsules later
+            optCapsuleScope = Some(newCapsuleScope)
+          }
+        }
+        
+        def onDisconnected() {
+          // Stop capsules in a previously created capsule scope
+          optCapsuleScope foreach { _.stop() }
+        }
+      }
+      
+      // Save reference to the internet listener so we can stop listening again
+      optInternetListener = Some(il)
+      
+      // Start listening
+      il.startListening()
+  }
+  
+  /**
+   * Stops listening to the internet connection and stops all capsules in the
+   * new capsule scope if one has been created.
+   */
+  def stop() {
+    optInternetListener foreach { _.stopListening }
+    optCapsuleScope foreach { _.stop() }
+  }
+}
+----
+
+Now we only have to make it convenient to use:
+
+[source,scala]
+----
+class InternetWatching(capsuleContext: CapsuleContext) {
+  def whenInternetConnectionActive(f: () => Unit) {
+    val m = new InternetWatcherCapsule(capsuleContext, f)
+    capsuleContext.addCapsule(m)
+  }
+}
+----
+
+That's it!
+You have extended the core DSL.
+Please note that we don't have a single dependency to the OSGi API here!
+`DominoActivator` is just a special `CapsuleContext` tailored to OSGi.
+But you can also create your own capsule contexts and the `InternetWatcher` capsule would work there as well.
+
+== Further reading
+
+For further details, please consult the http://helgoboss.github.com/domino/scaladoc#org.helgoboss.domino.package[Scaladoc].
+
+
