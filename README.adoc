@@ -86,9 +86,9 @@ class Activator extends DominoActivator {
 }
 ----
 
-== Resources
+Read more in the complete link:UserGuide.adoc[Domino User Guide].
 
-=== Download
+== Download
 
 The latest stable version is {stable-version} and can be downloaded from http://search.maven.org/#search|ga|1|g%3A%22com.github.domino-osgi%22[Maven Central].
 
