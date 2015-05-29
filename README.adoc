@@ -108,7 +108,7 @@ SBT::
 
 Gradle::
 [source,groovy,subs="attributes"]
-"com.github.domino-osgi:domino:{stable-version}"
+compile 'com.github.domino-osgi:domino_${scala.version}:{stable-version}'
 
 Manual::
 [horizontal]
