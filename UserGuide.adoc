@@ -74,8 +74,6 @@ Within `f`, you always have access to `bundleContext`.
 
 === Reacting on bundle stop
 
-NOTE: From now on, we will omit the `import` statement.
-
 What if we want to execute some code as soon as the bundle gets stopped?
 In native OSGi, you would implement the `stop()` method accordingly.
 
@@ -83,6 +81,8 @@ In Domino you go:
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     println("Bundle started")
@@ -98,6 +98,8 @@ If you love symmetry, you can also write:
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     onStart {
@@ -119,6 +121,8 @@ This new writing style has an advantage though: You can now put related start an
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     printStartAndStop()
@@ -142,6 +146,8 @@ You can also make such cohesive logic widely reusable by factoring it out into c
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     new MyService().providesService[MyService]
@@ -163,6 +169,8 @@ It's a special case. But have a look at the following example:
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     whenServicePresent[OtherService] { os =>
@@ -191,6 +199,8 @@ as a container in which you throw capsules, that is, start and stop logic. Both 
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {                                       // Scope 1
     whenServicePresent[OtherService] { os =>  // Scope 2   // 
@@ -212,6 +222,8 @@ Take a look at the following example to get an idea how you can express complex 
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   // A (Scope 1)
   whenBundleActive {
@@ -265,6 +277,8 @@ Here's a more complete example in which a service is registered under multiple i
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     new MyService().providesService[MyService, Service](
@@ -283,14 +297,19 @@ trait Service
 
 You can even provide generic type parameters in the interface list:
 
-    class MyActivator extends DominoActivator {
-      whenBundleActive {
-        val myStringService = new MyService[String]() 
-        myStringService.providesService[MyService[String]]
-      }
-    }
+[source,scala]
+----
+import domino._
+
+class MyActivator extends DominoActivator {
+  whenBundleActive {
+    val myStringService = new MyService[String]() 
+    myStringService.providesService[MyService[String]]
+  }
+}
     
-    class MyService[T]
+class MyService[T]
+----
 
 The type parameters are automatically added as service property to enable finding services
 distinguished by their generic type.
@@ -306,6 +325,8 @@ But there's also a shortcut:
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     whenServicesPresent[OtherService, PersonService] {
@@ -329,6 +350,8 @@ You can provide an OSGi http://www.osgi.org/javadoc/r4v43/core/org/osgi/framewor
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     whenAdvancedServicePresent[OtherService]("(transactional=true)") {
@@ -349,6 +372,8 @@ Sometimes you don't really need a service but you want to use it if it's availab
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     val optName = service[MyService] map { _.name }
@@ -366,6 +391,8 @@ There's an implicit method `service` available on service references which retur
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     serviceRef[MyService] foreach { myServiceRef =>
@@ -385,6 +412,8 @@ If you need a service just for a specific call, you can use `withService`:
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     val result = withService[MyService] {
@@ -408,6 +437,8 @@ Occasionally you need a list of services of one type.
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     services[MyService] foreach { myService =>
@@ -434,6 +465,9 @@ If you want to react when a service comes and goes, use `watchServices`.
 
 [source,scala]
 ----
+import domino._
+import domino.service_watching.ServiceWatcherEvent._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     watchServices[MyService] {
@@ -476,6 +510,8 @@ Domino makes working with configurations a breeze:
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     whenConfigurationActive("myServicePid") { confMap =>
@@ -499,6 +535,8 @@ This is especially useful in the Scala world where immutable services are quite 
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     whenConfigurationActive("myServicePid") { confMap =>
@@ -518,6 +556,8 @@ However, if you have a mutable service and you want to use its setters methods t
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     val myService = new MyService
@@ -549,6 +589,8 @@ In Domino, you go:
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     whenFactoryConfigurationActive("myServiceFactoryPid", "My factory name") { (confMap, servicePid) =>
@@ -592,6 +634,8 @@ Domino doesn't go the XML way and provides builders instead:
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     // Listen to configuration changes as usual and also register the metatype
@@ -626,6 +670,9 @@ Like services, you can also watch bundles coming and going:
 
 [source,scala]
 ----
+import domino._
+import domino.bundle_watching.BundleWatcherEvent._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     watchBundles {
@@ -649,6 +696,8 @@ class MyActivator extends DominoActivator {
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     log.debug("Bundle started")
@@ -686,6 +735,8 @@ Now we could already use the capsule in our bundle activator:
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   whenBundleActive {
     val m = new PrintBundleNameCapsule(bundleContext)
@@ -709,6 +760,8 @@ If you want to provide short method names for adding start and stop logic, much 
 
 [source,scala]
 ----
+import domino._
+
 class BundleNamePrinting(dominoActivator: DominoActivator) {
   def printBundleName() {
     val m = new PrintBundleNameCapsule(dominoActivator.bundleContext)
@@ -721,6 +774,8 @@ Then you can use it like this:
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   val p = new BundleNamePrinting(this)
   import p._
@@ -748,6 +803,8 @@ As in following usage example:
 
 [source,scala]
 ----
+import domino._
+
 class MyActivator extends DominoActivator {
   val w = new InternetWatching(this)
   import w._
@@ -830,6 +887,8 @@ Now we only have to make it convenient to use:
 
 [source,scala]
 ----
+import domino.capsule._
+
 class InternetWatching(capsuleContext: CapsuleContext) {
   def whenInternetConnectionActive(f: () => Unit) {
     val m = new InternetWatcherCapsule(capsuleContext, f)
