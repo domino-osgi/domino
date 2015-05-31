@@ -177,12 +177,16 @@ Please review the variables in the script, namely the `DOMINO_VERSION` and the `
 
 When executed the script will create a `staging-settings.xml` (to which you should add your login credentials) and wait. After pressing enter it will build all artifatcs and upload them to the OSSRH Nexus where you must log-in and manually release these artifacts.
 
-=== Credits
+== Credits
 
 Thanks to ...
 
 * http://github.com/weiglewilczek/scalamodules[ScalaModules] for being an inspiration, in particular for the bundle and service watching functionality
 * http://commons.wikimedia.org/wiki/User:Nyenyec[Nyenyec] for creating the image from which the Domino logo is derived
+
+== License
+
+Domino is licensed under the http://www.opensource.org/licenses/mit-license[MIT License].
 
 == Changelog
 
