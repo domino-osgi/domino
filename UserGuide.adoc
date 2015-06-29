@@ -249,7 +249,7 @@ class MySecondService(os: OtherService, ps: PersonService)
 
 As you can see here, scopes can be deeply nested.
 This is like saying: "When the bundle is active (A) and `OtherService` 
-is available (B), register `MyService` (C).
+is available (B), register `MyService` +++(C)+++.
 When additionally `PersonService` is available (D), also register `MySecondService` (E)."
 
 So let's assume, the bundle is active, `OtherService` is available 
