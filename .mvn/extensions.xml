@@ -3,7 +3,7 @@
   <extension>
     <groupId>io.takari.polyglot</groupId>
     <artifactId>polyglot-scala</artifactId>
-    <version>0.1.10</version>
+    <version>0.1.11</version>
   </extension>
 </extensions>
 
