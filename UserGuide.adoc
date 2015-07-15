@@ -38,12 +38,12 @@ Let's start with a very simple bundle activator written in the native OSGi API (
 import org.osgi.framework._
 
 class MyActivator extends BundleActivator {
-  def start(context: BundleContext) {
+  def start(bundleContext: BundleContext) {
     println("Bundle started")
     println(bundleContext.getBundle.getSymbolicName)
   }
   
-  def stop(context: BundleContext) {
+  def stop(bundleContext: BundleContext) {
   }
 }
 ----
