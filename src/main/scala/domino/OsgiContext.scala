@@ -14,7 +14,7 @@ trait OsgiContext extends DynamicCapsuleContext with EmptyBundleActivator {
   /**
    * Contains the bundle context as long as the bundle is active.
    */
-  private var _bundleContext: BundleContext = _
+  private[this] var _bundleContext: BundleContext = _
 
   /**
    * Returns the bundle context as long as the bundle is active.
