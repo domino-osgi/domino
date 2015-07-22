@@ -72,13 +72,13 @@ abstract class DominoActivator extends OsgiContext
     with Logging
     with ServiceProviding
     with ServiceWatching {
-  
+
   /** Dependency */
-  protected val capsuleContext = this
-  
+  override protected val capsuleContext = this
+
   /** Dependency */
   protected val serviceProviding = this
-  
+
   /** Dependency */
-  protected val serviceConsuming = this
+  override protected val serviceConsuming = this
 }
