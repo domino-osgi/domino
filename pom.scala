@@ -69,7 +69,8 @@ ScalaModel(
           instructions = Config(
             _include = "osgi.bnd"
           )
-        )
+        ),
+        executions = Seq(Execution(phase = "verify", goals = Seq("baseline")))
       ),
       Plugin(
         "org.apache.maven.plugins" % "maven-jar-plugin" % "2.5",
