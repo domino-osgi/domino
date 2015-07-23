@@ -190,6 +190,10 @@ Domino is licensed under the http://www.opensource.org/licenses/mit-license[MIT 
 
 == Changelog
 
+=== Domino {master}
+
+* Removed `Logging` trait from `DominoActivator`. You can restore the old behavior be mixing in the trait into your activator class.
+
 === Domino 1.1.0 - 2015-05-28
 
 * Switched Maintainer to Tobias Roeser

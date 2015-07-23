@@ -1,9 +1,8 @@
 package domino
 
 import domino.bundle_watching.BundleWatching
-import domino.configuration_watching.ConfigurationWatching
-import domino.logging.Logging
 import domino.capsule._
+import domino.configuration_watching.ConfigurationWatching
 import domino.service_consuming.ServiceConsuming
 import domino.service_providing.ServiceProviding
 import domino.service_watching.ServiceWatching
@@ -69,7 +68,6 @@ abstract class DominoActivator extends OsgiContext
     with BundleWatching
     with ConfigurationWatching
     with ServiceConsuming
-    with Logging
     with ServiceProviding
     with ServiceWatching {
 
