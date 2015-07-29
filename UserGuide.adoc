@@ -835,7 +835,7 @@ The capsule could look like this:
 
 [source,scala]
 ----
-import org.helgoboss.capsule._
+import domino.capsule._
 
 class InternetWatcherCapsule(capsuleContext: CapsuleContext, f: () => Unit) extends Capsule {
   var optCapsuleScope: Option[CapsuleScope] = None
@@ -848,7 +848,7 @@ class InternetWatcherCapsule(capsuleContext: CapsuleContext, f: () => Unit) exte
       // Adapt the InternetListener events to the capsule scope concept
       val il = new InternetListener {
         def onConnected() {
-          if (optCapsuleScope.isDefined) {
+          if (optCapsuleScope.isEmpty) {
             // Execute the given function in a new capsule scope
             val newCapsuleScope = capsuleContext.executeWithinNewCapsuleScope {
               f()
