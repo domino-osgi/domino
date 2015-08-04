@@ -56,8 +56,8 @@ ScalaModel(
     "org.osgi" % "org.osgi.core" % "4.3.0",
     "org.osgi" % "org.osgi.compendium" % "4.3.0",
     // test dependencies
-    // "junit" % "junit" % "4.11" % "test",
-    "org.scalatest" %% "scalatest" % "2.2.0" % "test"
+    "org.scalatest" %% "scalatest" % "2.2.0" % "test",
+    "com.googlecode.pojosr" % "de.kalpatec.pojosr.framework.bare" % "0.2.1" % "test"
   ),
   build = Build(
     outputDirectory = "${project.build.directory}/classes_" + scalaVersion.binaryVersion,
@@ -103,7 +103,8 @@ ScalaModel(
           checkMultipleScalaVersions = false,
           args = Config(
             arg = "-deprecation",
-            arg = "-feature"
+            arg = "-feature",
+            arg = "-language:postfixOps"
           )
         )
       )

@@ -3,11 +3,14 @@ package domino
 import org.scalatest.WordSpecLike
 import org.scalatest.ShouldMatchers
 import org.osgi.framework.ServiceRegistration
+import domino.test.PojoSrTestHelper
 
 /**
  * Currently tests only the DSL grammar and signatures but doesn't execute it.
  */
-class ServiceProvidingSpec extends DominoActivator with WordSpecLike with ShouldMatchers {
+class ServiceProvidingSpec
+    extends WordSpecLike
+    with ShouldMatchers {
 
   trait MyService {
     def doIt()
@@ -30,56 +33,70 @@ class ServiceProvidingSpec extends DominoActivator with WordSpecLike with Should
   "Service providing" should {
 
     "allow specifying just one interface" in {
-      whenBundleActive {
-        val reg: ServiceRegistration[CombinedService] = combinedService.providesService[CombinedService]
+      new DominoActivator {
+        whenBundleActive {
+          val reg: ServiceRegistration[CombinedService] = combinedService.providesService[CombinedService]
+        }
       }
       pending
     }
 
     "allow specifying just one interface and passing service properties" in {
-      whenBundleActive {
-        val reg: ServiceRegistration[_] = exampleService.providesService[MyService](
-          "prop1" -> "value1",
-          "prop2" -> 3
-        )
+      new DominoActivator {
+        whenBundleActive {
+          val reg: ServiceRegistration[_] = exampleService.providesService[MyService](
+            "prop1" -> "value1",
+            "prop2" -> 3
+          )
+        }
       }
       pending
     }
 
     "allow specifying just one interface and passing service properties in a map" in {
-      whenBundleActive {
-        val reg: ServiceRegistration[_] = exampleService.providesService[MyService](serviceProps)
+      new DominoActivator {
+        whenBundleActive {
+          val reg: ServiceRegistration[_] = exampleService.providesService[MyService](serviceProps)
+        }
       }
       pending
     }
 
     "allow specifying several interfaces" in {
-      whenBundleActive {
-        val reg: ServiceRegistration[_] = exampleService.providesService[MyService, MyService2]
+      new DominoActivator {
+        whenBundleActive {
+          val reg: ServiceRegistration[_] = exampleService.providesService[MyService, MyService2]
+        }
       }
       pending
     }
 
     "allow specifying several interfaces and passing service properties" in {
-      whenBundleActive {
-        val reg: ServiceRegistration[_] = exampleService.providesService[MyService, MyService2](
-          "prop1" -> "value1",
-          "prop2" -> 3
-        )
+      new DominoActivator {
+        whenBundleActive {
+          val reg: ServiceRegistration[_] = exampleService.providesService[MyService, MyService2](
+            "prop1" -> "value1",
+            "prop2" -> 3
+          )
+        }
       }
       pending
     }
 
     "allow specifying several interfaces and passing service properties in a map" in {
-      whenBundleActive {
-        val reg: ServiceRegistration[_] = exampleService.providesService[MyService, MyService2](serviceProps)
+      new DominoActivator {
+        whenBundleActive {
+          val reg: ServiceRegistration[_] = exampleService.providesService[MyService, MyService2](serviceProps)
+        }
       }
       pending
     }
 
     "allow specifying generic types" in {
-      whenBundleActive {
-        val reg: ServiceRegistration[_] = List(exampleService).providesService[List[MyService]]
+      new DominoActivator {
+        whenBundleActive {
+          val reg: ServiceRegistration[_] = List(exampleService).providesService[List[MyService]]
+        }
       }
       pending
     }

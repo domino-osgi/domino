@@ -12,16 +12,20 @@ import org.osgi.framework.Bundle
 /**
  * Currently tests only the DSL grammar and signatures but doesn't execute it.
  */
-class BundleWatchingSpec extends DominoActivator with WordSpecLike with ShouldMatchers {
+class BundleWatchingSpec
+    extends WordSpecLike
+    with ShouldMatchers {
 
   "Bundle watching" should {
 
     "make it possible to react on bundles coming and going" in {
-      whenBundleActive {
-        val tracker: BundleTracker[Bundle] = watchBundles {
-          case AddingBundle(b: Bundle, c: BundleWatcherContext) =>
-          case RemovedBundle(b: Bundle, c: BundleWatcherContext) =>
-          case ModifiedBundle(b: Bundle, c: BundleWatcherContext) =>
+      new DominoActivator {
+        whenBundleActive {
+          val tracker: BundleTracker[Bundle] = watchBundles {
+            case AddingBundle(b: Bundle, c: BundleWatcherContext) =>
+            case RemovedBundle(b: Bundle, c: BundleWatcherContext) =>
+            case ModifiedBundle(b: Bundle, c: BundleWatcherContext) =>
+          }
         }
       }
       pending

@@ -155,10 +155,11 @@ trait ServiceConsuming extends DominoImplicits {
     } else {
       // Build the filter (generic type filter + custom filter)
       val tpe = typeTag[S].tpe
+      val className = classTag[S].runtimeClass.getName
       val completeFilter = DominoUtil.createGenericsAndCustomFilter(tpe, filter)
 
       // Get the list of references matching the filter
-      val refs = bundleContext.getServiceReferences(DominoUtil.getFullTypeName(tpe), completeFilter.orNull)
+      val refs = bundleContext.getServiceReferences(className, completeFilter.orNull)
 
       if (refs == null) {
         Nil

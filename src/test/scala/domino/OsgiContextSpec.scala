@@ -6,7 +6,9 @@ import org.scalatest.ShouldMatchers
 /**
  * Currently tests only the DSL grammar and signatures but doesn't execute it.
  */
-class OsgiContextSpec extends DominoActivator with WordSpecLike with ShouldMatchers {
+class OsgiContextSpec
+    extends WordSpecLike
+    with ShouldMatchers {
 
   trait Service1
 
@@ -16,12 +18,14 @@ class OsgiContextSpec extends DominoActivator with WordSpecLike with ShouldMatch
 
   "OsgiContext" should {
     "bind a capsule scope to the bundle life cycle" in {
-      whenBundleActive {
-        onStart {
-          println("start")
-        }
-        onStop {
-          println("end")
+      new DominoActivator {
+        whenBundleActive {
+          onStart {
+            println("start")
+          }
+          onStop {
+            println("end")
+          }
         }
       }
       pending
