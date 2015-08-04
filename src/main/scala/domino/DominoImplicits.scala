@@ -1,5 +1,6 @@
 package domino
 
+import scala.language.implicitConversions
 import org.osgi.framework.{BundleContext, ServiceReference}
 
 /**

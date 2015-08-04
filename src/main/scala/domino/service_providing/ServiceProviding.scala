@@ -1,5 +1,6 @@
 package domino.service_providing
 
+import scala.language.implicitConversions
 import org.osgi.framework.BundleContext
 import domino.capsule.CapsuleContext
 

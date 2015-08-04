@@ -1,7 +1,7 @@
 package domino.service_consuming
 
-import org.osgi.framework.{ServiceReference, BundleContext}
-import domino.{DominoImplicits, DominoUtil}
+import org.osgi.framework.{ ServiceReference, BundleContext }
+import domino.{ DominoImplicits, DominoUtil }
 import reflect.ClassTag
 import reflect.classTag
 import scala.reflect.runtime.universe._
@@ -66,7 +66,7 @@ trait ServiceConsuming extends DominoImplicits {
   }
 
   /**
-   * Returns the highest-ranked service of the specified type if available. The service is not explicitly released. 
+   * Returns the highest-ranked service of the specified type if available. The service is not explicitly released.
    * It's assumed that the service will be used until the bundle stops. Doesn't take type parameters into account!
    *
    * @group GetServices
@@ -110,7 +110,7 @@ trait ServiceConsuming extends DominoImplicits {
    */
   def serviceRef[S <: AnyRef: TypeTag: ClassTag](filter: String): Option[ServiceReference[S]] = {
     val refs = serviceRefs[S](filter)
-    refs.lift(0)
+    refs.headOption
   }
 
   /**
