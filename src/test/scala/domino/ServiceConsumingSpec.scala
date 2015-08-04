@@ -143,7 +143,7 @@ class ServiceConsumingSpec
       }
     }
 
-    "offer optional scoped service" in {
+    "consume optional scoped service" in {
       new DominoActivator {
         whenBundleActive {
           val result: Int = withService[MyService, Int] {
@@ -155,7 +155,7 @@ class ServiceConsumingSpec
       pending
     }
 
-    "offer implicit withService on reference" in {
+    "consume implicit withService on reference" in {
       new DominoActivator {
         whenBundleActive {
           serviceRef[MyService] foreach { r: ServiceReference[MyService] =>
@@ -168,7 +168,7 @@ class ServiceConsumingSpec
       pending
     }
 
-    "offer optional scoped service restricted by filter" in {
+    "consume optional scoped service restricted by filter" in {
       new DominoActivator {
         whenBundleActive {
           val result: Int = withAdvancedService[MyService, Int]("(myProp=myValue)") {
@@ -180,7 +180,7 @@ class ServiceConsumingSpec
       pending
     }
 
-    "offer optional service reference" in {
+    "consume optional service reference" in {
       new DominoActivator {
         whenBundleActive {
           serviceRef[MyService] foreach { r: ServiceReference[MyService] =>
@@ -191,7 +191,7 @@ class ServiceConsumingSpec
       pending
     }
 
-    "offer implicit service on reference" in {
+    "consume implicit service on reference" in {
       new DominoActivator {
         whenBundleActive {
           serviceRef[MyService] foreach { r: ServiceReference[MyService] =>
@@ -202,7 +202,7 @@ class ServiceConsumingSpec
       pending
     }
 
-    "offer optional service reference restricted by filter" in {
+    "consume optional service reference restricted by filter" in {
       new DominoActivator {
         whenBundleActive {
           val ref: Option[ServiceReference[MyService]] = serviceRef[MyService]("(myProp=myValue)")
@@ -211,7 +211,7 @@ class ServiceConsumingSpec
       pending
     }
 
-    "offer multiple services" in {
+    "consume multiple services" in {
       new DominoActivator {
         whenBundleActive {
           val s: Traversable[MyService] = services[MyService]
@@ -220,7 +220,7 @@ class ServiceConsumingSpec
       pending
     }
 
-    "offer multiple services restricted by filter" in {
+    "consume multiple services restricted by filter" in {
       new DominoActivator {
         whenBundleActive {
           val s: Traversable[MyService] = services[MyService]("(myProp=MyValue)")
@@ -229,7 +229,7 @@ class ServiceConsumingSpec
       pending
     }
 
-    "offer multiple service references" in {
+    "consume multiple service references" in {
       new DominoActivator {
         whenBundleActive {
           val refs: Traversable[ServiceReference[MyService]] = serviceRefs[MyService]
@@ -238,7 +238,7 @@ class ServiceConsumingSpec
       pending
     }
 
-    "offer multiple service references restricted by filter" in {
+    "consume multiple service references restricted by filter" in {
       new DominoActivator {
         whenBundleActive {
           val refs: Traversable[ServiceReference[MyService]] = serviceRefs[MyService]("(myProp=MyValue)")

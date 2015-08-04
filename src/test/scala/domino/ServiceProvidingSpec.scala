@@ -4,13 +4,10 @@ import org.scalatest.WordSpecLike
 import org.scalatest.ShouldMatchers
 import org.osgi.framework.ServiceRegistration
 import domino.test.PojoSrTestHelper
+import domino.test.PojoSrTestHelper
+import org.osgi.framework.ServiceListener
 
-/**
- * Currently tests only the DSL grammar and signatures but doesn't execute it.
- */
-class ServiceProvidingSpec
-    extends WordSpecLike
-    with ShouldMatchers {
+object ServiceProvidingSpec {
 
   trait MyService {
     def doIt()
@@ -21,6 +18,18 @@ class ServiceProvidingSpec
   class CombinedService extends MyService with MyService2 {
     def doIt() {}
   }
+
+}
+
+/**
+ * Currently tests only the DSL grammar and signatures but doesn't execute it.
+ */
+class ServiceProvidingSpec
+    extends WordSpecLike
+    with ShouldMatchers
+    with PojoSrTestHelper {
+
+  import ServiceProvidingSpec._
 
   val exampleService = new MyService with MyService2 {
     def doIt() {}
@@ -33,12 +42,19 @@ class ServiceProvidingSpec
   "Service providing" should {
 
     "allow specifying just one interface" in {
-      new DominoActivator {
-        whenBundleActive {
-          val reg: ServiceRegistration[CombinedService] = combinedService.providesService[CombinedService]
+      withPojoServiceRegistry { sr =>
+        val activator = new DominoActivator {
+          whenBundleActive {
+            combinedService.providesService[CombinedService]
+          }
         }
+        activator.start(sr.getBundleContext)
+        val ref = sr.getServiceReference(classOf[CombinedService].getName)
+        assert(ref !== null)
+        assert(sr.getService(ref).isInstanceOf[CombinedService])
+        assert(sr.getServiceReference(classOf[MyService].getName) === null)
+        assert(sr.getServiceReference(classOf[MyService2].getName) === null)
       }
-      pending
     }
 
     "allow specifying just one interface and passing service properties" in {
@@ -63,12 +79,19 @@ class ServiceProvidingSpec
     }
 
     "allow specifying several interfaces" in {
-      new DominoActivator {
-        whenBundleActive {
-          val reg: ServiceRegistration[_] = exampleService.providesService[MyService, MyService2]
+      withPojoServiceRegistry { sr =>
+        val activator = new DominoActivator {
+          whenBundleActive {
+            val reg: ServiceRegistration[_] = exampleService.providesService[MyService, MyService2]
+          }
         }
+        activator.start(sr.getBundleContext)
+        val ref1 = sr.getServiceReference(classOf[MyService].getName)
+        assert(ref1 !== null)
+        val ref2 = sr.getServiceReference(classOf[MyService2].getName)
+        assert(ref2 !== null)
+        assert(sr.getService(ref1) === sr.getService(ref2))
       }
-      pending
     }
 
     "allow specifying several interfaces and passing service properties" in {

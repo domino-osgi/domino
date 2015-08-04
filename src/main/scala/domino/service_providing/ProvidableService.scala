@@ -4,6 +4,7 @@ import org.osgi.framework.{ BundleContext, ServiceRegistration }
 import domino.capsule._
 import scala.reflect.runtime.universe._
 import reflect.ClassTag
+import reflect.classTag
 
 /**
  * Offers methods to register the wrapped service as OSGi service.
@@ -23,7 +24,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    */
   def providesService[S1 >: S: TypeTag: ClassTag](properties: (String, Any)*): ServiceRegistration[S] = {
     providesServiceInternal(
-      List(typeTag[S1]),
+      List((classTag[S1].runtimeClass.getName, typeTag[S1])),
       properties
     )
   }
@@ -59,7 +60,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
    */
   def providesService[S1 >: S: TypeTag: ClassTag, S2 >: S: TypeTag: ClassTag](properties: (String, Any)*): ServiceRegistration[S] = {
     providesServiceInternal(
-      List(typeTag[S1], typeTag[S2]),
+      List((classTag[S1].runtimeClass.getName, typeTag[S1]), (classTag[S2].runtimeClass.getName, typeTag[S2])),
       properties
     )
   }
@@ -102,7 +103,7 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
       (properties: (String, Any)*): ServiceRegistration[S] = {
 
     providesServiceInternal(
-      List(typeTag[S1], typeTag[S2], typeTag[S3]),
+      List((classTag[S1].runtimeClass.getName, typeTag[S1]), (classTag[S2].runtimeClass.getName, typeTag[S2]), (classTag[S3].runtimeClass.getName, typeTag[S3])),
       properties
     )
   }
@@ -134,8 +135,8 @@ class ProvidableService[S](service: S, capsuleContext: CapsuleContext, bundleCon
     providesService[S1, S2, S3](properties.toSeq: _*)
   }
 
-  protected def providesServiceInternal(typeTags: Traversable[TypeTag[_]], properties: Seq[(String, Any)]): ServiceRegistration[S] = {
-    val types = typeTags.view map { _.tpe }
+  protected def providesServiceInternal(typeTags: Traversable[(String, TypeTag[_])], properties: Seq[(String, Any)]): ServiceRegistration[S] = {
+    val types = typeTags.view.map { case (name, t) => name -> t.tpe }
     val sp = new ServiceProviderCapsule(types, properties, bundleContext, service)
     capsuleContext.addCapsule(sp)
     sp.reg

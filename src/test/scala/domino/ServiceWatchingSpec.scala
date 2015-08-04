@@ -121,6 +121,7 @@ class ServiceWatchingSpec
         }
       }
     }
+
   }
 
 }

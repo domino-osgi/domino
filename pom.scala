@@ -10,6 +10,8 @@ implicit val scalaVersion = System.getenv("SCALA_VERSION") match {
 println("Using Scala version: " + scalaVersion.version)
 
 val url = "https:/github.com/domino-osgi/domino"
+val pojosr = "com.googlecode.pojosr" % "de.kalpatec.pojosr.framework.bare" % "0.2.1"
+// val pojosr = "com.googlecode.pojosr" % "de.kalpatec.pojosr.framework.bare" % "0.3.0-SNAPSHOT"
 
 ScalaModel(
   gav = "com.github.domino-osgi" %% "domino" % dominoVersion,
@@ -57,7 +59,7 @@ ScalaModel(
     "org.osgi" % "org.osgi.compendium" % "4.3.0",
     // test dependencies
     "org.scalatest" %% "scalatest" % "2.2.0" % "test",
-    "com.googlecode.pojosr" % "de.kalpatec.pojosr.framework.bare" % "0.2.1" % "test"
+    pojosr % "test"
   ),
   build = Build(
     outputDirectory = "${project.build.directory}/classes_" + scalaVersion.binaryVersion,

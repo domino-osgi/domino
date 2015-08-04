@@ -1,10 +1,9 @@
 package domino.service_providing
 
 import domino.capsule.Capsule
-import org.osgi.framework.{BundleContext, ServiceRegistration}
+import org.osgi.framework.{ BundleContext, ServiceRegistration }
 import domino.DominoUtil
 import scala.reflect.runtime.universe._
-
 
 /**
  * A capsule which registers an object in the OSGi service registry while the current capsule scope is active.
@@ -16,7 +15,7 @@ import scala.reflect.runtime.universe._
  * @tparam S Service type
  */
 class ServiceProviderCapsule[S](
-    types: Traversable[Type],
+    types: Traversable[(String, Type)],
     properties: Seq[(String, Any)],
     bundleContext: BundleContext,
     service: S) extends Capsule {
@@ -30,10 +29,10 @@ class ServiceProviderCapsule[S](
 
   def start() {
     // Create array of class names under which the service shall be registered
-    val typeArray = types map { DominoUtil.getFullTypeName } toArray
+    val typeArray = types.map(_._1).toArray
 
     // Add generic types expression to properties if necessary
-    val extendedProperties = DominoUtil.createGenericsExpression(types) match {
+    val extendedProperties = DominoUtil.createGenericsExpression(types.map(_._2)) match {
       case Some(exp) =>
         (DominoUtil.GenericsExpressionKey -> exp) +: properties
 
@@ -58,7 +57,7 @@ class ServiceProviderCapsule[S](
       _reg.unregister()
     } catch {
       case x: IllegalStateException =>
-        // Do nothing. Was already unregistered.
+      // Do nothing. Was already unregistered.
     }
     _reg = null
   }
