@@ -93,6 +93,19 @@ ScalaModel(
           reportsDirectory = "${project.build.directory}/surefire-reports",
           junitxml = "."
         )
+      ),
+      Plugin(
+        "net.alchim31.maven" % "scala-maven-plugin" % "3.2.1",
+        executions = Seq(Execution(goals = Seq("compile", "testCompile"))),
+        configuration = Config(
+          scalaVersion = scalaVersion.version,
+          fork = true,
+          checkMultipleScalaVersions = false,
+          args = Config(
+            arg = "-deprecation",
+            arg = "-feature"
+          )
+        )
       )
     )
   ),
