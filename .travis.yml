@@ -2,7 +2,7 @@ language: java
 
 env:
  - SCALA_VERSION=2.10.5
- - SCALA_VERSION=2.11.6
+ - SCALA_VERSION=2.11.7
 
 jdk:
  - oraclejdk8
