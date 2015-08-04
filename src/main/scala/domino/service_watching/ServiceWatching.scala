@@ -6,6 +6,7 @@ import org.osgi.util.tracker.ServiceTracker
 import domino.{DominoImplicits, DominoUtil}
 import scala.reflect.runtime.universe._
 import reflect.ClassTag
+import org.osgi.framework.FrameworkUtil
 
 /**
  * Provides convenient methods to add a service watcher to the current scope or wait until services are present.
@@ -44,8 +45,8 @@ trait ServiceWatching extends DominoImplicits {
    * @return Underlying service tracker
    */
   def watchAdvancedServices[S <: AnyRef: TypeTag: ClassTag](filter: String)(f: ServiceWatcherEvent[S] => Unit): ServiceTracker[S, S] = {
-    val combinedFilter = DominoUtil.createCompleteFilter(typeTag[S].tpe, filter)
-    val typedFilter = bundleContext.createFilter(combinedFilter)
+    val combinedFilter = DominoUtil.createCompleteFilter(typeTag[S].tpe, bundleContext.createFilter(filter))
+    val typedFilter = bundleContext.createFilter(combinedFilter.toString())
     val sw = new ServiceWatcherCapsule[S](typedFilter, f, bundleContext)
     capsuleContext.addCapsule(sw)
     sw.tracker

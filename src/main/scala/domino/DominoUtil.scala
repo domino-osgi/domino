@@ -1,8 +1,10 @@
 package domino
 
-import java.util.{Vector, Hashtable, Dictionary}
+import java.util.{ Vector, Hashtable, Dictionary }
 import org.osgi.framework.Constants
 import scala.reflect.runtime.universe._
+import org.osgi.framework.Filter
+import org.osgi.framework.FrameworkUtil
 
 /**
  * Contains utility methods used throughout Domino.
@@ -93,17 +95,14 @@ object DominoUtil {
    *
    * If no generic type is used in the type, returns `None`.
    */
-  def createGenericsFilter(tpe: Type): Option[String] = {
+  def createGenericsFilter(tpe: Type): Option[Filter] = {
     val expression = createGenericsExpression(List(tpe))
-    expression match {
-      case Some(e) =>
-        if (e.isEmpty) {
-          None
-        } else {
-          Some("(" + GenericsExpressionKey + "=*" + e + "*)")
-        }
-      case None =>
+    expression.flatMap { e =>
+      if (e.isEmpty) {
         None
+      } else {
+        Some(FrameworkUtil.createFilter(s"(${GenericsExpressionKey}=*${e}*)"))
+      }
     }
   }
 
@@ -115,12 +114,12 @@ object DominoUtil {
    * @param tpe Type information
    * @param customFilter A custom filter expression
    */
-  def createGenericsAndCustomFilter(tpe: Type, customFilter: String): Option[String] = {
+  def createGenericsAndCustomFilter(tpe: Type, customFilter: Filter): Option[Filter] = {
     // Create the generic type filter criteria
     val completeTypeExpressionFilter = createGenericsFilter(tpe)
 
     // Link it with the custom filter
-    DominoUtil.linkFiltersWithAnd(completeTypeExpressionFilter, Option(customFilter))
+    linkFiltersWithAnd(completeTypeExpressionFilter, Option(customFilter))
   }
 
   /**
@@ -130,23 +129,22 @@ object DominoUtil {
    * @param tpe Type information
    * @param customFilter A custom filter expression
    */
-  def createCompleteFilter(tpe: Type, customFilter: String): String = {
+  def createCompleteFilter(tpe: Type, customFilter: Filter): Filter = {
     // Create object class and generics and custom filter
     val className = getFullTypeName(tpe)
     val objectClassFilter = createObjectClassFilter(className)
     val genericsAndCustomFilter = createGenericsAndCustomFilter(tpe, customFilter)
 
     // Combine
-    DominoUtil.linkFiltersWithAnd(Some(objectClassFilter), genericsAndCustomFilter).get
+    linkFiltersWithAnd(Some(objectClassFilter), genericsAndCustomFilter).get
   }
 
   /**
    * Creates an `OBJECTCLASS` filter for the given class.
    */
-  def createObjectClassFilter(typeName: String): String = {
-    s"(${Constants.OBJECTCLASS}=$typeName)"
+  def createObjectClassFilter(typeName: String): Filter = {
+    FrameworkUtil.createFilter(s"(${Constants.OBJECTCLASS}=${typeName})")
   }
-
 
   /**
    * Links to filter expressions with a logical AND if both are given, otherwise returns just one of it.
@@ -155,13 +153,13 @@ object DominoUtil {
    * @param filterTwo Second filter
    * @return result
    */
-  def linkFiltersWithAnd(filterOne: Option[String], filterTwo: Option[String]): Option[String] = {
+  def linkFiltersWithAnd(filterOne: Option[Filter], filterTwo: Option[Filter]): Option[Filter] = {
     // TODO Do this more elegantly
     filterOne match {
       case Some(f1) =>
         filterTwo match {
           case Some(f2) =>
-            Some("(&" + f1 + f2 + ")")
+            Some(FrameworkUtil.createFilter(s"(&${f1.toString()}${f2.toString()})"))
 
           case None =>
             filterOne

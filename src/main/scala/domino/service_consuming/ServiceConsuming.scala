@@ -1,10 +1,11 @@
 package domino.service_consuming
 
-import org.osgi.framework.{ServiceReference, BundleContext}
-import domino.{DominoImplicits, DominoUtil}
+import org.osgi.framework.{ ServiceReference, BundleContext }
+import domino.{ DominoImplicits, DominoUtil }
 import reflect.ClassTag
 import reflect.classTag
 import scala.reflect.runtime.universe._
+import org.osgi.framework.FrameworkUtil
 
 /**
  * Provides convenient methods to consume OSGi services.
@@ -155,10 +156,11 @@ trait ServiceConsuming extends DominoImplicits {
     } else {
       // Build the filter (generic type filter + custom filter)
       val tpe = typeTag[S].tpe
-      val completeFilter = DominoUtil.createGenericsAndCustomFilter(tpe, filter)
+      val completeFilter = DominoUtil.createGenericsAndCustomFilter(tpe, FrameworkUtil.createFilter(filter))
+      println("filter: " + completeFilter)
 
       // Get the list of references matching the filter
-      val refs = bundleContext.getServiceReferences(DominoUtil.getFullTypeName(tpe), completeFilter.orNull)
+      val refs = bundleContext.getServiceReferences(DominoUtil.getFullTypeName(tpe), completeFilter.map(_.toString()).orNull)
 
       if (refs == null) {
         Nil
