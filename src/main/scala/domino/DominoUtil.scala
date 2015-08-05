@@ -144,6 +144,7 @@ object DominoUtil {
    * Creates an `OBJECTCLASS` filter for the given class.
    */
   def createObjectClassFilter(typeName: String): String = {
+    // FIXME: check if tpeName is correct. Shouldn't it be the class name?
     s"(${Constants.OBJECTCLASS}=$typeName)"
   }
 
