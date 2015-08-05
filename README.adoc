@@ -181,6 +181,7 @@ When executed the script will create a `staging-settings.xml` (to which you shou
 
 Thanks to ...
 
+* https://github.com/helgoboss[helgoboss] for creating Domino 1.0.0
 * http://github.com/weiglewilczek/scalamodules[ScalaModules] for being an inspiration, in particular for the bundle and service watching functionality
 * http://commons.wikimedia.org/wiki/User:Nyenyec[Nyenyec] for creating the image from which the Domino logo is derived
 
@@ -193,6 +194,9 @@ Domino is licensed under the http://www.opensource.org/licenses/mit-license[MIT 
 === Domino {master}
 
 * Removed `Logging` trait from `DominoActivator`. You can restore the old behavior be mixing in the trait into your activator class.
+* Improved test suite.
+  Now we use PojoSR to test most OSGi dynamics without the need to run a separate container.
+* Fixed naming issues for service provisioning and comsumption.
 
 === Domino 1.1.0 - 2015-05-28
 
