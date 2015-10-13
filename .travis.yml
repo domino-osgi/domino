@@ -1,9 +1,5 @@
 language: java
 
-env:
- - SCALA_VERSION=2.10.5
- - SCALA_VERSION=2.11.7
-
 jdk:
  - oraclejdk8
  - oraclejdk7
@@ -11,6 +7,7 @@ jdk:
 
 before_script:
  - ./mvnw -version
+ - sbt -sbt-version 0.13.8 +test +osgiBundle
 
 script: ./mvnw source:jar scala:doc-jar install
 
