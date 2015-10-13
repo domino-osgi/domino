@@ -7,7 +7,7 @@ jdk:
 
 before_script:
  - ./mvnw -version
- - sbt -sbt-version 0.13.8 +test +osgiBundle
+ - sbt +test +osgiBundle
 
 script: ./mvnw source:jar scala:doc-jar install
 
