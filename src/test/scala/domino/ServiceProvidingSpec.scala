@@ -172,7 +172,7 @@ class ServiceProvidingSpec
         }
         activator.start(sr.getBundleContext)
 
-        val genericValue = ";List[domino.ServiceProvidingSpec.MyService];"
+        val genericValue = ";scala.List[domino.ServiceProvidingSpec.MyService];"
 
         val ref = sr.getServiceReference(classOf[List[MyService]].getName)
         assert(ref.getProperty(DominoUtil.GenericsExpressionKey) === genericValue)
