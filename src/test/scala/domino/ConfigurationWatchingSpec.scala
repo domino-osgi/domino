@@ -72,6 +72,36 @@ class ConfigurationWatchingSpec
       }
     }
 
+    "work with normal configurations when CM is already running" in {
+      withPojoServiceRegistry { sr =>
+        val log = new Log
+        def bundleContext: BundleContext = sr.getBundleContext
+
+        val cm = new ConfigurationManager()
+        cm.start(bundleContext)
+
+        val ref = bundleContext.getServiceReference(classOf[ConfigurationAdmin])
+        val ca: ConfigurationAdmin = bundleContext.getService(ref)
+
+        val config = ca.getConfiguration("domino.test")
+        config.update(mutable.Map("prop1" -> "v1").asJavaDictionary)
+
+        val activator = new DominoActivator {
+          whenBundleActive {
+            val reg: ServiceRegistration[ManagedService] = whenConfigurationActive("domino.test") { conf: Map[String, Any] =>
+              log.log("config: " + conf.map(c => c._1 + "=" + c._2).toList.sorted)
+            }
+          }
+        }
+        activator.start(bundleContext)
+
+        // make sure no outstanding events exists
+        Thread.sleep(500)
+        
+        assert(log.log === List("config: List(prop1=v1, service.pid=domino.test)"))
+      }
+    }
+
     "work with normal configurations and metatypes" in {
       val log = new Log
       withPojoServiceRegistry { sr =>
