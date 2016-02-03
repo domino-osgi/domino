@@ -50,7 +50,7 @@ class ConfigurationWatcherCapsule(
   /**
    * Contains the previous configuration map. Used to determine whether the configuration has changed.
    */
-  protected var oldOptConf: Option[Dictionary[String, _]] = None
+  private[this] var oldOptConf: Option[Map[String, Any]] = None
 
   def start() {
     // Service properties
@@ -81,8 +81,8 @@ class ConfigurationWatcherCapsule(
   def updated(conf: Dictionary[String, _]) {
     // We query the config admin directly because the user can make sure then that the config value is already set.
     // See http://www.mail-archive.com/users@felix.apache.org/msg06764.html
-    val safeOptConf = Option(conf) orElse getConfigDirectly
-
+    val safeOptConf = Option(conf).map(d => DominoUtil.convertToMap(d)).orElse(getConfigDirectly)
+    
     // Execute handler only if configuration has changed
     executeBlockWithConfIfChanged(safeOptConf)
   }
@@ -90,25 +90,28 @@ class ConfigurationWatcherCapsule(
   /**
    * Executes the handler only if the configuration has changed compared to the one which was used last.
    */
-  protected def executeBlockWithConfIfChanged(optConf: Option[Dictionary[String, _]]) {
+  protected def executeBlockWithConfIfChanged(optConf: Option[Map[String, Any]]) {
     if (oldOptConf != optConf) {
       executeBlockWithConf(optConf)
     }
   }
-  
+
   /**
    * Executes the handler with the given configuration and saves it for future comparison.
    */
-  protected def executeBlockWithConf(optConf: Option[Dictionary[String, _]]) {
+  private[this] def executeBlockWithConf(optConf: Option[Map[String, Any]]) {
     // Stop capsules in previous scope
     newCapsuleScope foreach { _.stop() }
+
+    // Save old conf
+    oldOptConf = optConf
 
     // Start capsules in new scope
     newCapsuleScope = Some(capsuleContext.executeWithinNewCapsuleScope {
       optConf match {
         case Some(conf) =>
           // Execute handler
-          f(DominoUtil.convertToMap(conf))
+          f(conf)
 
         case None =>
           // No configuration there. We use an empty map.
@@ -116,14 +119,12 @@ class ConfigurationWatcherCapsule(
       }
     })
 
-    // Save old conf
-    oldOptConf = optConf
   }
 
   /**
    * Pulls the current configuration from the configuration admin.
    */
-  protected def getConfigDirectly: Option[Dictionary[String, _]] = {
+  private[this] def getConfigDirectly: Option[Map[String, Any]] = {
     serviceConsuming.withService[ConfigurationAdmin, Option[Dictionary[String, _]]] {
       case Some(confAdmin) =>
         Option(confAdmin.getConfiguration(servicePid)) match {
@@ -132,6 +133,6 @@ class ConfigurationWatcherCapsule(
         }
 
       case None => None
-    }
+    }.map(d => DominoUtil.convertToMap(d))
   }
 }

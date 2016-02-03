@@ -83,7 +83,7 @@ class ConfigurationWatchingSpec
         val ref = bundleContext.getServiceReference(classOf[ConfigurationAdmin])
         val ca: ConfigurationAdmin = bundleContext.getService(ref)
 
-        val config = ca.getConfiguration("domino.test")
+        val config = ca.getConfiguration("domino.test2")
         config.update(mutable.Map("prop1" -> "v1").asJavaDictionary)
 
         // make sure no outstanding events exists
@@ -91,14 +91,17 @@ class ConfigurationWatchingSpec
 
         val activator = new DominoActivator {
           whenBundleActive {
-            val reg: ServiceRegistration[ManagedService] = whenConfigurationActive("domino.test") { conf: Map[String, Any] =>
+            val reg: ServiceRegistration[ManagedService] = whenConfigurationActive("domino.test2") { conf: Map[String, Any] =>
               log.log("config: " + conf.map(c => c._1 + "=" + c._2).toList.sorted)
             }
           }
         }
         activator.start(bundleContext)
 
-        assert(log.log === List("config: List(prop1=v1, service.pid=domino.test)"))
+        // make sure no outstanding events exists
+        Thread.sleep(500)
+
+        assert(log.log === List("config: List(prop1=v1, service.pid=domino.test2)"))
       }
     }
 
