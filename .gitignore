@@ -6,6 +6,7 @@
 .scala_dependencies
 *.iml
 .idea
+bin/
 target/
 staging-settings.xml
 .polyglot.pom.scala
