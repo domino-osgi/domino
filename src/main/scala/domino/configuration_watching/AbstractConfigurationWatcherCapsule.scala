@@ -18,7 +18,7 @@ abstract class AbstractConfigurationWatcherCapsule(
   /**
    * Contains the adapter which translates the Scala OSGi metatype definition into a native OSGi metatype definition.
    */
-  protected lazy val metaTypeProviderAdapter = metaTypeProvider map { new MetaTypeProviderAdapter(_) }
+  private[this] lazy val metaTypeProviderAdapter = metaTypeProvider map { new MetaTypeProviderAdapter(_) }
 
   def getObjectClassDefinition(id: String, locale: String) = {
     metaTypeProviderAdapter map { _.getObjectClassDefinition(id, locale) } orNull

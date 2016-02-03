@@ -78,7 +78,7 @@ class ConfigurationWatcherCapsule(
     _reg = null
   }
 
-  def updated(conf: Dictionary[String, _]) {
+  override def updated(conf: Dictionary[String, _]) {
     // We query the config admin directly because the user can make sure then that the config value is already set.
     // See http://www.mail-archive.com/users@felix.apache.org/msg06764.html
     val safeOptConf = Option(conf).map(d => DominoUtil.convertToMap(d)).orElse(getConfigDirectly)
@@ -90,7 +90,7 @@ class ConfigurationWatcherCapsule(
   /**
    * Executes the handler only if the configuration has changed compared to the one which was used last.
    */
-  protected def executeBlockWithConfIfChanged(optConf: Option[Map[String, Any]]) {
+  private[this] def executeBlockWithConfIfChanged(optConf: Option[Map[String, Any]]) {
     if (oldOptConf != optConf) {
       executeBlockWithConf(optConf)
     }
