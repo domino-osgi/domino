@@ -1,10 +1,10 @@
 package domino.configuration_watching
 
-import org.osgi.service.cm.{ConfigurationAdmin, ManagedService}
-import domino.capsule.{CapsuleContext, CapsuleScope}
-import org.osgi.service.metatype.{MetaTypeProvider => JMetaTypeProvider}
+import org.osgi.service.cm.{ ConfigurationAdmin, ManagedService }
+import domino.capsule.{ CapsuleContext, CapsuleScope }
+import org.osgi.service.metatype.{ MetaTypeProvider => JMetaTypeProvider }
 import domino.scala_osgi_metatype.interfaces.MetaTypeProvider
-import org.osgi.framework.{BundleContext, Constants, ServiceRegistration}
+import org.osgi.framework.{ BundleContext, Constants, ServiceRegistration }
 import java.util.Dictionary
 import domino.DominoUtil
 import domino.service_consuming.ServiceConsuming
@@ -21,15 +21,15 @@ import domino.service_consuming.ServiceConsuming
  * @param capsuleContext Dependency
  */
 class ConfigurationWatcherCapsule(
-    servicePid: String,
-    f: Map[String, Any] => Unit,
-    metaTypeProvider: Option[MetaTypeProvider],
-    serviceConsuming: ServiceConsuming,
-    bundleContext: BundleContext,
-    capsuleContext: CapsuleContext
-  ) extends AbstractConfigurationWatcherCapsule(metaTypeProvider) with ManagedService {
+  servicePid: String,
+  f: Map[String, Any] => Unit,
+  metaTypeProvider: Option[MetaTypeProvider],
+  serviceConsuming: ServiceConsuming,
+  bundleContext: BundleContext,
+  capsuleContext: CapsuleContext)
+    extends AbstractConfigurationWatcherCapsule(metaTypeProvider) with ManagedService {
 
-  protected var _reg: ServiceRegistration[ManagedService] = _
+  private[this] var _reg: ServiceRegistration[ManagedService] = _
 
   /**
    * Returns the service registration of the configuration listener as long as the current scope is active.
@@ -39,13 +39,13 @@ class ConfigurationWatcherCapsule(
   /**
    * Contains the interfaces under which this object will be put in the service registry.
    */
-  protected lazy val interfacesArray: Array[String] = Array(classOf[ManagedService].getName) ++ (
+  private[this] lazy val interfacesArray: Array[String] = Array(classOf[ManagedService].getName) ++ (
     metaTypeProvider map { p => classOf[JMetaTypeProvider].getName })
 
   /**
    * Contains the new capsule scope.
    */
-  protected var newCapsuleScope: Option[CapsuleScope] = None
+  private[this] var newCapsuleScope: Option[CapsuleScope] = None
 
   /**
    * Contains the previous configuration map. Used to determine whether the configuration has changed.
