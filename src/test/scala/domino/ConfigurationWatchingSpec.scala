@@ -86,6 +86,9 @@ class ConfigurationWatchingSpec
         val config = ca.getConfiguration("domino.test")
         config.update(mutable.Map("prop1" -> "v1").asJavaDictionary)
 
+        // make sure no outstanding events exists
+        Thread.sleep(500)
+
         val activator = new DominoActivator {
           whenBundleActive {
             val reg: ServiceRegistration[ManagedService] = whenConfigurationActive("domino.test") { conf: Map[String, Any] =>
@@ -95,9 +98,6 @@ class ConfigurationWatchingSpec
         }
         activator.start(bundleContext)
 
-        // make sure no outstanding events exists
-        Thread.sleep(500)
-        
         assert(log.log === List("config: List(prop1=v1, service.pid=domino.test)"))
       }
     }
