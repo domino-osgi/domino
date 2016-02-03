@@ -1,7 +1,7 @@
 import org.sonatype.maven.polyglot.scala.model._
 import scala.collection.immutable._
 
-val dominoVersion = "1.1.1"
+val dominoVersion = "1.1.2-SNAPSHOT"
 
 implicit val scalaVersion = System.getenv("SCALA_VERSION") match {
   case null => ScalaVersion("2.11.7")
