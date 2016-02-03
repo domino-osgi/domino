@@ -59,6 +59,7 @@ ScalaModel(
     "org.osgi" % "org.osgi.compendium" % "4.3.0",
     // test dependencies
     "org.scalatest" %% "scalatest" % "2.2.0" % "test",
+    "org.apache.felix" % "org.apache.felix.configadmin" % "1.8.8" % "test",
     pojosr % "test"
   ),
   build = Build(
