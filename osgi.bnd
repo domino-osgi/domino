@@ -8,7 +8,7 @@ Export-Package: \
   ${bundle.namespace};version="2.0.0", \
   ${bundle.namespace}.bundle_watching;version="1.1.0", \
   ${bundle.namespace}.capsule;version="1.1.0", \
-  ${bundle.namespace}.configuration_watching;version="1.1.0", \
+  ${bundle.namespace}.configuration_watching;version="2.0.0", \
   ${bundle.namespace}.logging;version="1.1.0", \
   ${bundle.namespace}.scala_logging;version="1.1.0", \
   ${bundle.namespace}.scala_osgi_metatype;version="1.1.0", \
