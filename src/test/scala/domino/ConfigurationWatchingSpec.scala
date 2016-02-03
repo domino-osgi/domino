@@ -65,6 +65,9 @@ class ConfigurationWatchingSpec
         val config = ca.getConfiguration("domino.test")
         config.update(mutable.Map("prop1" -> "v1").asJavaDictionary)
 
+        // make sure no outstanding events exists
+        Thread.sleep(500)
+
         assert(log.log === List("config: List()", "config: List(prop1=v1, service.pid=domino.test)"))
       }
     }
