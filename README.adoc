@@ -1,7 +1,6 @@
 = Domino
 :toc: 
 :toc-placement: preamble
-// also adapt the version in xml blocks
 :stable-version: 1.1.0
 
 image:https://travis-ci.org/domino-osgi/domino.svg?branch=master["Travis CI Build Status", link="https://travis-ci.org/domino-osgi/domino"]
@@ -94,12 +93,12 @@ Read more in the complete link:UserGuide.adoc[Domino User Guide].
 The latest stable version is {stable-version} and can be downloaded from http://search.maven.org/#search|ga|1|g%3A%22com.github.domino-osgi%22[Maven Central].
 
 Maven::
-[source,xml]
+[source,xml,subs="attributes,verbatim"]
 ----
 <dependency>
   <groupId>com.github.domino-osgi</groupId>
   <artifactId>domino_${scala.version}</artifactId>
-  <version>1.1.0</version>
+  <version>{stable-version}</version>
 </dependency>
 ----
 
