@@ -1,30 +1,52 @@
 package domino
 
-import org.scalatest.WordSpecLike
-import org.scalatest.ShouldMatchers
 import org.osgi.framework.ServiceRegistration
+import org.osgi.service.cm.ManagedService
+import org.osgi.service.cm.ManagedServiceFactory
+import org.scalatest.Matchers
+import org.scalatest.WordSpecLike
+
 import domino.scala_osgi_metatype.builders.ObjectClass
-import org.osgi.service.cm.{ ManagedServiceFactory, ManagedService }
+import domino.test.PojoSrTestHelper
+
+object ConfigurationWatchingSpec {
+  class Log {
+    private[this] var journal = List[String]()
+    def log(msg: String): Unit = {
+      journal = msg :: journal
+    }
+    def log: List[String] = journal.reverse
+  }
+}
 
 /**
  * Currently tests only the DSL grammar and signatures but doesn't execute it.
  */
 class ConfigurationWatchingSpec
     extends WordSpecLike
-    with ShouldMatchers {
+    with Matchers
+    with PojoSrTestHelper {
+
+  import ConfigurationWatchingSpec._
 
   val objectClass = ObjectClass(id = "domino.test", name = "Test")
 
   "Configuration watching" should {
 
     "work with normal configurations" in {
-      new DominoActivator {
-        whenBundleActive {
-          val reg: ServiceRegistration[ManagedService] = whenConfigurationActive("domino.test") { conf: Map[String, Any] =>
+      val log = new Log
+      withPojoServiceRegistry { sr =>
+        val activator = new DominoActivator {
+          whenBundleActive {
+            val reg: ServiceRegistration[ManagedService] = whenConfigurationActive("domino.test") { conf: Map[String, Any] =>
+              log.log("config: " + conf)
+            }
           }
         }
+        activator.start(sr.getBundleContext)
+        // empty config, as we don't have a ConfigAdminService
+        assert(log.log === List("config: Map()"))
       }
-      pending
     }
 
     "work with normal configurations and metatypes" in {
