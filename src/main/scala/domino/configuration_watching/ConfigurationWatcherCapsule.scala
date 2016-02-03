@@ -34,7 +34,7 @@ class ConfigurationWatcherCapsule(
   /**
    * Returns the service registration of the configuration listener as long as the current scope is active.
    */
-  def reg = _reg
+  protected[configuration_watching] def reg = _reg
 
   /**
    * Contains the interfaces under which this object will be put in the service registry.
@@ -52,7 +52,7 @@ class ConfigurationWatcherCapsule(
    */
   private[this] var oldOptConf: Option[Map[String, Any]] = None
 
-  def start() {
+  override def start() {
     // Service properties
     val propertiesMap = Map(Constants.SERVICE_PID -> servicePid)
 
@@ -69,7 +69,7 @@ class ConfigurationWatcherCapsule(
     _reg = tmp.asInstanceOf[ServiceRegistration[ManagedService]]
   }
 
-  def stop() {
+  override def stop() {
     // Stop capsules in the newly created capsule scope
     newCapsuleScope foreach { _.stop() }
 

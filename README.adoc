@@ -197,6 +197,7 @@ Domino is licensed under the http://www.opensource.org/licenses/mit-license[MIT 
 * Improved test suite.
   Now we use PojoSR to test most OSGi dynamics without the need to run a separate container.
 * Fixed naming issues for service provisioning and comsumption.
+* Fixed unnecessary re-configuration issues with `whenConfigurationActive` and `whenFactoryConfigurationActive`.
 
 === Domino 1.1.0 - 2015-05-28
 

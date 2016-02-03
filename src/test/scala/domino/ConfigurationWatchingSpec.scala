@@ -49,6 +49,9 @@ class ConfigurationWatchingSpec
           whenBundleActive {
             val reg: ServiceRegistration[ManagedService] = whenConfigurationActive("domino.test") { conf: Map[String, Any] =>
               log.log("config: " + conf.map(c => c._1 + "=" + c._2).toList.sorted)
+              onStop {
+                log.log("stop config: " + conf.map(c => c._1 + "=" + c._2).toList.sorted)
+              }
             }
           }
         }
@@ -68,7 +71,10 @@ class ConfigurationWatchingSpec
         // make sure no outstanding events exists
         Thread.sleep(500)
 
-        assert(log.log === List("config: List()", "config: List(prop1=v1, service.pid=domino.test)"))
+        assert(log.log === List(
+          "config: List()",
+          "stop config: List()",
+          "config: List(prop1=v1, service.pid=domino.test)"))
       }
     }
 
@@ -93,6 +99,9 @@ class ConfigurationWatchingSpec
           whenBundleActive {
             val reg: ServiceRegistration[ManagedService] = whenConfigurationActive("domino.test2") { conf: Map[String, Any] =>
               log.log("config: " + conf.map(c => c._1 + "=" + c._2).toList.sorted)
+              onStop {
+                log.log("stop config: " + conf.map(c => c._1 + "=" + c._2).toList.sorted)
+              }
             }
           }
         }
@@ -106,8 +115,8 @@ class ConfigurationWatchingSpec
     }
 
     "work with normal configurations and metatypes" in {
-      val log = new Log
       withPojoServiceRegistry { sr =>
+        val log = new Log
         val activator = new DominoActivator {
           whenBundleActive {
             val reg: ServiceRegistration[ManagedService] = whenConfigurationActive(objectClass) { conf: Map[String, Any] =>
@@ -124,26 +133,85 @@ class ConfigurationWatchingSpec
     }
 
     "work with factory configurations" in {
-      val log = new Log
       withPojoServiceRegistry { sr =>
+        def bundleContext = sr.getBundleContext()
+        val log = new Log
+
+        val cm = new ConfigurationManager()
+        cm.start(bundleContext)
+
+        val ref = bundleContext.getServiceReference(classOf[ConfigurationAdmin])
+        val ca: ConfigurationAdmin = bundleContext.getService(ref)
+
         val activator = new DominoActivator {
           whenBundleActive {
             val reg: ServiceRegistration[ManagedServiceFactory] = whenFactoryConfigurationActive("domino.test", "Test") {
               (conf: Map[String, Any], pid: String) =>
-                log.log("pid: " + pid + " config: " + conf)
+                log.log("config: " + conf.map(c => c._1 + "=" + c._2).toList.sorted)
+                onStop {
+                  log.log("stop config: " + conf.map(c => c._1 + "=" + c._2).toList.sorted)
+                }
             }
           }
         }
-        activator.start(sr.getBundleContext)
+        activator.start(bundleContext)
         assert(log.log === List())
-        // TODO: check with ConfigAdmin
-        pending
+
+        val config1 = ca.createFactoryConfiguration("domino.test")
+        config1.update(mutable.Map("prop1" -> "1").asJavaDictionary)
+        Thread.sleep(500)
+        assert(log.log.size === 1, "- Log has wrong size: " + log.log)
+        log.log.zip(List(
+          "config: List(prop1=1, service.factoryPid=domino.test, service.pid=domino.test."
+        )).foreach {
+          case (msg, expected) =>
+            msg should startWith(expected)
+        }
+
+        val config2 = ca.createFactoryConfiguration("domino.test")
+        config2.update(mutable.Map("prop2" -> "2").asJavaDictionary)
+        Thread.sleep(500)
+        assert(log.log.size === 2, "- Log has wrong size: " + log.log)
+        log.log.zip(List(
+          "config: List(prop1=1, service.factoryPid=domino.test, service.pid=domino.test.",
+          "config: List(prop2=2, service.factoryPid=domino.test, service.pid=domino.test."
+        )).foreach {
+          case (msg, expected) =>
+            msg should startWith(expected)
+        }
+
+        // resend config to test double-updates
+        config2.update(mutable.Map("prop2" -> "2").asJavaDictionary)
+        // expect no new config update
+        Thread.sleep(500)
+        assert(log.log.size === 2, "- Log has wrong size: " + log.log)
+        log.log.zip(List(
+          "config: List(prop1=1, service.factoryPid=domino.test, service.pid=domino.test.",
+          "config: List(prop2=2, service.factoryPid=domino.test, service.pid=domino.test."
+        )).foreach {
+          case (msg, expected) =>
+            msg should startWith(expected)
+        }
+        
+        // delete on config
+        config1.delete()
+        // expect no new config update
+        Thread.sleep(500)
+        assert(log.log.size === 3, "- Log has wrong size: " + log.log)
+        log.log.zip(List(
+          "config: List(prop1=1, service.factoryPid=domino.test, service.pid=domino.test.",
+          "config: List(prop2=2, service.factoryPid=domino.test, service.pid=domino.test.",
+          "stop config: List(prop1=1, service.factoryPid=domino.test, service.pid=domino.test."
+        )).foreach {
+          case (msg, expected) =>
+            msg should startWith(expected)
+        }
       }
     }
 
     "work with factory configurations and metatypes" in {
-      val log = new Log
       withPojoServiceRegistry { sr =>
+        val log = new Log
         val activator = new DominoActivator {
           whenBundleActive {
             val reg: ServiceRegistration[ManagedServiceFactory] = whenFactoryConfigurationActive(objectClass) {
@@ -157,10 +225,6 @@ class ConfigurationWatchingSpec
         // TODO: check with ConfigAdmin
         pending
       }
-    }
-
-    "ignore config updates without change in configuration" in {
-      pending
     }
 
   }
