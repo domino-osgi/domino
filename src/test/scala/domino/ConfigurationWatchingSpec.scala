@@ -38,21 +38,12 @@ class ConfigurationWatchingSpec
 
   "Configuration watching" should {
 
-    "work with normal configurations" in {
+    def testConfigurations(f: Log => BundleActivator): Unit = {
       withPojoServiceRegistry { sr =>
         val log = new Log
         def bundleContext: BundleContext = sr.getBundleContext
 
-        val activator = new DominoActivator {
-          whenBundleActive {
-            val reg: ServiceRegistration[ManagedService] = whenConfigurationActive("domino.test") { conf: Map[String, Any] =>
-              log.log("config: " + conf.map(c => c._1 + "=" + c._2).toList.sorted)
-              onStop {
-                log.log("stop config: " + conf.map(c => c._1 + "=" + c._2).toList.sorted)
-              }
-            }
-          }
-        }
+        val activator = f(log)
         activator.start(bundleContext)
         // empty config, as we don't have a ConfigAdminService
         assert(log.log === List("config: List()"))
@@ -74,6 +65,19 @@ class ConfigurationWatchingSpec
           "stop config: List()",
           "config: List(prop1=v1, service.pid=domino.test)"))
       }
+    }
+
+    "work with normal configurations" in {
+      testConfigurations(log => new DominoActivator {
+        whenBundleActive {
+          val reg: ServiceRegistration[ManagedService] = whenConfigurationActive("domino.test") { conf: Map[String, Any] =>
+            log.log("config: " + conf.map(c => c._1 + "=" + c._2).toList.sorted)
+            onStop {
+              log.log("stop config: " + conf.map(c => c._1 + "=" + c._2).toList.sorted)
+            }
+          }
+        }
+      })
     }
 
     "work with normal configurations when CM is already running" in {
@@ -113,21 +117,16 @@ class ConfigurationWatchingSpec
     }
 
     "work with normal configurations and metatypes" in {
-      withPojoServiceRegistry { sr =>
-        val log = new Log
-        val activator = new DominoActivator {
-          whenBundleActive {
-            val reg: ServiceRegistration[ManagedService] = whenConfigurationActive(objectClass) { conf: Map[String, Any] =>
-              log.log("config: " + conf)
+      testConfigurations(log => new DominoActivator {
+        whenBundleActive {
+          val reg: ServiceRegistration[ManagedService] = whenConfigurationActive(objectClass) { conf: Map[String, Any] =>
+            log.log("config: " + conf.map(c => c._1 + "=" + c._2).toList.sorted)
+            onStop {
+              log.log("stop config: " + conf.map(c => c._1 + "=" + c._2).toList.sorted)
             }
           }
         }
-        activator.start(sr.getBundleContext)
-        // empty config, as we don't have a ConfigAdminService
-        assert(log.log === List("config: Map()"))
-        // TODO: check with ConfigAdmin
-        pending
-      }
+      })
     }
 
     def testFactoryConfigurations(f: Log => BundleActivator): Unit = {
