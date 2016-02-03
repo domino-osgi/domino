@@ -1,7 +1,7 @@
 = Domino
 :toc: 
 :toc-placement: preamble
-:stable-version: 1.1.0
+:stable-version: 1.1.1
 
 image:https://travis-ci.org/domino-osgi/domino.svg?branch=master["Travis CI Build Status", link="https://travis-ci.org/domino-osgi/domino"]
 image:https://www.codacy.com/project/badge/afcdfefe80494be4bf729437dc3e2a9b["Codacy code quality", link="https://www.codacy.com/app/lefou/domino"]
@@ -191,11 +191,11 @@ Domino is licensed under the http://www.opensource.org/licenses/mit-license[MIT 
 
 == Changelog
 
-=== Domino {master}
+=== Domino 1.1.1 - 2016-02-03
 
 * Removed `Logging` trait from `DominoActivator`. You can restore the old behavior be mixing in the trait into your activator class.
-* Improved test suite.
-  Now we use PojoSR to test most OSGi dynamics without the need to run a separate container.
+* Improved test suite and implemented more tests.
+  Now we use PojoSR to test OSGi dynamics without the need to run a separate container.
 * Fixed naming issues for service provisioning and comsumption.
 * Fixed unnecessary re-configuration issues with `whenConfigurationActive` and `whenFactoryConfigurationActive`.
 
