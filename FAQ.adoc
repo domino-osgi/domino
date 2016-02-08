@@ -75,3 +75,6 @@ A quick workaround would be to add the `DynamicImport-Package: *` directive to b
 In future, Scala reflection hopefully doesn't reevaluate the type information for `S` but uses the one which is implicitly given.
 Then it wouldn't be necessary anymore to access the actual class substituted for `S`.
       
+== I'm seeing this eror message: The Bundle Activator does not implement BundleActivator.
+
+This might be related to some issue in the bnd tool (https://github.com/bndtools/bnd/issues/1005). Using a newer version (>= 3.2) should fix it.
