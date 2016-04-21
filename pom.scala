@@ -9,7 +9,7 @@ implicit val scalaVersion = System.getenv("SCALA_VERSION") match {
 }
 println("Using Scala version: " + scalaVersion.version)
 
-val url = "https:/github.com/domino-osgi/domino"
+val url = "https://github.com/domino-osgi/domino"
 val pojosr = "com.googlecode.pojosr" % "de.kalpatec.pojosr.framework.bare" % "0.2.1"
 // val pojosr = "com.googlecode.pojosr" % "de.kalpatec.pojosr.framework.bare" % "0.3.0-SNAPSHOT"
 
