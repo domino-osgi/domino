@@ -1,12 +1,14 @@
 = Domino
-:toc: 
+:toc:
 :toc-placement: preamble
 :stable-version: 1.1.1
 
+ifdef::env-github[]
 image:https://travis-ci.org/domino-osgi/domino.svg?branch=master["Travis CI Build Status", link="https://travis-ci.org/domino-osgi/domino"]
 image:https://www.codacy.com/project/badge/afcdfefe80494be4bf729437dc3e2a9b["Codacy code quality", link="https://www.codacy.com/app/lefou/domino"]
 image:https://badge.waffle.io/domino-osgi/domino.svg?label=ready&title=Ready["Ready Stories", link="https://waffle.io/domino-osgi/domino"]
 image:https://badges.gitter.im/Join%20Chat.svg["Gitter chat", link="https://gitter.im/domino-osgi/domino?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge"]
+endif::[]
 
 
 Domino is a small library for the programming language http://www.scala-lang.org[Scala] designed to support developers in writing http://www.osgi.org/javadoc/r4v43/core/org/osgi/framework/BundleActivator.html[bundle activators] for the Java module system http://www.osgi.org/Technology/WhyOSGi[OSGi]. It strives to make writing complex and highly-dynamic bundle activators as easy as possible without sacrificing the power of the OSGi API.
@@ -46,7 +48,7 @@ Many of OSGi's core features are natively supported by the DSL (services, config
 
 Some lines of code often say more than 1000 words.
 
-=== Wait for service and register service 
+=== Wait for service and register service
 
 [source,scala]
 ----
@@ -57,7 +59,7 @@ class MyService(httpService: HttpService)
 
 class Activator extends DominoActivator {
   whenBundleActive {
-    // Make service available as long as another 
+    // Make service available as long as another
     // service is present
     whenServicePresent[HttpService] { httpService =>
       val myService = new MyService(httpService)
@@ -113,13 +115,13 @@ compile 'com.github.domino-osgi:domino_${scala.version}:{stable-version}'
 Manual::
 [horizontal]
 Scala 2.10:::
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/1.1.0/domino_2.10-{stable-version}.jar[domino-{stable-version}.jar],
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/1.1.0/domino_2.10-{stable-version}-sources.jar[domino-{stable-version}-sources.jar],
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/1.1.0/domino_2.10-{stable-version}-javadoc.jar[domino-{stable-version}-scaladoc.jar]
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/{stable-version}/domino_2.10-{stable-version}.jar[domino_2.10-{stable-version}.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/{stable-version}/domino_2.10-{stable-version}-sources.jar[domino_2.10-{stable-version}-sources.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/{stable-version}/domino_2.10-{stable-version}-javadoc.jar[domino_2.10-{stable-version}-scaladoc.jar]
 Scala 2.11:::
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/1.1.0/domino_2.11-{stable-version}.jar[domino-{stable-version}.jar],
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/1.1.0/domino_2.11-{stable-version}-sources.jar[domino-{stable-version}-sources.jar],
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/1.1.0/domino_2.11-{stable-version}-javadoc.jar[domino-{stable-version}-scaladoc.jar]
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/{stable-version}/domino_2.11-{stable-version}.jar[domino_2.11-{stable-version}.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/{stable-version}/domino_2.11-{stable-version}-sources.jar[domino_2.11-{stable-version}-sources.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/{stable-version}/domino_2.11-{stable-version}-javadoc.jar[domino_2.11-{stable-version}-scaladoc.jar]
 
 
 == Documentation
