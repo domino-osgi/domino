@@ -3,6 +3,7 @@ package domino
 import java.util.{Vector, Hashtable, Dictionary}
 import org.osgi.framework.Constants
 import scala.reflect.runtime.universe._
+import scala.collection.JavaConverters._
 
 /**
  * Contains utility methods used throughout Domino.
@@ -34,7 +35,7 @@ object DominoUtil {
     dictionary.keys.asScala.foreach { key =>
       val jValue = dictionary.get(key)
       val value = jValue match {
-        case v: Vector[_] => v.toList
+        case v: Vector[_] => v.asScala.toList
         case a: Array[_] => a.toList
         case _ => jValue
       }
