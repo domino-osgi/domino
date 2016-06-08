@@ -30,8 +30,8 @@ object DominoUtil {
    */
   def convertToMap(dictionary: Dictionary[_, _]): Map[String, Any] = {
     val map = new collection.mutable.HashMap[String, Any]
-    import collection.JavaConversions._
-    dictionary.keys.foreach { key =>
+    import collection.JavaConverters._
+    dictionary.keys.asScala.foreach { key =>
       val jValue = dictionary.get(key)
       val value = jValue match {
         case v: Vector[_] => v.toList

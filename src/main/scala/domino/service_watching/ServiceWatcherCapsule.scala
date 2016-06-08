@@ -43,7 +43,7 @@ class ServiceWatcherCapsule[S <: AnyRef](
 
       override def removedService(ref: ServiceReference[S], service: S) {
         val watcherEvent = ServiceWatcherEvent.RemovedService(service, ServiceWatcherContext(_tracker, ref))
-        try f(watcherEvent) finally context ungetService ref
+        try f(watcherEvent) finally context.ungetService(ref)
       }
     }
 
