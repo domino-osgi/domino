@@ -31,13 +31,19 @@ for scalaVersion in $SCALA_VERSIONS; do
   echo "Building for Scala ${scalaVersion}"
   SCALA_VERSION=${scalaVersion} mvn clean source:jar scala:doc-jar install
 
-  echo "Uploading jar"
-  SCALA_VERSION=${scalaVersion} mvn -s ./staging-settings.xml -P deploy gpg:sign-and-deploy-file -DpomFile=.polyglot.pom.scala -Dfile="target/domino_${SCALA_BIN_VERSION}-${DOMINO_VERSION}.jar"
+  if [ -n "$SKIP_UPLOAD" ] ; then
+    echo "Skipping Upload"
+  else
 
-  echo "Uploading sources"
-  SCALA_VERSION=${scalaVersion} mvn -s ./staging-settings.xml -P deploy gpg:sign-and-deploy-file -DpomFile=.polyglot.pom.scala -Dfile="target/domino_${SCALA_BIN_VERSION}-${DOMINO_VERSION}-sources.jar" -Dclassifier=sources
+    echo "Uploading jar"
+    SCALA_VERSION=${scalaVersion} mvn -s ./staging-settings.xml -P deploy gpg:sign-and-deploy-file -DpomFile=.polyglot.pom.scala -Dfile="target/domino_${SCALA_BIN_VERSION}-${DOMINO_VERSION}.jar"
 
-  echo "Uploading javadoc"
-  SCALA_VERSION=${scalaVersion} mvn -s ./staging-settings.xml -P deploy gpg:sign-and-deploy-file -DpomFile=.polyglot.pom.scala -Dfile="target/domino_${SCALA_BIN_VERSION}-${DOMINO_VERSION}-javadoc.jar" -Dclassifier=javadoc
+    echo "Uploading sources"
+    SCALA_VERSION=${scalaVersion} mvn -s ./staging-settings.xml -P deploy gpg:sign-and-deploy-file -DpomFile=.polyglot.pom.scala -Dfile="target/domino_${SCALA_BIN_VERSION}-${DOMINO_VERSION}-sources.jar" -Dclassifier=sources
+
+    echo "Uploading javadoc"
+    SCALA_VERSION=${scalaVersion} mvn -s ./staging-settings.xml -P deploy gpg:sign-and-deploy-file -DpomFile=.polyglot.pom.scala -Dfile="target/domino_${SCALA_BIN_VERSION}-${DOMINO_VERSION}-javadoc.jar" -Dclassifier=javadoc
+
+  fi
 
 done
