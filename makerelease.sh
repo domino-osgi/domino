@@ -21,8 +21,8 @@ fi
 echo "Please edit staging-settings.xml with propper connection details."
 read
 
-DOMINO_VERSION="1.1.1"
-SCALA_VERSIONS="2.10.6 2.11.7"
+DOMINO_VERSION="1.1.2"
+SCALA_VERSIONS="2.10.6 2.11.11 2.12.2"
 
 for scalaVersion in $SCALA_VERSIONS; do
 

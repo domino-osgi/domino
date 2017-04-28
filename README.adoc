@@ -193,6 +193,11 @@ Domino is licensed under the http://www.opensource.org/licenses/mit-license[MIT 
 
 == Changelog
 
+=== Domino 1.1.2 - 2017-04-28
+
+* Support for Scala 2.12
+* More test cases
+
 === Domino 1.1.1 - 2016-02-03
 
 * Removed `Logging` trait from `DominoActivator`. You can restore the old behavior be mixing in the trait into your activator class.
