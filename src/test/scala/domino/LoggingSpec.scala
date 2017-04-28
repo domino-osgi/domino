@@ -1,7 +1,7 @@
 package domino
 
 import org.scalatest.WordSpecLike
-import org.scalatest.ShouldMatchers
+import org.scalatest.Matchers
 import domino.logging.Logging
 import domino.test.PojoSrTestHelper
 import org.osgi.service.log.LogService
@@ -13,7 +13,7 @@ import scala.collection.JavaConverters._
  */
 class LoggingSpec
     extends WordSpecLike
-    with ShouldMatchers
+    with Matchers
     with PojoSrTestHelper {
 
   "Logging" should {

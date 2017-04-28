@@ -3,13 +3,13 @@ package domino.scala_osgi_metatype
 import adapters.MetaTypeProviderAdapter
 import interfaces._
 import org.scalatest.WordSpecLike
-import org.scalatest.ShouldMatchers
+import org.scalatest.Matchers
 import scala.Some
 
 /**
  * Tests the adapters.
  */
-class AdapterSpec extends WordSpecLike with ShouldMatchers {
+class AdapterSpec extends WordSpecLike with Matchers {
 
   "Scala MetaTypeProvider" should {
     "be adaptable to an OSGi-compliant MetaTypeProvider" in {

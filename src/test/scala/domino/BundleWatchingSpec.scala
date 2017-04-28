@@ -5,7 +5,7 @@ import bundle_watching.BundleWatcherEvent.AddingBundle
 import bundle_watching.BundleWatcherEvent.RemovedBundle
 import bundle_watching.BundleWatcherEvent.ModifiedBundle
 import org.scalatest.WordSpecLike
-import org.scalatest.ShouldMatchers
+import org.scalatest.Matchers
 import org.osgi.util.tracker.BundleTracker
 import org.osgi.framework.Bundle
 
@@ -14,7 +14,7 @@ import org.osgi.framework.Bundle
  */
 class BundleWatchingSpec
     extends WordSpecLike
-    with ShouldMatchers {
+    with Matchers {
 
   "Bundle watching" should {
 

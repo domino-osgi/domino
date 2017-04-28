@@ -1,14 +1,14 @@
 package domino
 
 import org.scalatest.WordSpecLike
-import org.scalatest.ShouldMatchers
+import org.scalatest.Matchers
 
 /**
  * Currently tests only the DSL grammar and signatures but doesn't execute it.
  */
 class OsgiContextSpec
     extends WordSpecLike
-    with ShouldMatchers {
+    with Matchers {
 
   trait Service1
 

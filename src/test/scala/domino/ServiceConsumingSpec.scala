@@ -1,7 +1,7 @@
 package domino
 
 import org.scalatest.WordSpecLike
-import org.scalatest.ShouldMatchers
+import org.scalatest.Matchers
 import org.osgi.framework.ServiceReference
 import de.kalpatec.pojosr.framework.launch.PojoServiceRegistry
 import domino.test.PojoSrTestHelper
@@ -21,7 +21,7 @@ object ServiceConsumingSpec {
  */
 class ServiceConsumingSpec
     extends WordSpecLike
-    with ShouldMatchers
+    with Matchers
     with PojoSrTestHelper {
   
   import ServiceConsumingSpec._

@@ -3,13 +3,13 @@ package domino.scala_osgi_metatype
 import builders.{ObjectClass, ListAttribute, ElementaryAttribute}
 import interfaces._
 import org.scalatest.WordSpecLike
-import org.scalatest.ShouldMatchers
+import org.scalatest.Matchers
 import scala.Some
 
 /**
  * Tests the builders.
  */
-class BuilderSpec extends WordSpecLike with ShouldMatchers {
+class BuilderSpec extends WordSpecLike with Matchers {
 
   "ObjectClass builder" should {
     "construct a corresponding ObjectClassDefinition" in {
