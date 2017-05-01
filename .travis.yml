@@ -1,19 +1,22 @@
 language: java
 
 env:
- - SCALA_VERSION=2.10.6
- - SCALA_VERSION=2.11.11
- - SCALA_VERSION=2.12.2
-
-jdk:
- - oraclejdk8
- - oraclejdk7
- - openjdk7
+ - SCALA_VERSION=2.10.6 JDK=oraclejdk8
+ - SCALA_VERSION=2.10.6 JDK=oraclejdk7
+ - SCALA_VERSION=2.10.6 JDK=openjdk7
+ - SCALA_VERSION=2.10.6 JDK=openjdk6
+ - SCALA_VERSION=2.11.11 JDK=oraclejdk8
+ - SCALA_VERSION=2.11.11 JDK=oraclejdk7
+ - SCALA_VERSION=2.11.11 JDK=openjdk7
+ - SCALA_VERSION=2.11.11 JDK=openjdk6
+ - SCALA_VERSION=2.12.2 JDK=oraclejdk8
 
 before_script:
+ - jdk_switcher use ${JDK} 
  - ./mvnw -version
 
-script: ./mvnw source:jar scala:doc-jar install
+script:
+ - ./mvnw source:jar scala:doc-jar install
 
 notifications:
   webhooks:
