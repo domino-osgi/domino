@@ -1,14 +1,14 @@
 language: java
 
-env: 
-  - SCALA_VERSION=2.10.6
-  - SCALA_VERSION=2.11.11
-  - SCALA_VERSION=2.12.2
-
 jdk:
   - oraclejdk8
   - oraclejdk7
   - openjdk7
+
+env: 
+  - SCALA_VERSION=2.10.6
+  - SCALA_VERSION=2.11.11
+  - SCALA_VERSION=2.12.2
 
 matix:
   exclude:
