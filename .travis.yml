@@ -10,7 +10,7 @@ env:
   - SCALA_VERSION=2.11.11
   - SCALA_VERSION=2.12.2
 
-matix:
+matrix:
   exclude:
     - jdk: oraclejdk7
       env: SCALA_VERSION=2.12.2
