@@ -4,18 +4,14 @@ env:
  - SCALA_VERSION=2.10.6 JDK=oraclejdk8
  - SCALA_VERSION=2.10.6 JDK=oraclejdk7
  - SCALA_VERSION=2.10.6 JDK=openjdk7
- - SCALA_VERSION=2.10.6 JDK=openjdk6
  - SCALA_VERSION=2.11.11 JDK=oraclejdk8
  - SCALA_VERSION=2.11.11 JDK=oraclejdk7
  - SCALA_VERSION=2.11.11 JDK=openjdk7
- - SCALA_VERSION=2.11.11 JDK=openjdk6
  - SCALA_VERSION=2.12.2 JDK=oraclejdk8
 
-before_script:
+script:
  - jdk_switcher use ${JDK} 
  - ./mvnw -version
-
-script:
  - ./mvnw source:jar scala:doc-jar install
 
 notifications:
