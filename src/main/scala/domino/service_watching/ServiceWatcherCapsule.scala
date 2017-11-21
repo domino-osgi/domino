@@ -3,9 +3,6 @@ package domino.service_watching
 import domino.capsule.Capsule
 import org.osgi.framework.{BundleContext, Filter, ServiceReference}
 import org.osgi.util.tracker.ServiceTracker
-import java.util.logging.{Logger => JLogger}
-
-import domino.scala_logging.JavaUtilLoggingLogger
 import org.slf4j.LoggerFactory
 
 import scala.reflect.ClassTag
