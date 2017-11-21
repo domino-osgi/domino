@@ -1,9 +1,11 @@
 package domino.service_watching
 
-import domino.capsule.{CapsuleScope, CapsuleContext}
+import com.sun.javafx.util.Logging
+import domino.capsule.{CapsuleContext, CapsuleScope}
 import org.osgi.framework.BundleContext
 import org.osgi.util.tracker.ServiceTracker
 import domino.{DominoImplicits, DominoUtil}
+
 import scala.reflect.runtime.universe._
 import reflect.ClassTag
 
