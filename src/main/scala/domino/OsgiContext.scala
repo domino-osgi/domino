@@ -1,7 +1,12 @@
 package domino
 
+import java.io.{PrintWriter, StringWriter}
+
 import org.osgi.framework.BundleContext
 import domino.capsule._
+import org.slf4j.LoggerFactory
+
+import scala.util.control.NonFatal
 
 /**
  * Provides the basis for the Domino DSL by binding the bundle lifecycle to a capsule scope.
@@ -11,6 +16,8 @@ import domino.capsule._
  * @see [[domino.capsule]]
  */
 trait OsgiContext extends DynamicCapsuleContext with EmptyBundleActivator {
+
+  private[this] val log = LoggerFactory.getLogger(classOf[OsgiContext])
   /**
    * Contains the bundle context as long as the bundle is active.
    */
@@ -44,7 +51,18 @@ trait OsgiContext extends DynamicCapsuleContext with EmptyBundleActivator {
    * @param f Handler
    */
   def whenBundleActive(f: => Unit) {
-    bundleActiveHandler = Some(f _)
+    try {
+      bundleActiveHandler = Some(f _)
+    } catch {
+      case NonFatal(t) =>
+        log.error(s"Error starting bundle: [${_bundleContext.getBundle.getSymbolicName}] : ${t.getMessage}")
+        if (log.isDebugEnabled) {
+          val sw = new StringWriter()
+          t.printStackTrace(new PrintWriter(sw))
+          log.debug(sw.toString)
+        }
+        throw t
+     }
   }
 
   abstract override def start(context: BundleContext) {
@@ -53,6 +71,8 @@ trait OsgiContext extends DynamicCapsuleContext with EmptyBundleActivator {
 
     // Make bundle context available in this class
     _bundleContext = context
+
+    log.debug(s"Executing BundleActivator [${context.getBundle().getSymbolicName}]")
 
     // Execute the handler if one was defined
     bundleActiveHandler foreach { f =>
@@ -63,6 +83,8 @@ trait OsgiContext extends DynamicCapsuleContext with EmptyBundleActivator {
 
   abstract override def stop(context: BundleContext) {
     // Stop and release all the capsules in the scope
+    log.debug(s"Stopping Bundle [${context.getBundle().getSymbolicName}]")
+
     bundleActiveCapsuleScope foreach { mc =>
       mc.stop()
       bundleActiveCapsuleScope = None
