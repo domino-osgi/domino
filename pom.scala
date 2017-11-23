@@ -17,9 +17,6 @@ ScalaModel(
   gav = "com.github.domino-osgi" %% "domino" % dominoVersion,
   modelVersion = "4.0.0",
   packaging = "bundle",
-  prerequisites = Prerequisites(
-    maven = "3.3.1"
-  ),
   properties = Map(
     "maven.compiler.source" -> "1.6",
     "maven.compiler.target" -> "1.6",
