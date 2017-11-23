@@ -4,7 +4,7 @@ import scala.collection.immutable._
 val dominoVersion = "1.1.3-SNAPSHOT"
 
 implicit val scalaVersion = System.getenv("SCALA_VERSION") match {
-  case null => ScalaVersion("2.12.4")
+  case null => ScalaVersion("2.12.3")
   case v => ScalaVersion(v)
 }
 println("Using Scala version: " + scalaVersion.version)
@@ -71,6 +71,20 @@ Model(
   ),
   build = Build(
     outputDirectory = "${project.build.directory}/classes_" + scalaVersion.binaryVersion,
+    resources = Seq(
+      Resource(
+        directory = "src/main/resources"
+      ),
+      Resource(
+        directory = ".",
+        includes = Seq(
+          "README.adoc",
+          "FAQ.adoc",
+          "UserGuide.adoc",
+          "LICENSE"
+        )
+      )
+    ),
     plugins = Seq(
       Plugin(
         Plugins.bundle,
@@ -81,14 +95,6 @@ Model(
           )
         ),
         executions = Seq(Execution(phase = "verify", goals = Seq("baseline")))
-      ),
-      Plugin(
-        Plugins.jar,
-        configuration = Config(
-          archive = Config(
-            addMavenDescriptor = false
-          )
-        )
       ),
       Plugin(
         Plugins.surefire,
