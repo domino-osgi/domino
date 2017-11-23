@@ -4,7 +4,7 @@ import scala.collection.immutable._
 val dominoVersion = "1.1.3-SNAPSHOT"
 
 implicit val scalaVersion = System.getenv("SCALA_VERSION") match {
-  case null => ScalaVersion("2.12.2")
+  case null => ScalaVersion("2.12.4")
   case v => ScalaVersion(v)
 }
 println("Using Scala version: " + scalaVersion.version)
