@@ -10,8 +10,19 @@ implicit val scalaVersion = System.getenv("SCALA_VERSION") match {
 println("Using Scala version: " + scalaVersion.version)
 
 val url = "https://github.com/domino-osgi/domino"
-val pojosr = "com.googlecode.pojosr" % "de.kalpatec.pojosr.framework.bare" % "0.2.1"
-// val pojosr = "com.googlecode.pojosr" % "de.kalpatec.pojosr.framework.bare" % "0.3.0-SNAPSHOT"
+
+object Deps {
+  // compile dependencies
+  val scalaLibrary = "org.scala-lang" % "scala-library" % scalaVersion.version
+  val scalaReflect = "org.scala-lang" % "scala-reflect" % scalaVersion.version
+  val osgiCore = "org.osgi" % "org.osgi.core" % "4.3.0"
+  val osgiCompendium = "org.osgi" % "org.osgi.compendium" % "4.3.0"
+  val scalaTest = "org.scalatest" %% "scalatest" % "3.0.1"
+  val felixConfigAdmin = "org.apache.felix" % "org.apache.felix.configadmin" % "1.8.8"
+  val pojosr = "com.googlecode.pojosr" % "de.kalpatec.pojosr.framework.bare" % "0.2.1"
+  // val pojosr = "com.googlecode.pojosr" % "de.kalpatec.pojosr.framework.bare" % "0.3.0-SNAPSHOT"
+  val bndlib = "biz.aQute.bnd" % "biz.aQute.bndlib" % "3.5.0"
+}
 
 object Plugins {
   val bnd = "biz.aQute.bnd" % "bnd-maven-plugin" % "3.5.0"
@@ -60,14 +71,14 @@ Model(
   ),
   dependencies = Seq(
     // compile dependencies
-    "org.scala-lang" % "scala-library" % scalaVersion.version,
-    "org.scala-lang" % "scala-reflect" % scalaVersion.version,
-    "org.osgi" % "org.osgi.core" % "4.3.0",
-    "org.osgi" % "org.osgi.compendium" % "4.3.0",
+    Deps.scalaLibrary,
+    Deps.scalaReflect,
+    Deps.osgiCore,
+    Deps.osgiCompendium,
     // test dependencies
-    "org.scalatest" %% "scalatest" % "3.0.1" % "test",
-    "org.apache.felix" % "org.apache.felix.configadmin" % "1.8.8" % "test",
-    pojosr % "test"
+    Deps.scalaTest % "test",
+    Deps.felixConfigAdmin % "test",
+    Deps.pojosr % "test"
   ),
   build = Build(
     outputDirectory = "${project.build.directory}/classes_" + scalaVersion.binaryVersion,
@@ -88,6 +99,9 @@ Model(
     plugins = Seq(
       Plugin(
         Plugins.bundle,
+        dependencies = Seq(
+          Deps.bndlib
+        ),
         extensions = true,
         configuration = Config(
           instructions = Config(
