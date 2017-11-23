@@ -21,4 +21,6 @@ Export-Package: \
 
 Include-Resource: \
   LICENSE, \
-  README.adoc
+  README.adoc, \
+  FAQ.adoc, \
+  UserGuide.adoc

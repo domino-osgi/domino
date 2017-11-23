@@ -13,7 +13,17 @@ val url = "https://github.com/domino-osgi/domino"
 val pojosr = "com.googlecode.pojosr" % "de.kalpatec.pojosr.framework.bare" % "0.2.1"
 // val pojosr = "com.googlecode.pojosr" % "de.kalpatec.pojosr.framework.bare" % "0.3.0-SNAPSHOT"
 
-ScalaModel(
+object Plugins {
+  val bnd = "biz.aQute.bnd" % "bnd-maven-plugin" % "3.5.0"
+  val bundle = "org.apache.felix" % "maven-bundle-plugin" % "3.3.0"
+  val jar = "org.apache.maven.plugins" % "maven-jar-plugin" % "2.5"
+  val surefire = "org.apache.maven.plugins" % "maven-surefire-plugin" % "2.17"
+  val scalatest = "org.scalatest" % "scalatest-maven-plugin" % "1.0"
+  val scala = "net.alchim31.maven" % "scala-maven-plugin" % "3.3.1"
+  val gpg = "org.apache.maven.plugins" % "maven-gpg-plugin" % "1.6"
+}
+
+Model(
   gav = "com.github.domino-osgi" %% "domino" % dominoVersion,
   modelVersion = "4.0.0",
   packaging = "bundle",
@@ -63,7 +73,7 @@ ScalaModel(
     outputDirectory = "${project.build.directory}/classes_" + scalaVersion.binaryVersion,
     plugins = Seq(
       Plugin(
-        "org.apache.felix" % "maven-bundle-plugin" % "2.5.4",
+        Plugins.bundle,
         extensions = true,
         configuration = Config(
           instructions = Config(
@@ -73,7 +83,7 @@ ScalaModel(
         executions = Seq(Execution(phase = "verify", goals = Seq("baseline")))
       ),
       Plugin(
-        "org.apache.maven.plugins" % "maven-jar-plugin" % "2.5",
+        Plugins.jar,
         configuration = Config(
           archive = Config(
             addMavenDescriptor = false
@@ -81,13 +91,13 @@ ScalaModel(
         )
       ),
       Plugin(
-        "org.apache.maven.plugins" % "maven-surefire-plugin" % "2.17",
+        Plugins.surefire,
         configuration = Config(
           skipTests = true
         )
       ),
       Plugin(
-        "org.scalatest" % "scalatest-maven-plugin" % "1.0",
+        Plugins.scalatest,
         executions = Seq(Execution(id = "test", goals = Seq("test"))),
         configuration = Config(
           reportsDirectory = "${project.build.directory}/surefire-reports",
@@ -95,8 +105,8 @@ ScalaModel(
         )
       ),
       Plugin(
-        "net.alchim31.maven" % "scala-maven-plugin" % "3.2.1",
-        executions = Seq(Execution(goals = Seq("compile", "testCompile"))),
+        Plugins.scala,
+        executions = Seq(Execution(goals = Seq("add-source", "compile", "testCompile"))),
         configuration = Config(
           scalaVersion = scalaVersion.version,
           fork = true,
@@ -116,7 +126,7 @@ ScalaModel(
       build = Build(
         plugins = Seq(
           Plugin(
-            "org.apache.maven.plugins" % "maven-gpg-plugin" % "1.6",
+            Plugins.gpg,
             configuration = Config(
               repositoryId = "ossrh",
               url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
