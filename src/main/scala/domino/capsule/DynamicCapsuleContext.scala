@@ -22,7 +22,7 @@ trait DynamicCapsuleContext extends CapsuleContext {
     capsule.start()
 
     // Add capsule to the current set if there is one
-    dynamicCapsuleSet.value foreach { _ += capsule }
+    dynamicCapsuleSet.value.foreach { _ += capsule }
   }
 
   def executeWithinNewCapsuleScope(f: => Unit): CapsuleScope = {

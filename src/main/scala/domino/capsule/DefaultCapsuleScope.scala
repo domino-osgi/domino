@@ -8,6 +8,6 @@ package domino.capsule
  */
 class DefaultCapsuleScope(capsules: Traversable[Capsule]) extends CapsuleScope {
   def stop() {
-    capsules foreach { _.stop() }
+    capsules.foreach { _.stop() }
   }
 }
