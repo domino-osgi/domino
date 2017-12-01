@@ -2,6 +2,7 @@ Bundle-SymbolicName: ${bundle.symbolicName}
 
 Import-Package: \
   scala.*;version="[${scalaBinVersion},${scalaBinVersion}.50)", \
+  org.slf4j.*;resolution:=optional, \
   *
 
 Export-Package: \
