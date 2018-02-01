@@ -131,7 +131,7 @@ http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.1
 == Documentation
 
 * link:UserGuide.adoc[User Guide]
-* Scaladoc
+* https://domino-osgi.github.io/domino/scaladoc/1.0.0_2.10[Scaladoc (1.0.0)]
 * link:FAQ.adoc[FAQ]
 * https://gitter.im/domino-osgi/domino[Gitter chat]
 
