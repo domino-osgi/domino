@@ -75,12 +75,12 @@ Model(
     Deps.scalaReflect,
     Deps.osgiCore,
     Deps.osgiCompendium,
-    Dependency(Deps.slf4j, optional = true),
+    Dependency(Deps.slf4j, scope = "provided", optional = true),
     // test dependencies
     Deps.scalaTest % "test",
     Deps.felixConfigAdmin % "test",
-    Deps.pojosr % "test",
-    Deps.logbackClassic % "test"
+    Deps.pojosr % "test"
+  //    Deps.logbackClassic % "test"
   ),
   build = Build(
     outputDirectory = "${project.build.directory}/classes_" + scalaVersion.binaryVersion,
