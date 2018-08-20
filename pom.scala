@@ -3,7 +3,7 @@ import scala.collection.immutable._
 
 // Scala setup, you can specify the scala version via env variable SCALA_VERSION
 implicit val scalaVersion: ScalaVersion = System.getenv("SCALA_VERSION") match {
-  case null => ScalaVersion("2.12.3")
+  case null => ScalaVersion("2.12.6")
   case v => ScalaVersion(v)
 }
 println("Using Scala version: " + scalaVersion.version)
@@ -30,7 +30,7 @@ object Plugins {
   val jar = "org.apache.maven.plugins" % "maven-jar-plugin" % "2.5"
   val surefire = "org.apache.maven.plugins" % "maven-surefire-plugin" % "2.17"
   val scalatest = "org.scalatest" % "scalatest-maven-plugin" % "1.0"
-  val scala = "net.alchim31.maven" % "scala-maven-plugin" % "3.3.1"
+  val scala = "net.alchim31.maven" % "scala-maven-plugin" % "3.4.2"
   val gpg = "org.apache.maven.plugins" % "maven-gpg-plugin" % "1.6"
 }
 
@@ -42,6 +42,7 @@ Model(
     "maven.compiler.source" -> "1.6",
     "maven.compiler.target" -> "1.6",
     "project.build.sourceEncoding" -> "UTF-8",
+    "scala.version" -> scalaVersion.version,
     "scalaBinVersion" -> scalaVersion.binaryVersion,
     "bundle.symbolicName" -> "${project.artifactId}",
     "bundle.namespace" -> "domino"
@@ -79,8 +80,8 @@ Model(
     // test dependencies
     Deps.scalaTest % "test",
     Deps.felixConfigAdmin % "test",
-    Deps.pojosr % "test"
-  //    Deps.logbackClassic % "test"
+    Deps.pojosr % "test",
+    Deps.logbackClassic % "test"
   ),
   build = Build(
     outputDirectory = "${project.build.directory}/classes_" + scalaVersion.binaryVersion,
