@@ -16,14 +16,16 @@ import org.osgi.util.tracker.ServiceTracker
  * @tparam S Service type to be tracked
  */
 class ServiceWatcherCapsule[S <: AnyRef](
-    filter: Filter,
-    f: ServiceWatcherEvent[S] => Unit,
-    bundleContext: BundleContext) extends Capsule {
+  filter: Filter,
+  f: ServiceWatcherEvent[S] => Unit,
+  bundleContext: BundleContext
+)
+  extends Capsule {
 
   private[this] var _tracker: ServiceTracker[S, S] = _
 
   private[this] val log = DominoLogger[ServiceWatcherCapsule[_]]
-  
+
   /**
    * Returns the underlying service tracker as long as the current capsule scope is active.
    */
@@ -31,9 +33,11 @@ class ServiceWatcherCapsule[S <: AnyRef](
 
   def start() {
     log.debug(s"About to create service tracker with filter: ${filter}")
+
     // Create tracker matching this filter
     _tracker = new ServiceTracker[S, S](bundleContext, filter, null) {
       override def addingService(ref: ServiceReference[S]) = {
+        log.debug(s"Added service via service tracker with filter: ${filter}")
         val service = context.getService(ref)
         val watcherEvent = ServiceWatcherEvent.AddingService(service, ServiceWatcherContext(_tracker, ref))
         f(watcherEvent)
@@ -41,11 +45,13 @@ class ServiceWatcherCapsule[S <: AnyRef](
       }
 
       override def modifiedService(ref: ServiceReference[S], service: S) {
+        log.debug(s"Modified service via service tracker with filter: ${filter}")
         val watcherEvent = ServiceWatcherEvent.ModifiedService(service, ServiceWatcherContext(_tracker, ref))
         f(watcherEvent)
       }
 
       override def removedService(ref: ServiceReference[S], service: S) {
+        log.debug(s"Removed service via service tracker with filter: ${filter}")
         val watcherEvent = ServiceWatcherEvent.RemovedService(service, ServiceWatcherContext(_tracker, ref))
         try f(watcherEvent) finally context.ungetService(ref)
       }
@@ -56,8 +62,10 @@ class ServiceWatcherCapsule[S <: AnyRef](
   }
 
   def stop() {
+    log.debug(s"Stopping service tracker with filter: ${filter}")
     // Close tracker
     _tracker.close()
     _tracker = null
   }
+
 }
