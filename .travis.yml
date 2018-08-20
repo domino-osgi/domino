@@ -15,10 +15,11 @@ matrix:
       env: SCALA_VERSION=2.12.3
 
 before_script: 
-  - ./mvnw -version
+- mvn -N io.takari:maven:0.6.1:wrapper -Dmaven=3.5.4
+
 
 script:
-  - ./mvnw source:jar scala:doc-jar install
+- ./mvnw source:jar scala:doc-jar install
 
 notifications:
   webhooks:
