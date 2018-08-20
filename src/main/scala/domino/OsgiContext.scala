@@ -1,9 +1,10 @@
 package domino
 
-import org.osgi.framework.BundleContext
+import scala.util.control.NonFatal
+
 import domino.capsule._
 import domino.logging.internal.DominoLogger
-import scala.util.control.NonFatal
+import org.osgi.framework.BundleContext
 
 /**
  * Provides the basis for the Domino DSL by binding the bundle lifecycle to a capsule scope.
@@ -28,7 +29,7 @@ trait OsgiContext extends DynamicCapsuleContext with EmptyBundleActivator {
    */
   private[this] var bundleActiveCapsuleScope: Option[CapsuleScope] = None
 
-  private[this] val log = DominoLogger[OsgiContext]
+  private[this] val log = DominoLogger[this.type]
 
   /**
    * Returns the bundle context as long as the bundle is active.
@@ -60,7 +61,7 @@ trait OsgiContext extends DynamicCapsuleContext with EmptyBundleActivator {
     super.start(context)
 
     if (_bundleContext.isDefined) {
-      log.warn(s"A BundleContext is already defined. Was the bundle started before? Bundle: ${dumpBundle(context)}")
+      log.warn(s"A BundleContext is already defined. Was the bundle started before? Bundle: ${DominoUtil.dumpBundle(context)}")
     }
 
     // Make bundle context available in this class
@@ -69,24 +70,19 @@ trait OsgiContext extends DynamicCapsuleContext with EmptyBundleActivator {
     // Execute the handler if one was defined
     bundleActiveHandler match {
       case Some(f) =>
-        log.debug(s"Starting whenBundleActive of bundle: ${dumpBundle(context)}")
+        log.debug(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Starting whenBundleActive")
         // Executes f. All capsules added in f are added to a new capsule scope which is returned afterwards.
         try {
           bundleActiveCapsuleScope = Some(executeWithinNewCapsuleScope(f()))
         } catch {
           case NonFatal(e) =>
-            log.debug(e)(s"Exception thrown while starting whenBundleActive of bundle: ${dumpBundle(context)}")
+            log.debug(e)(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Exception thrown while starting whenBundleActive")
             throw e
         }
 
       case None =>
-        log.warn(s"Starting a OsgiContext (DominoActivator) without any registered whenBundleActive handler of bundle: ${dumpBundle(context)}")
+        log.warn(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Starting a OsgiContext (DominoActivator) without any registered whenBundleActive handler")
     }
-  }
-
-  private[this] def dumpBundle(context: BundleContext): String = {
-    val bundle = context.getBundle()
-    s"${bundle.getSymbolicName()}[${bundle.getBundleId()}]"
   }
 
   abstract override def stop(context: BundleContext) {
@@ -94,11 +90,11 @@ trait OsgiContext extends DynamicCapsuleContext with EmptyBundleActivator {
     try {
       bundleActiveCapsuleScope.foreach { mc =>
         try {
-          log.debug(s"Stopping whenBundleActive of bundle: ${dumpBundle(context)}")
+          log.debug(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Stopping whenBundleActive")
           mc.stop()
         } catch {
           case NonFatal(e) =>
-            log.debug(e)(s"Exception thrown while stopping whenBundleActive of bundle: ${dumpBundle(context)}")
+            log.debug(e)(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Exception thrown while stopping whenBundleActive")
             throw e
         } finally {
           bundleActiveCapsuleScope = None

@@ -23,7 +23,7 @@ class ServiceProviderCapsule[S](
   service: S
 ) extends Capsule {
 
-  private[this] val log = DominoLogger[ServiceProviderCapsule[_]]
+  private[this] val log = DominoLogger[this.type]
 
   protected var _reg: ServiceRegistration[S] = _
 
@@ -51,7 +51,7 @@ class ServiceProviderCapsule[S](
       javaPropertiesHashtable.put(tuple._1, tuple._2.asInstanceOf[AnyRef])
     }
 
-    log.debug(s"About to provide the service: ${service}\n  interfaces: ${typeArray.mkString(", ")}\n  properties: ${properties}")
+    log.debug(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Register service [${service}] with interfaces [${typeArray.mkString(", ")} and properties [${properties.mkString(", ")}]")
 
     // Register service
     val tmp = bundleContext.registerService(typeArray, service, javaPropertiesHashtable)
@@ -61,7 +61,7 @@ class ServiceProviderCapsule[S](
   def stop() {
     // Unregister
     try {
-      log.debug(s"Removing provided service: ${service}\n  interfaces: ${types.map(_._1).mkString(", ")}\n  properties: ${properties}")
+      log.debug(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Unregister service [${service}] with interfaces [${types.map(_._1).mkString(", ")}] and properties [${properties.mkString(", ")}]")
       _reg.unregister()
     } catch {
       case x: IllegalStateException =>

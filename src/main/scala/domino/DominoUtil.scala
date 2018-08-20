@@ -1,9 +1,12 @@
 package domino
 
-import java.util.{Vector, Hashtable, Dictionary}
-import org.osgi.framework.Constants
-import scala.reflect.runtime.universe._
+import java.util.{ Dictionary, Hashtable, Vector }
+
 import scala.collection.JavaConverters._
+import scala.reflect.runtime.universe._
+
+import org.osgi.framework.BundleContext
+import org.osgi.framework.Constants
 
 /**
  * Contains utility methods used throughout Domino.
@@ -13,7 +16,7 @@ object DominoUtil {
    * The OSGi service property key for saving the generic types expression.
    */
   val GenericsExpressionKey = "completeTypesExpression"
-  
+
   /**
    * Converts the given Scala Map to a Java Dictionary.
    */
@@ -31,7 +34,6 @@ object DominoUtil {
    */
   def convertToMap(dictionary: Dictionary[_, _]): Map[String, Any] = {
     val map = new collection.mutable.HashMap[String, Any]
-    import collection.JavaConverters._
     dictionary.keys.asScala.foreach { key =>
       val jValue = dictionary.get(key)
       val value = jValue match {
@@ -56,9 +58,9 @@ object DominoUtil {
    *  - `Map[String, Map[String, Integer]]`
    *  - `List[Number]`
    *  - `String`
-   *    
+   *
    * Example result: `";Map[String, Map[String, Integer]];List[Number];String;"` (package names omitted)
-   *    
+   *
    * @note A semicolon is used instead of a comma to separate the types.
    *
    * @param types Type objects which might contain information about generic type arguments
@@ -149,7 +151,6 @@ object DominoUtil {
     s"(${Constants.OBJECTCLASS}=$typeName)"
   }
 
-
   /**
    * Links to filter expressions with a logical AND if both are given, otherwise returns just one of it.
    *
@@ -173,4 +174,10 @@ object DominoUtil {
         filterTwo
     }
   }
+
+  def dumpBundle(context: BundleContext): String = {
+    val bundle = context.getBundle()
+    s"${bundle.getSymbolicName()}[${bundle.getBundleId()}]"
+  }
+
 }

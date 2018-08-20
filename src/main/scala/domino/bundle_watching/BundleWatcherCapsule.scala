@@ -1,5 +1,6 @@
 package domino.bundle_watching
 
+import domino.DominoUtil
 import domino.capsule.Capsule
 import domino.logging.internal.DominoLogger
 import org.osgi.framework.{ Bundle, BundleContext, BundleEvent }
@@ -17,7 +18,7 @@ class BundleWatcherCapsule(f: BundleWatcherEvent => Unit, bundleContext: BundleC
 
   private[this] var _tracker: BundleTracker[Bundle] = _
 
-  private[this] val log = DominoLogger[BundleWatcherCapsule]
+  private[this] val log = DominoLogger[this.type]
 
   /**
    * Returns the underlying bundle tracker used to implement this feature as long as the current scope is active.
@@ -25,7 +26,7 @@ class BundleWatcherCapsule(f: BundleWatcherEvent => Unit, bundleContext: BundleC
   def tracker = _tracker
 
   def start() {
-    log.debug(s"About to create and open bundle tracker")
+    log.debug(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Start tracking bundle lifecycle events")
 
     import org.osgi.framework.Bundle._
 
@@ -53,6 +54,7 @@ class BundleWatcherCapsule(f: BundleWatcherEvent => Unit, bundleContext: BundleC
   }
 
   def stop() {
+    log.debug(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Stop tracking bundle lifecycle events")
     // Stop tracking
     _tracker.close()
     _tracker = null
