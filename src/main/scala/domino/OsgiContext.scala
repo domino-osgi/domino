@@ -67,16 +67,20 @@ trait OsgiContext extends DynamicCapsuleContext with EmptyBundleActivator {
     _bundleContext = Option(context)
 
     // Execute the handler if one was defined
-    bundleActiveHandler.foreach { f =>
-      log.debug(s"Starting whenBundleActive of bundle: ${dumpBundle(context)}")
-      // Executes f. All capsules added in f are added to a new capsule scope which is returned afterwards.
-      try {
-        bundleActiveCapsuleScope = Some(executeWithinNewCapsuleScope(f()))
-      } catch {
-        case NonFatal(e) =>
-          log.debug(e)(s"Exception thrown while starting whenBundleActive of bundle: ${dumpBundle(context)}")
-          throw e
-      }
+    bundleActiveHandler match {
+      case Some(f) =>
+        log.debug(s"Starting whenBundleActive of bundle: ${dumpBundle(context)}")
+        // Executes f. All capsules added in f are added to a new capsule scope which is returned afterwards.
+        try {
+          bundleActiveCapsuleScope = Some(executeWithinNewCapsuleScope(f()))
+        } catch {
+          case NonFatal(e) =>
+            log.debug(e)(s"Exception thrown while starting whenBundleActive of bundle: ${dumpBundle(context)}")
+            throw e
+        }
+
+      case None =>
+        log.warn(s"Starting a OsgiContext (DominoActivator) without any registered whenBundleActive handler of bundle: ${dumpBundle(context)}")
     }
   }
 
