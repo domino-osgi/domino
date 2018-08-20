@@ -7,7 +7,7 @@ jdk:
 env: 
   - SCALA_VERSION=2.10.7
   - SCALA_VERSION=2.11.12
-  - SCALA_VERSION=2.12.3
+  - SCALA_VERSION=2.12.6
 
 matrix:
   exclude:
