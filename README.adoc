@@ -197,6 +197,12 @@ Domino is licensed under the http://www.opensource.org/licenses/mit-license[MIT 
 
 == Changelog
 
+=== {master}
+
+* Log un-/regististration of services
+* Log registrations of service trackers
+
+
 === Domino 1.1.2 - 2017-04-28
 
 * Support for Scala 2.12

@@ -1,8 +1,9 @@
 package domino.service_watching
 
 import domino.capsule.Capsule
+import domino.logging.internal.DominoLogger
+import org.osgi.framework.{ BundleContext, Filter, ServiceReference }
 import org.osgi.util.tracker.ServiceTracker
-import org.osgi.framework.{Filter, BundleContext, ServiceReference}
 
 /**
  * A capsule which executes the given event handlers on service state transitions while the current scope is active.
@@ -19,14 +20,17 @@ class ServiceWatcherCapsule[S <: AnyRef](
     f: ServiceWatcherEvent[S] => Unit,
     bundleContext: BundleContext) extends Capsule {
 
-  protected var _tracker: ServiceTracker[S, S] = _
+  private[this] var _tracker: ServiceTracker[S, S] = _
 
+  private[this] val log = DominoLogger[ServiceWatcherCapsule[_]]
+  
   /**
    * Returns the underlying service tracker as long as the current capsule scope is active.
    */
   def tracker = _tracker
 
   def start() {
+    log.debug(s"About to create service tracker with filter: ${filter}")
     // Create tracker matching this filter
     _tracker = new ServiceTracker[S, S](bundleContext, filter, null) {
       override def addingService(ref: ServiceReference[S]) = {

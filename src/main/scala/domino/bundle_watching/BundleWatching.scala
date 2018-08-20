@@ -1,7 +1,7 @@
 package domino.bundle_watching
 
 import domino.capsule.CapsuleContext
-import org.osgi.framework.{Bundle, BundleContext}
+import org.osgi.framework.{ Bundle, BundleContext }
 import org.osgi.util.tracker.BundleTracker
 
 /**

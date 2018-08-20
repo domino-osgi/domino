@@ -5,9 +5,13 @@ Import-Package: \
   org.slf4j.*;resolution:=optional, \
   *
 
+Private-Package: \
+  ${bundle.namespace}.logging.internal
+
+
 Export-Package: \
-  ${bundle.namespace};version="2.0.0", \
-  ${bundle.namespace}.bundle_watching;version="1.1.0", \
+  ${bundle.namespace};version="3.0.0", \
+  ${bundle.namespace}.bundle_watching;version="2.0.0", \
   ${bundle.namespace}.capsule;version="1.1.0", \
   ${bundle.namespace}.configuration_watching;version="2.0.0", \
   ${bundle.namespace}.logging;version="1.1.0", \
@@ -17,8 +21,8 @@ Export-Package: \
   ${bundle.namespace}.scala_osgi_metatype.builders;version="1.1.0", \
   ${bundle.namespace}.scala_osgi_metatype.interfaces;version="1.1.0", \
   ${bundle.namespace}.service_consuming;version="1.1.0", \
-  ${bundle.namespace}.service_providing;version="2.0.0", \
-  ${bundle.namespace}.service_watching;version="1.1.0"
+  ${bundle.namespace}.service_providing;version="2.0.1", \
+  ${bundle.namespace}.service_watching;version="2.0.0"
 
 #Include-Resource: \
 #  LICENSE, \

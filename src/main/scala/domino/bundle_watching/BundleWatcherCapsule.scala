@@ -1,8 +1,9 @@
 package domino.bundle_watching
 
 import domino.capsule.Capsule
+import domino.logging.internal.DominoLogger
+import org.osgi.framework.{ Bundle, BundleContext, BundleEvent }
 import org.osgi.util.tracker.BundleTracker
-import org.osgi.framework.{BundleContext, BundleEvent, Bundle}
 
 /**
  * A capsule for watching bundles coming and going as long as the current capsule scope is active. Tracks
@@ -13,7 +14,10 @@ import org.osgi.framework.{BundleContext, BundleEvent, Bundle}
  * @param bundleContext Bundle context
  */
 class BundleWatcherCapsule(f: BundleWatcherEvent => Unit, bundleContext: BundleContext) extends Capsule {
-  protected var _tracker: BundleTracker[Bundle] = _
+
+  private[this] var _tracker: BundleTracker[Bundle] = _
+
+  private[this] val log = DominoLogger[BundleWatcherCapsule]
 
   /**
    * Returns the underlying bundle tracker used to implement this feature as long as the current scope is active.
@@ -21,7 +25,9 @@ class BundleWatcherCapsule(f: BundleWatcherEvent => Unit, bundleContext: BundleC
   def tracker = _tracker
 
   def start() {
-    import Bundle._
+    log.debug(s"About to create and open bundle tracker")
+
+    import org.osgi.framework.Bundle._
 
     // Create a bundle tracker which tracks all bundle state transitions
     _tracker = new BundleTracker[Bundle](bundleContext, ACTIVE + INSTALLED + RESOLVED + STARTING + STOPPING + UNINSTALLED, null) {

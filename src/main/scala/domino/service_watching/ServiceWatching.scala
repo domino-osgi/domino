@@ -1,11 +1,12 @@
 package domino.service_watching
 
-import domino.capsule.{CapsuleScope, CapsuleContext}
+import scala.reflect.ClassTag
+import scala.reflect.runtime.universe._
+
+import domino.{ DominoImplicits, DominoUtil }
+import domino.capsule.{ CapsuleContext, CapsuleScope }
 import org.osgi.framework.BundleContext
 import org.osgi.util.tracker.ServiceTracker
-import domino.{DominoImplicits, DominoUtil}
-import scala.reflect.runtime.universe._
-import reflect.ClassTag
 
 /**
  * Provides convenient methods to add a service watcher to the current scope or wait until services are present.
