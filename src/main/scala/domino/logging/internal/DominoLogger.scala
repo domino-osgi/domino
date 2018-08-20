@@ -13,11 +13,17 @@ trait DominoLogger extends Serializable {
   def isDebugEnabled: Boolean
   def isTraceEnabled: Boolean
 
-  def error(msg: => String, throwable: Throwable = null): Unit
-  def warn(msg: => String, throwable: Throwable = null): Unit
-  def info(msg: => String, throwable: Throwable = null): Unit
-  def debug(msg: => String, throwable: Throwable = null): Unit
-  def trace(msg: => String, throwable: Throwable = null): Unit
+  def error(msg: => String): Unit
+  def warn(msg: => String): Unit
+  def info(msg: => String): Unit
+  def debug(msg: => String): Unit
+  def trace(msg: => String): Unit
+
+  def error(throwable: Throwable)(msg: => String): Unit
+  def warn(throwable: Throwable)(msg: => String): Unit
+  def info(throwable: Throwable)(msg: => String): Unit
+  def debug(throwable: Throwable)(msg: => String): Unit
+  def trace(throwable: Throwable)(msg: => String): Unit
 }
 
 object DominoLogger {
