@@ -4,7 +4,7 @@ import scala.reflect.ClassTag
 import scala.reflect.classTag
 
 /**
- * Experimental logger facade, meant for internal user in Domino OSGi.
+ * Experimental logger facade, meant for internal use in Domino OSGi.
  */
 trait DominoLogger extends Serializable {
   def isErrorEnabled: Boolean
