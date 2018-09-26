@@ -19,8 +19,6 @@ import org.osgi.util.tracker.ServiceTracker
  */
 trait ServiceWatching extends DominoImplicits {
 
-  private[this] lazy val log = DominoLogger[this.type]
-
   /** Dependency */
   protected def capsuleContext: CapsuleContext
 
