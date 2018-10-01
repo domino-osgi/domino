@@ -3,12 +3,12 @@ import scala.collection.immutable._
 
 // Scala setup, you can specify the scala version via env variable SCALA_VERSION
 implicit val scalaVersion: ScalaVersion = System.getenv("SCALA_VERSION") match {
-  case null => ScalaVersion("2.12.6")
+  case null => ScalaVersion("2.12.7")
   case v => ScalaVersion(v)
 }
 println("Using Scala version: " + scalaVersion.version)
 
-val dominoVersion = "1.1.3-SNAPSHOT"
+val dominoVersion = "1.1.3"
 val url = "https://github.com/domino-osgi/domino"
 
 object Deps {
