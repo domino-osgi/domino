@@ -8,7 +8,7 @@ implicit val scalaVersion: ScalaVersion = System.getenv("SCALA_VERSION") match {
 }
 println("Using Scala version: " + scalaVersion.version)
 
-val dominoVersion = "1.1.3"
+val dominoVersion = "1.1.4-SNAPSHOT"
 val url = "https://github.com/domino-osgi/domino"
 
 object Deps {
