@@ -1,13 +1,21 @@
+# Maven
+target/
+staging-settings.xml
+.polyglot.pom.scala
+.polyglot.pom.scala.asc
+
+# Eclipse
 .classpath
 .project
 .settings/
 .cache-main
 .cache-tests
 .scala_dependencies
+bin/
+
+# Idea
 *.iml
 .idea
-bin/
-target/
-staging-settings.xml
-.polyglot.pom.scala
-.polyglot.pom.scala.asc
+
+# Mill
+out/
