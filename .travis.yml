@@ -4,14 +4,18 @@ jdk:
   - oraclejdk8
   - openjdk8
 
+
 before_script: 
 - (echo "#!/usr/bin/env sh" && curl -L https://github.com/lihaoyi/mill/releases/download/0.2.8/0.2.8) > mill
 - chmod +x mill
 
-
 script:
 - ./mill _buildAll
 - ./mill _test
+
+after_failure:
+- cat out/mill-worker-1/logs 
+
 
 notifications:
   webhooks:
