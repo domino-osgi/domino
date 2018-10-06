@@ -2,24 +2,16 @@ language: java
 
 jdk:
   - oraclejdk8
-  - openjdk7
-
-env: 
-  - SCALA_VERSION=2.10.7
-  - SCALA_VERSION=2.11.12
-  - SCALA_VERSION=2.12.6
-
-matrix:
-  exclude:
-    - jdk: openjdk7
-      env: SCALA_VERSION=2.12.6
+  - openjdk8
 
 before_script: 
-- mvn -N io.takari:maven:0.6.1:wrapper -Dmaven=3.5.4
+- (echo "#!/usr/bin/env sh" && curl -L https://github.com/lihaoyi/mill/releases/download/0.2.8/0.2.8) > mill
+- chmod +x mill
 
 
 script:
-- ./mvnw source:jar scala:doc-jar install
+- ./mill _buildAll
+- ./mill _test
 
 notifications:
   webhooks:
