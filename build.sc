@@ -4,28 +4,28 @@ import mill.define.Task
 import mill.scalalib.publish._
 import ammonite.ops.up
 import $ivy.`de.tobiasroeser::mill-osgi:0.0.1-SNAPSHOT`, de.tobiasroeser.mill.osgi._
+// somehow, mill does not resolve this transitive dependency
+import $ivy.`org.slf4j:slf4j-api:1.7.25`
+import scala.collection.immutable.Seq
 
 val scalaVersions = Seq("2.12.7", "2.11.12", "2.10.7")
+val dominoVersion = "1.1.4-SNAPSHOT"
 
-def build() = T.command {
+def _build() = T.command {
   domino(scalaVersions.head).jar()
 }
 
-/**
- * Build JARs for all cross Scala versions.
- */
-def buildAll() = T.command {
-  Task.traverse(scalaVersions)(v => domino(v).jar)
+/** Build JARs for all cross Scala versions. */
+def _buildAll() = T.command {
+  Task.traverse(scalaVersions)(v => domino(v).osgiBundle)
 }
 
-def test() = T.command {
+def _test() = T.command {
   domino(scalaVersions.head).test.test()()
 }
 
-/**
- * Run tests against all cross Scala versions.
- */
-def testAll() = T.command {
+/** Run tests against all cross Scala versions. */
+def _testAll() = T.command {
   Task.traverse(scalaVersions)(v => domino(v).test.test())
 }
 
@@ -35,8 +35,6 @@ class DominoModule(val crossScalaVersion: String)
   extends CrossSbtModule
   with PublishModule
   with OsgiBundleModule {
-
-  def publishVersion = "1.1.4-SNAPSHOT"
 
   object Deps {
     val scalaLibrary = ivy"org.scala-lang:scala-library:${crossScalaVersion}"
@@ -53,28 +51,61 @@ class DominoModule(val crossScalaVersion: String)
 
   val millSourcePath = super.millSourcePath / up
 
-  def ivyDeps = Agg(
+  override def ivyDeps = Agg(
     Deps.scalaLibrary,
     Deps.scalaReflect,
     Deps.osgiCore,
     Deps.osgiCompendium,
     Deps.slf4j
   )
+  
+  override def osgiHeaders = T {
+    val scalaBinVersion = crossScalaVersion.split("[.]").take(2).mkString(".")
+    val namespace = "domino"
+    super.osgiHeaders().copy(
+      `Bundle-Name` = Some(s"Domino for Scala ${scalaBinVersion}"),
+      `Import-Package` = Seq(
+        s"""scala.*;version="[${scalaBinVersion},${scalaBinVersion}.50)"""",
+        "org.slf4j.*;resolution:=optional",
+        "*"
+      ),
+      `Private-Package` = Seq(
+        s"${namespace}.logging.internal"
+      ),
+      `Export-Package` = Seq(
+        s"""${namespace};version="3.0.0"""",
+        s"""${namespace}.bundle_watching;version="2.0.0"""",
+        s"""${namespace}.capsule;version="1.1.0"""",
+        s"""${namespace}.configuration_watching;version="2.0.0"""",
+        s"""${namespace}.logging;version="1.1.0"""",
+        s"""${namespace}.scala_logging;version="1.1.0"""",
+        s"""${namespace}.scala_osgi_metatype;version="1.1.0"""",
+        s"""${namespace}.scala_osgi_metatype.adapters;version="1.1.0"""",
+        s"""${namespace}.scala_osgi_metatype.builders;version="1.1.0"""",
+        s"""${namespace}.scala_osgi_metatype.interfaces;version="1.2.0"""",
+        s"""${namespace}.service_consuming;version="1.1.0"""",
+        s"""${namespace}.service_providing;version="2.1.0"""",
+        s"""${namespace}.service_watching;version="2.0.0""""
+      )
+    )
+  }
+
+  override def publishVersion = dominoVersion
 
   object test extends Tests {
 
-    def ivyDeps = Agg(
+    override def ivyDeps = Agg(
       Deps.scalaTest,
       Deps.felixConfigAdmin,
       Deps.pojosr,
       Deps.logbackClassic
     )
 
-    def testFrameworks = Seq("org.scalatest.tools.Framework")
+    override def testFrameworks = Seq("org.scalatest.tools.Framework")
 
   }
 
-  def pomSettings = PomSettings(
+  override def pomSettings = PomSettings(
     description = "A lightweight Scala library for writing elegant OSGi bundle activators",
     organization = "com.github.domino-osgi",
     url = "https://github.com/domino-osgi/domino",
