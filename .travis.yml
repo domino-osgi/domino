@@ -8,6 +8,8 @@ jdk:
 before_script: 
 - (echo "#!/usr/bin/env sh" && curl -L https://github.com/lihaoyi/mill/releases/download/0.2.8/0.2.8) > mill
 - chmod +x mill
+- git clone https://github.com/lefou/mill-osgi.git
+- (cd mill-osgi && ../mill _install)
 
 script:
 - ./mill _buildAll
