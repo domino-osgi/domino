@@ -32,9 +32,9 @@ def _testAll() = T.command {
 object domino extends Cross[DominoModule](scalaVersions: _*)
 
 class DominoModule(val crossScalaVersion: String)
-  extends CrossSbtModule
+  extends CrossScalaModule
   with PublishModule
-  with OsgiBundleModule {
+  with OsgiBundleModule { dominoModule =>
 
   object Deps {
     val scalaLibrary = ivy"org.scala-lang:scala-library:${crossScalaVersion}"
@@ -49,7 +49,9 @@ class DominoModule(val crossScalaVersion: String)
     val logbackClassic = ivy"ch.qos.logback:logback-classic:1.1.3"
   }
 
-  val millSourcePath = super.millSourcePath / up
+  override val millSourcePath = super.millSourcePath / up / 'src / 'main
+  override def sources = T.sources { millSourcePath / 'scala }
+  override def resources = T.sources { millSourcePath / 'resources }
 
   override def ivyDeps = Agg(
     Deps.scalaLibrary,
@@ -58,7 +60,7 @@ class DominoModule(val crossScalaVersion: String)
     Deps.osgiCompendium,
     Deps.slf4j
   )
-  
+
   override def osgiHeaders = T {
     val scalaBinVersion = crossScalaVersion.split("[.]").take(2).mkString(".")
     val namespace = "domino"
@@ -93,6 +95,10 @@ class DominoModule(val crossScalaVersion: String)
   override def publishVersion = dominoVersion
 
   object test extends Tests {
+
+    override val millSourcePath = dominoModule.millSourcePath / up / 'test
+    override def sources = T.sources { millSourcePath / 'scala }
+    override def resources = T.sources { millSourcePath / 'resources }
 
     override def ivyDeps = Agg(
       Deps.scalaTest,
