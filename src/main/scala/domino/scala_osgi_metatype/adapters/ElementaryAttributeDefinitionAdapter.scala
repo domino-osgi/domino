@@ -3,7 +3,6 @@ package domino.scala_osgi_metatype.adapters
 import domino.scala_osgi_metatype.interfaces.ElementaryAttributeDefinition
 
 
-
 /**
  * Provides the given Scala elementary attribute definition as an OSGi-compliant attribute definition.
  *
@@ -16,9 +15,7 @@ class ElementaryAttributeDefinitionAdapter[T](delegate: ElementaryAttributeDefin
   def getCardinality = 0
 
   lazy val getDefaultValue = {
-    if (delegate.defaultValue.isEmpty)
-      null
-    else
-      delegate.defaultValue map { _.toString } toArray
+    if (delegate.defaultValue.isEmpty) null
+    else delegate.defaultValue.map(_.toString).toArray
   }
 }

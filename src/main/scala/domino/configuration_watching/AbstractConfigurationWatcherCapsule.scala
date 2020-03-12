@@ -21,8 +21,8 @@ abstract class AbstractConfigurationWatcherCapsule(
   private[this] lazy val metaTypeProviderAdapter = metaTypeProvider map { new MetaTypeProviderAdapter(_) }
 
   def getObjectClassDefinition(id: String, locale: String) = {
-    metaTypeProviderAdapter map { _.getObjectClassDefinition(id, locale) } orNull
+    metaTypeProviderAdapter.map(_.getObjectClassDefinition(id, locale)).orNull
   }
 
-  def getLocales = metaTypeProviderAdapter map { _.getLocales } orNull
+  def getLocales = metaTypeProviderAdapter.map(_.getLocales).orNull
 }
