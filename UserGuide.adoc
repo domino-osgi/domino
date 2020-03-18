@@ -494,6 +494,14 @@ Note that you have access to the underlying service tracker and service referenc
 
 In case you primarily want to watch the service references, use `watchServiceRefs`. This can save some resources because the service is not looked up for each service reference.
 
+==== Debug service watching
+
+When the domino bundle is activated, it runs a monitor service, which will periodically log unsatisfied (and also satisfied) service watchers.
+
+By default, the log interval is `30` seconds (`30000` ms).
+You can change that default by providing a value in milliseconds as system property `domino.service_watching.monitor.interval`.
+A negative value disables the logging.
+
 
 === Listen to configuration changes
 

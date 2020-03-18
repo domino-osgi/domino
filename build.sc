@@ -10,7 +10,7 @@ import de.tobiasroeser.mill.osgi._
 import $ivy.`de.tototec::de.tobiasroeser.mill.publishM2:0.1.3`
 import de.tobiasroeser.mill.publishM2._
 
-val scalaVersions = Seq("2.13.1", "2.12.10", "2.11.12", "2.10.7")
+val scalaVersions = Seq("2.13.1", "2.12.11", "2.11.12", "2.10.7")
 val dominoVersion = "1.1.4-SNAPSHOT"
 
 def _all() = T.command {
@@ -86,6 +86,7 @@ class DominoModule(override val crossScalaVersion: String)
   override def osgiHeaders = T {
     super.osgiHeaders().copy(
       `Bundle-Name` = Some(s"Domino for Scala ${scalaBinVersion}"),
+      `Bundle-Activator` = Some("domino.internal.DominoBundleActivator"),
       `Import-Package` = Seq(
         s"""scala.*;version="[${scalaBinVersion},${scalaBinVersion}.50)"""",
         "org.slf4j.*;resolution:=optional",
@@ -106,7 +107,8 @@ class DominoModule(override val crossScalaVersion: String)
         """domino.scala_osgi_metatype.interfaces;version="1.2.0"""",
         """domino.service_consuming;version="1.1.0"""",
         """domino.service_providing;version="2.1.0"""",
-        """domino.service_watching;version="2.0.0""""
+        """domino.service_watching;version="2.0.1"""",
+        """domino.service_watching.monitor;version="1.0.0""""
       )
     )
   }
