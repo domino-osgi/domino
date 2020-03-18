@@ -1,23 +1,15 @@
 language: java
 
 jdk:
-  - oraclejdk8
   - openjdk8
-
-
-before_script: 
-- curl -L https://github.com/lihaoyi/mill/releases/download/0.2.8/0.2.8 > mill
-- ls -la mill
-- git clone --depth 1 https://github.com/lefou/mill-osgi.git
-- (cd mill-osgi && sh ../mill _install)
+  - openjdk11
 
 script:
-- sh mill _buildAll
-- sh mill _test
+- ./millw _buildAll
+- ./millw _test
 
 after_failure:
 - cat out/mill-worker-1/logs 
-
 
 notifications:
   webhooks:
