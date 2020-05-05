@@ -1,6 +1,6 @@
 package domino.scala_osgi_metatype.adapters
 
-import org.osgi.service.metatype.{ AttributeDefinition => JAttributeDefinition }
+import org.osgi.service.metatype.{AttributeDefinition => JAttributeDefinition}
 import domino.scala_osgi_metatype.interfaces.{Password, ValidationResult, AttributeDefinition}
 
 /**
@@ -20,7 +20,7 @@ abstract class AttributeDefinitionAdapter[T](delegate: AttributeDefinition[T]) e
     if (delegate.options.isEmpty) {
       null
     } else {
-      delegate.options map { _._1 } toArray
+      delegate.options.map(_._1).toArray
     }
   }
 
@@ -28,7 +28,7 @@ abstract class AttributeDefinitionAdapter[T](delegate: AttributeDefinition[T]) e
     if (delegate.options.isEmpty) {
       null
     } else {
-      delegate.options map { _._2.toString } toArray
+      delegate.options.map(_._2.toString).toArray
     }
   }
 

@@ -25,10 +25,10 @@ trait ObjectClassDefinitionConvenience {
    * }}}
    */
   lazy val defaultConfig = {
-    allAttributeDefinitions flatMap { definition =>
-      definition.defaultValue map { value =>
+    allAttributeDefinitions.flatMap { definition =>
+      definition.defaultValue.map { value =>
         definition.id -> value
       }
-    } toMap
+    }.toMap
   }
 }

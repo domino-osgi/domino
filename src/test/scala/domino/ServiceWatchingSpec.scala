@@ -13,12 +13,12 @@ import org.osgi.framework.FrameworkUtil
 import domino.test.PojoSrTestHelper
 
 /**
- * Currently tests only the DSL grammar and signatures but doesn't execute it.
+ * Currently, tests that contain a `pending` tests only the DSL grammar and signatures but doesn't execute it.
  */
 class ServiceWatchingSpec
-    extends WordSpecLike
-    with Matchers
-    with PojoSrTestHelper {
+  extends WordSpecLike
+  with Matchers
+  with PojoSrTestHelper {
 
   trait MyService {
     def doIt()

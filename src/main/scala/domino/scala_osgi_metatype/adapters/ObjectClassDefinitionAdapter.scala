@@ -1,6 +1,6 @@
 package domino.scala_osgi_metatype.adapters
 
-import org.osgi.service.metatype.{ ObjectClassDefinition => JObjectClassDefinition, AttributeDefinition => JAttributeDefinition }
+import org.osgi.service.metatype.{ObjectClassDefinition => JObjectClassDefinition, AttributeDefinition => JAttributeDefinition}
 import domino.scala_osgi_metatype.interfaces.{ListAttributeDefinition, ElementaryAttributeDefinition, ObjectClassDefinition}
 
 /**
@@ -22,10 +22,10 @@ class ObjectClassDefinitionAdapter(delegate: ObjectClassDefinition) extends JObj
     if (list.isEmpty) {
       null
     } else {
-      list map {
+      list.map {
         case ed: ElementaryAttributeDefinition[_] => new ElementaryAttributeDefinitionAdapter(ed)
         case ld: ListAttributeDefinition[_] => new ListAttributeDefinitionAdapter(ld)
-      } toArray
+      }.toArray
     }
   }
 

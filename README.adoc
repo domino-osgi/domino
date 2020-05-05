@@ -1,7 +1,7 @@
 = Domino
 :toc:
 :toc-placement: preamble
-:stable-version: 1.1.3
+:stable-version: 1.1.4
 
 ifdef::env-github[]
 image:https://travis-ci.org/domino-osgi/domino.svg?branch=master["Travis CI Build Status", link="https://travis-ci.org/domino-osgi/domino"]
@@ -104,6 +104,11 @@ Maven::
 </dependency>
 ----
 
+Mill::
+[source,scala,subs="attributes"]
+ivy"com.github.domino-osgi::domino:{stable-version}"
+
+
 SBT::
 [source,scala,subs="attributes"]
 "com.github.domino-osgi" %% "domino" % "{stable-version}"
@@ -114,18 +119,22 @@ compile 'com.github.domino-osgi:domino_${scala.version}:{stable-version}'
 
 Manual::
 [horizontal]
-Scala 2.10:::
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/{stable-version}/domino_2.10-{stable-version}.jar[domino_2.10-{stable-version}.jar],
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/{stable-version}/domino_2.10-{stable-version}-sources.jar[domino_2.10-{stable-version}-sources.jar],
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/{stable-version}/domino_2.10-{stable-version}-javadoc.jar[domino_2.10-{stable-version}-scaladoc.jar]
-Scala 2.11:::
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/{stable-version}/domino_2.11-{stable-version}.jar[domino_2.11-{stable-version}.jar],
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/{stable-version}/domino_2.11-{stable-version}-sources.jar[domino_2.11-{stable-version}-sources.jar],
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/{stable-version}/domino_2.11-{stable-version}-javadoc.jar[domino_2.11-{stable-version}-scaladoc.jar]
+Scala 2.13:::
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.13/{stable-version}/domino_2.13-{stable-version}.jar[domino_2.12-{stable-version}.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.13/{stable-version}/domino_2.13-{stable-version}-sources.jar[domino_2.12-{stable-version}-sources.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.13/{stable-version}/domino_2.13-{stable-version}-javadoc.jar[domino_2.12-{stable-version}-scaladoc.jar]
 Scala 2.12:::
 http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.12/{stable-version}/domino_2.12-{stable-version}.jar[domino_2.12-{stable-version}.jar],
 http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.12/{stable-version}/domino_2.12-{stable-version}-sources.jar[domino_2.12-{stable-version}-sources.jar],
 http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.12/{stable-version}/domino_2.12-{stable-version}-javadoc.jar[domino_2.12-{stable-version}-scaladoc.jar]
+Scala 2.11:::
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/{stable-version}/domino_2.11-{stable-version}.jar[domino_2.11-{stable-version}.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/{stable-version}/domino_2.11-{stable-version}-sources.jar[domino_2.11-{stable-version}-sources.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.11/{stable-version}/domino_2.11-{stable-version}-javadoc.jar[domino_2.11-{stable-version}-scaladoc.jar]
+Scala 2.10:::
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/{stable-version}/domino_2.10-{stable-version}.jar[domino_2.10-{stable-version}.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/{stable-version}/domino_2.10-{stable-version}-sources.jar[domino_2.10-{stable-version}-sources.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.10/{stable-version}/domino_2.10-{stable-version}-javadoc.jar[domino_2.10-{stable-version}-scaladoc.jar]
 
 
 == Documentation
@@ -150,24 +159,17 @@ If you want to show appreciation for the project, please "star" it on https://gi
 
 === Building Domino
 
-Domino is build with Apache Maven and the Polygot Scala Extension. At least Maven 3.3.1 is required.
+Domino is build with the https://github.com/lihaoyi/mill[Mill build tool].
 
-To cleanly build domino, use:
-
-----
-mvn clean package
-----
-
-
-To build domino for another Scala version, e.g. 2.10.5 (under a Unix-like OS), use:
+To cleanly build domino, you can use the bundles start script or your locally installed mill executable:
 
 ----
-SCALA_VERSION=2.10.5 mvn clean package
+./millw clean package
 ----
 
 === Creating a Release
 
-* Bump version in pom file
+* Bump version in `build.sc` file
 * Update Changelog
 * Review documentation
 * Create a git tag with the version
@@ -175,13 +177,13 @@ SCALA_VERSION=2.10.5 mvn clean package
 
 ==== Deploy to Maven Central / Sonatype Open Source Respository (OSSRH)
 
-Unfortunately, not all Maven plugins are ready yet for a Polyglot Maven setup, thus the current version 1.6.3 of the Maven Staging Plugin simply doen't work.
-
-To deploy a release to , use the shell script `makerelase.sh`.
-
-Please review the variables in the script, namely the `DOMINO_VERSION` and the `SCALA_VERSIONS`.
-
-When executed the script will create a `staging-settings.xml` (to which you should add your login credentials) and wait. After pressing enter it will build all artifatcs and upload them to the OSSRH Nexus where you must log-in and manually release these artifacts.
+----
+./millw mill.scalalib.PublishModule/publishAll \
+  --release true \
+  --signed true \
+  --publishArtifacts __.publishArtifacts \
+  --sonatypeCreds <YourSonatypeCreds>
+----
 
 == Credits
 
@@ -196,6 +198,12 @@ Thanks to ...
 Domino is licensed under the http://www.opensource.org/licenses/mit-license[MIT License].
 
 == Changelog
+
+=== Domino 1.1.4 - 2020-05-05
+
+* Support for Scala 2.13
+* Bumped supported Scala versions to latest releases
+* Added option to log currently unsatisfied service watchers
 
 === Domino 1.1.3 - 2018-10-01
 

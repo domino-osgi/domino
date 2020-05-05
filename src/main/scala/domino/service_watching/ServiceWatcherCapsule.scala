@@ -37,6 +37,7 @@ class ServiceWatcherCapsule[S <: AnyRef](
 
     // Create tracker matching this filter
     _tracker = new ServiceTracker[S, S](bundleContext, filter, null) {
+
       override def addingService(ref: ServiceReference[S]) = {
           val service = context.getService(ref)
         log.debug(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Adding service [${service}] for filter [${filter}]")

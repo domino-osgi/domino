@@ -1,25 +1,15 @@
 language: java
 
 jdk:
-  - oraclejdk8
-  - openjdk7
-
-env: 
-  - SCALA_VERSION=2.10.7
-  - SCALA_VERSION=2.11.12
-  - SCALA_VERSION=2.12.6
-
-matrix:
-  exclude:
-    - jdk: openjdk7
-      env: SCALA_VERSION=2.12.6
-
-before_script: 
-- mvn -N io.takari:maven:0.6.1:wrapper -Dmaven=3.5.4
-
+  - openjdk8
+  - openjdk11
 
 script:
-- ./mvnw source:jar scala:doc-jar install
+- ./millw _buildAll
+- ./millw _test
+
+after_failure:
+- cat out/mill-worker-1/logs 
 
 notifications:
   webhooks:
