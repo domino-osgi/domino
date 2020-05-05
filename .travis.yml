@@ -5,11 +5,11 @@ jdk:
   - openjdk11
 
 script:
-- ./millw _buildAll
-- ./millw _test
+- ./millw -i -j 0 __.compile
+- ./millw -i -j 0 __.testCached
 
 after_failure:
-- cat out/mill-worker-1/logs 
+- cat out/mill-worker-*/logs 
 
 notifications:
   webhooks:
