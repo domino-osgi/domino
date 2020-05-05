@@ -10,7 +10,7 @@ import de.tobiasroeser.mill.osgi._
 import $ivy.`de.tototec::de.tobiasroeser.mill.publishM2:0.1.3`
 import de.tobiasroeser.mill.publishM2._
 
-val scalaVersions = Seq("2.13.1", "2.12.11", "2.11.12", "2.10.7")
+val scalaVersions = Seq("2.13.2", "2.12.11", "2.11.12", "2.10.7")
 val dominoVersion = "1.1.4-SNAPSHOT"
 
 def _all() = T.command {
