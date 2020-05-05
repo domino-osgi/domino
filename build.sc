@@ -7,38 +7,10 @@ import mill.scalalib.publish._
 import $ivy.`de.tototec::de.tobiasroeser.mill.osgi:0.2.0`
 import de.tobiasroeser.mill.osgi._
 
-import $ivy.`de.tototec::de.tobiasroeser.mill.publishM2:0.1.3`
-import de.tobiasroeser.mill.publishM2._
-
 val scalaVersions = Seq("2.13.2", "2.12.11", "2.11.12", "2.10.7")
-val dominoVersion = "1.1.4-SNAPSHOT"
+val dominoVersion = "1.1.4"
 
-def _all() = T.command {
-  _buildAll()()
-  _testAll()()
-}
-
-def _build() = T.command {
-  domino(scalaVersions.head).osgiBundle()
-}
-
-/** Build JARs for all cross Scala versions. */
-def _buildAll() = T.command {
-  Task.traverse(scalaVersions)(v => domino(v).osgiBundle)
-}
-
-def _test() = T.command {
-  domino(scalaVersions.head).test.test()()
-}
-
-/** Run tests against all cross Scala versions. */
-def _testAll() = T.command {
-  // T.ctx().log.info("Test all")
-  // T.ctx().log.debug("Running all tests")
-  Task.traverse(scalaVersions)(v => domino(v).test.test())
-}
-
- object Deps {
+object Deps {
   val osgiCore = ivy"org.osgi:org.osgi.core:4.3.0"
   val osgiCompendium = ivy"org.osgi:org.osgi.compendium:4.3.0"
   val slf4j = ivy"org.slf4j:slf4j-api:1.7.25"
@@ -51,11 +23,9 @@ def _testAll() = T.command {
 }
 
 object domino extends Cross[DominoModule](scalaVersions: _*)
-
 class DominoModule(override val crossScalaVersion: String)
   extends CrossScalaModule
   with PublishModule
-  with PublishM2Module
   with OsgiBundleModule { dominoModule =>
 
   override def skipIdea = crossScalaVersion != scalaVersions.head
