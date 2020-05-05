@@ -8,7 +8,7 @@ import $ivy.`de.tototec::de.tobiasroeser.mill.osgi:0.2.0`
 import de.tobiasroeser.mill.osgi._
 
 val scalaVersions = Seq("2.13.2", "2.12.11", "2.11.12", "2.10.7")
-val dominoVersion = "1.1.4"
+val dominoVersion = "1.1.5"
 
 object Deps {
   val osgiCore = ivy"org.osgi:org.osgi.core:4.3.0"
@@ -42,7 +42,7 @@ class DominoModule(override val crossScalaVersion: String)
         Agg.empty[Dep]
       else
         Agg(
-          ivy"$scalaOrganization:scala-reflect:$scalaVersion".forceVersion()
+          ivy"${scalaOrganization()}:scala-reflect:${scalaVersion()}".forceVersion()
         )
   }
 

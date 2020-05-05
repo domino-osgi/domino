@@ -1,7 +1,7 @@
 = Domino
 :toc:
 :toc-placement: preamble
-:stable-version: 1.1.4
+:stable-version: 1.1.5
 
 ifdef::env-github[]
 image:https://travis-ci.org/domino-osgi/domino.svg?branch=master["Travis CI Build Status", link="https://travis-ci.org/domino-osgi/domino"]
@@ -198,6 +198,10 @@ Thanks to ...
 Domino is licensed under the http://www.opensource.org/licenses/mit-license[MIT License].
 
 == Changelog
+
+=== Domino 1.1.5 - 2020-05-05
+
+* Fixed Maven Central packaging
 
 === Domino 1.1.4 - 2020-05-05
 
