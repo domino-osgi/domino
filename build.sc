@@ -4,7 +4,7 @@ import mill.define.Task
 import mill.scalalib._
 import mill.scalalib.publish._
 
-import $ivy.`de.tototec::de.tobiasroeser.mill.osgi:0.2.0`
+import $ivy.`de.tototec::de.tobiasroeser.mill.osgi::0.3.2`
 import de.tobiasroeser.mill.osgi._
 
 val scalaVersions = Seq("2.13.2", "2.12.11", "2.11.12", "2.10.7")
