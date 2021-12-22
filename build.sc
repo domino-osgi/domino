@@ -38,7 +38,7 @@ class DominoModule(override val crossScalaVersion: String)
   override def artifactName = "domino"
 
   def scalaReflectIvyDeps = T{
-    if(mill.scalalib.api.Util.isDotty(crossScalaVersion))
+    if(mill.scalalib.api.Util.isDottyOrScala3(crossScalaVersion))
         Agg.empty[Dep]
       else
         Agg(
