@@ -52,7 +52,7 @@ class ConfigurationWatcherCapsule(
    */
   private[this] var oldOptConf: Option[Map[String, Any]] = None
 
-  override def start() {
+  override def start(): Unit = {
     // Service properties
     val propertiesMap = Map(Constants.SERVICE_PID -> servicePid)
 
@@ -69,7 +69,7 @@ class ConfigurationWatcherCapsule(
     _reg = tmp.asInstanceOf[ServiceRegistration[ManagedService]]
   }
 
-  override def stop() {
+  override def stop(): Unit = {
     // Stop capsules in the newly created capsule scope
     newCapsuleScope foreach { _.stop() }
 
@@ -78,7 +78,7 @@ class ConfigurationWatcherCapsule(
     _reg = null
   }
 
-  override def updated(conf: Dictionary[String, _]) {
+  override def updated(conf: Dictionary[String, _]): Unit = {
     // We query the config admin directly because the user can make sure then that the config value is already set.
     // See http://www.mail-archive.com/users@felix.apache.org/msg06764.html
     val safeOptConf = Option(conf).map(d => DominoUtil.convertToMap(d)).orElse(getConfigDirectly)
@@ -90,7 +90,7 @@ class ConfigurationWatcherCapsule(
   /**
    * Executes the handler only if the configuration has changed compared to the one which was used last.
    */
-  private[this] def executeBlockWithConfIfChanged(optConf: Option[Map[String, Any]]) {
+  private[this] def executeBlockWithConfIfChanged(optConf: Option[Map[String, Any]]): Unit = {
     if (oldOptConf != optConf) {
       executeBlockWithConf(optConf)
     }
@@ -99,7 +99,7 @@ class ConfigurationWatcherCapsule(
   /**
    * Executes the handler with the given configuration and saves it for future comparison.
    */
-  private[this] def executeBlockWithConf(optConf: Option[Map[String, Any]]) {
+  private[this] def executeBlockWithConf(optConf: Option[Map[String, Any]]): Unit = {
     // Stop capsules in previous scope
     newCapsuleScope foreach { _.stop() }
 

@@ -32,47 +32,47 @@ import java.util.logging.{Level => JLevel, Logger => JLogger}
  * @param jLogger JUL logger
  */
 class JavaUtilLoggingLogger(jLogger: JLogger) extends Logger {
-    def debug(message: => AnyRef) {
+    def debug(message: => AnyRef): Unit = {
         log(JLevel.FINE, message)
     }
     
-    def debug(message: => AnyRef, exception: => Throwable) {
+    def debug(message: => AnyRef, exception: => Throwable): Unit = {
         log(JLevel.FINE, message, exception)
     }
     
-    def info(message: => AnyRef) {
+    def info(message: => AnyRef): Unit = {
         log(JLevel.INFO, message)
     }
     
-    def info(message: => AnyRef, exception: => Throwable) {
+    def info(message: => AnyRef, exception: => Throwable): Unit = {
         log(JLevel.INFO, message, exception)
     }
     
-    def warn(message: => AnyRef) {
+    def warn(message: => AnyRef): Unit = {
         log(JLevel.WARNING, message)
     }
     
-    def warn(message: => AnyRef, exception: => Throwable) {
+    def warn(message: => AnyRef, exception: => Throwable): Unit = {
         log(JLevel.WARNING, message, exception)
     }
     
-    def error(message: => AnyRef) {
+    def error(message: => AnyRef): Unit = {
         log(JLevel.SEVERE, message)
     }
     
-    def error(message: => AnyRef, exception: => Throwable) {
+    def error(message: => AnyRef, exception: => Throwable): Unit = {
         log(JLevel.SEVERE, message, exception)
     }
     
-    def trace(message: => AnyRef) {
+    def trace(message: => AnyRef): Unit = {
         log(JLevel.FINER, message)
     }
     
-    def trace(message: => AnyRef, exception: => Throwable) {
+    def trace(message: => AnyRef, exception: => Throwable): Unit = {
         log(JLevel.FINER, message, exception)
     }
     
-    private def log(logLevel: JLevel, message: => AnyRef, exception: => Throwable = null) {
+    private def log(logLevel: JLevel, message: => AnyRef, exception: => Throwable = null): Unit = {
         if (jLogger.isLoggable(logLevel)) {
             val exceptionEvaluated = exception
             if (exceptionEvaluated == null) {

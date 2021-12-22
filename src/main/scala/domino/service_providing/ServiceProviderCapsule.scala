@@ -32,7 +32,7 @@ class ServiceProviderCapsule[S](
    */
   def reg = _reg
 
-  def start() {
+  def start(): Unit = {
     // Create array of class names under which the service shall be registered
     val typeArray = types.map(_._1).toArray
 
@@ -58,7 +58,7 @@ class ServiceProviderCapsule[S](
     _reg = tmp.asInstanceOf[ServiceRegistration[S]]
   }
 
-  def stop() {
+  def stop(): Unit = {
     // Unregister
     try {
       log.debug(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Unregister service [${service}] with interfaces [${types.map(_._1).mkString(", ")}] and properties [${properties.mkString(", ")}]")

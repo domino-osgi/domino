@@ -7,7 +7,7 @@ package domino.capsule
  * @param capsules capsules in the scope
  */
 class DefaultCapsuleScope(capsules: Traversable[Capsule]) extends CapsuleScope {
-  def stop() {
+  def stop(): Unit = {
     capsules.foreach { _.stop() }
   }
 }

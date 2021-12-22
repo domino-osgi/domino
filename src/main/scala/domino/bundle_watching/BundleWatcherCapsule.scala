@@ -25,25 +25,25 @@ class BundleWatcherCapsule(f: BundleWatcherEvent => Unit, bundleContext: BundleC
    */
   def tracker = _tracker
 
-  def start() {
+  def start(): Unit = {
     log.debug(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Start tracking bundle lifecycle events")
 
     import org.osgi.framework.Bundle._
 
     // Create a bundle tracker which tracks all bundle state transitions
     _tracker = new BundleTracker[Bundle](bundleContext, ACTIVE + INSTALLED + RESOLVED + STARTING + STOPPING + UNINSTALLED, null) {
-      override def addingBundle(bundle: Bundle, event: BundleEvent) = {
+      override def addingBundle(bundle: Bundle, event: BundleEvent): Bundle = {
         val watcherEvent = BundleWatcherEvent.AddingBundle(bundle, BundleWatcherContext(_tracker))
         f(watcherEvent)
         bundle
       }
 
-      override def modifiedBundle(bundle: Bundle, event: BundleEvent, obj: Bundle) {
+      override def modifiedBundle(bundle: Bundle, event: BundleEvent, obj: Bundle): Unit = {
         val watcherEvent = BundleWatcherEvent.ModifiedBundle(bundle, BundleWatcherContext(_tracker))
         f(watcherEvent)
       }
 
-      override def removedBundle(bundle: Bundle, event: BundleEvent, obj: Bundle) {
+      override def removedBundle(bundle: Bundle, event: BundleEvent, obj: Bundle): Unit = {
         val watcherEvent = BundleWatcherEvent.RemovedBundle(bundle, BundleWatcherContext(_tracker))
         f(watcherEvent)
       }
@@ -53,7 +53,7 @@ class BundleWatcherCapsule(f: BundleWatcherEvent => Unit, bundleContext: BundleC
     _tracker.open()
   }
 
-  def stop() {
+  def stop(): Unit = {
     log.debug(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Stop tracking bundle lifecycle events")
     // Stop tracking
     _tracker.close()

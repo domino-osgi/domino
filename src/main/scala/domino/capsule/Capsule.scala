@@ -14,10 +14,10 @@ trait Capsule {
   /**
    * Starts the capsule. After that, the capsule is active.
    */
-  def start()
+  def start(): Unit
 
   /**
    * Stops the capsule. After that, the capsule is inactive.
    */
-  def stop()
+  def stop(): Unit
 }

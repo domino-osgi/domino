@@ -13,5 +13,5 @@ trait CapsuleScope {
   /**
    * Stops all capsules in this scope.
    */
-  def stop()
+  def stop(): Unit
 }
