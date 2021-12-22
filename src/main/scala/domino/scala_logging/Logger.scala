@@ -37,50 +37,50 @@ trait Logger {
   /**
    * Logs the given message on debug level.
    */
-  def debug(message: => AnyRef)
+  def debug(message: => AnyRef): Unit
 
   /**
    * Logs the given message and exception on debug level.
    */
-  def debug(message: => AnyRef, exception: => Throwable)
+  def debug(message: => AnyRef, exception: => Throwable): Unit
 
   /**
    * Logs the given message on info level.
    */
-  def info(message: => AnyRef)
+  def info(message: => AnyRef): Unit
 
   /**
    * Logs the given message and exception on info level.
    */
-  def info(message: => AnyRef, exception: => Throwable)
+  def info(message: => AnyRef, exception: => Throwable): Unit
 
   /**
    * Logs the given message on warn level.
    */
-  def warn(message: => AnyRef)
+  def warn(message: => AnyRef): Unit
 
   /**
    * Logs the given message and exception on warn level.
    */
-  def warn(message: => AnyRef, exception: => Throwable)
+  def warn(message: => AnyRef, exception: => Throwable): Unit
 
   /**
    * Logs the given message on error level.
    */
-  def error(message: => AnyRef)
+  def error(message: => AnyRef): Unit
 
   /**
    * Logs the given message and exception on error level.
    */
-  def error(message: => AnyRef, exception: => Throwable)
+  def error(message: => AnyRef, exception: => Throwable): Unit
 
   /**
    * Logs the given message on trace level.
    */
-  def trace(message: => AnyRef)
+  def trace(message: => AnyRef): Unit
 
   /**
    * Logs the given message and exception on trace level.
    */
-  def trace(message: => AnyRef, exception: => Throwable)
+  def trace(message: => AnyRef, exception: => Throwable): Unit
 }

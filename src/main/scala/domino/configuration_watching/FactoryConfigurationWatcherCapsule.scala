@@ -54,7 +54,7 @@ class FactoryConfigurationWatcherCapsule(
    */
   private[this] var oldOptConfs = Map[String, Option[Map[String, Any]]]()
 
-  override def start() {
+  override def start(): Unit = {
     // Service properties
     val propertiesMap = Map(Constants.SERVICE_PID -> servicePid)
 
@@ -71,7 +71,7 @@ class FactoryConfigurationWatcherCapsule(
     _reg = tmp.asInstanceOf[ServiceRegistration[ManagedServiceFactory]]
   }
 
-  override def stop() {
+  override def stop(): Unit = {
     // Stop capsules in all newly created capsule scopes
     newCapsuleScopes.keys foreach { stopAndRemoveCapsuleScope }
 
@@ -80,9 +80,9 @@ class FactoryConfigurationWatcherCapsule(
     _reg = null
   }
 
-  override def getName() = name
+  override def getName(): String = name
 
-  override def updated(pid: String, conf: Dictionary[String, _]) {
+  override def updated(pid: String, conf: Dictionary[String, _]): Unit = {
     // Execute handler only if configuration has changed
     executeBlockWithConfIfChanged(pid, Option(conf).map(d => DominoUtil.convertToMap(d)))
   }
@@ -90,7 +90,7 @@ class FactoryConfigurationWatcherCapsule(
   /**
    * Executes the handler only if the configuration has changed compared to the one which was used last.
    */
-  private[this] def executeBlockWithConfIfChanged(pid: String, optConf: Option[Map[String, Any]]) {
+  private[this] def executeBlockWithConfIfChanged(pid: String, optConf: Option[Map[String, Any]]): Unit = {
     if (oldOptConfs.get(pid) != Some(optConf)) {
       executeBlockWithConf(pid, optConf)
     }
@@ -99,7 +99,7 @@ class FactoryConfigurationWatcherCapsule(
   /**
    * Executes the correct handler with the given configuration and saves the configuration for future comparison.
    */
-  private[this] def executeBlockWithConf(pid: String, optConf: Option[Map[String, Any]]) {
+  private[this] def executeBlockWithConf(pid: String, optConf: Option[Map[String, Any]]): Unit = {
     // If factory configuration was changed, we need to stop the capsules in the corresponding capsule scope first
     if (newCapsuleScopes.contains(pid)) {
       // Existing service is reconfigured. So we have to stop the capsule corresponding to the PID first.
@@ -137,14 +137,14 @@ class FactoryConfigurationWatcherCapsule(
     }
   }
 
-  def deleted(pid: String) {
+  def deleted(pid: String): Unit = {
     stopAndRemoveCapsuleScope(pid)
   }
 
   /**
    * Adds a capsule scope for the given PID.
    */
-  private[this] def addCapsuleScope(pid: String, capsuleScope: CapsuleScope, optConf: Option[Map[String, Any]]) {
+  private[this] def addCapsuleScope(pid: String, capsuleScope: CapsuleScope, optConf: Option[Map[String, Any]]): Unit = {
     newCapsuleScopes += (pid -> capsuleScope)
     oldOptConfs += (pid -> optConf)
   }
@@ -152,7 +152,7 @@ class FactoryConfigurationWatcherCapsule(
   /**
    * Stops the capsule scope for the given PID.
    */
-  private[this] def stopAndRemoveCapsuleScope(pid: String) {
+  private[this] def stopAndRemoveCapsuleScope(pid: String): Unit = {
     val capsuleScope = newCapsuleScopes(pid)
     capsuleScope.stop()
     newCapsuleScopes -= pid

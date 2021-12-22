@@ -48,7 +48,7 @@ trait OsgiContext extends DynamicCapsuleContext with EmptyBundleActivator {
    * @group Basics
    * @param f Handler
    */
-  def whenBundleActive(f: => Unit) {
+  def whenBundleActive(f: => Unit): Unit = {
     log.debug(s"Registering whenBundleActive for bundle in ${getClass()}")
     if (bundleActiveHandler.isDefined) {
       log.warn(s"Overriding already present whenBundleActive for bundle in ${getClass()}. The previous whenBundleActive will be ignored")
@@ -56,7 +56,7 @@ trait OsgiContext extends DynamicCapsuleContext with EmptyBundleActivator {
     bundleActiveHandler = Some(f _)
   }
 
-  abstract override def start(context: BundleContext) {
+  abstract override def start(context: BundleContext): Unit = {
     // Integrate into the stacked traits
     super.start(context)
 
@@ -85,7 +85,7 @@ trait OsgiContext extends DynamicCapsuleContext with EmptyBundleActivator {
     }
   }
 
-  abstract override def stop(context: BundleContext) {
+  abstract override def stop(context: BundleContext): Unit = {
     // Stop and release all the capsules in the scope
     try {
       bundleActiveCapsuleScope.foreach { mc =>
