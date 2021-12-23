@@ -17,7 +17,7 @@ trait CapsuleContext {
    *
    * @param capsule capsule
    */
-  def addCapsule(capsule: Capsule)
+  def addCapsule(capsule: Capsule): Unit
 
   /**
    * Creates a new capsule scope on top of the active one and executes the given function in it. So the function

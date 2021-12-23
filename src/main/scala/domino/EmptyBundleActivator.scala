@@ -9,9 +9,9 @@ import org.osgi.framework.{ BundleContext, BundleActivator }
  * @see [[http://www.artima.com/scalazine/articles/stackable_trait_pattern.html Stackable Trait Pattern]]
  */
 trait EmptyBundleActivator extends BundleActivator {
-  def start(context: BundleContext) {
+  def start(context: BundleContext): Unit = {
   }
 
-  def stop(context: BundleContext) {
+  def stop(context: BundleContext): Unit = {
   }
 }

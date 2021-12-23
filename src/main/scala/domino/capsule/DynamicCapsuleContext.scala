@@ -17,7 +17,7 @@ trait DynamicCapsuleContext extends CapsuleContext {
    */
   private val dynamicCapsuleSet = new DynamicVariable[Option[mutable.Set[Capsule]]](None)
 
-  def addCapsule(capsule: Capsule) {
+  def addCapsule(capsule: Capsule): Unit = {
     // Start the capsule immediately
     capsule.start()
 

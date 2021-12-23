@@ -32,13 +32,13 @@ class ServiceWatcherCapsule[S <: AnyRef](
    */
   def tracker = _tracker
 
-  def start() {
+  def start(): Unit = {
     log.debug(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Start tracking services with filter [${filter}]")
 
     // Create tracker matching this filter
     _tracker = new ServiceTracker[S, S](bundleContext, filter, null) {
 
-      override def addingService(ref: ServiceReference[S]) = {
+      override def addingService(ref: ServiceReference[S]): S = {
           val service = context.getService(ref)
         log.debug(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Adding service [${service}] for filter [${filter}]")
         val watcherEvent = ServiceWatcherEvent.AddingService(service, ServiceWatcherContext(_tracker, ref))
@@ -46,13 +46,13 @@ class ServiceWatcherCapsule[S <: AnyRef](
         service
       }
 
-      override def modifiedService(ref: ServiceReference[S], service: S) {
+      override def modifiedService(ref: ServiceReference[S], service: S): Unit = {
         log.debug(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Modified service [${service}] for filter [${filter}]")
         val watcherEvent = ServiceWatcherEvent.ModifiedService(service, ServiceWatcherContext(_tracker, ref))
         f(watcherEvent)
       }
 
-      override def removedService(ref: ServiceReference[S], service: S) {
+      override def removedService(ref: ServiceReference[S], service: S): Unit = {
         log.debug(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Removed service [${service}] for filter [${filter}]")
         val watcherEvent = ServiceWatcherEvent.RemovedService(service, ServiceWatcherContext(_tracker, ref))
         try f(watcherEvent) finally context.ungetService(ref)
@@ -63,7 +63,7 @@ class ServiceWatcherCapsule[S <: AnyRef](
     _tracker.open()
   }
 
-  def stop() {
+  def stop(): Unit = {
     log.debug(s"Bundle ${DominoUtil.dumpBundle(bundleContext)}: Stop tracking services with filter [${filter}]")
     // Close tracker
     _tracker.close()
