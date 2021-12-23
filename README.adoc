@@ -8,6 +8,7 @@ image:https://travis-ci.org/domino-osgi/domino.svg?branch=master["Travis CI Buil
 image:https://www.codacy.com/project/badge/afcdfefe80494be4bf729437dc3e2a9b["Codacy code quality", link="https://www.codacy.com/app/lefou/domino"]
 image:https://badge.waffle.io/domino-osgi/domino.svg?label=ready&title=Ready["Ready Stories", link="https://waffle.io/domino-osgi/domino"]
 image:https://badges.gitter.im/Join%20Chat.svg["Gitter chat", link="https://gitter.im/domino-osgi/domino?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge"]
+image:https://javadoc.io/badge2/com.github.domino-osgi/domino_2.13/javadoc.svg["ScalaDoc", link="https://javadoc.io/doc/com.github.domino-osgi/domino_2.13"]
 endif::[]
 
 
@@ -140,6 +141,7 @@ http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.1
 == Documentation
 
 * link:UserGuide.adoc[User Guide]
+* ScalaDoc hosted on https://javadoc.io/doc/com.github.domino-osgi/domino_2.13[javadoc.io]
 * https://domino-osgi.github.io/domino/scaladoc/1.0.0_2.10[Scaladoc (1.0.0)]
 * link:FAQ.adoc[FAQ]
 * https://gitter.im/domino-osgi/domino[Gitter chat]
