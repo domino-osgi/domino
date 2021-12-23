@@ -2,6 +2,7 @@
 :toc:
 :toc-placement: preamble
 :stable-version: 1.1.5
+:example-scala-version: 2.13.2
 
 ifdef::env-github[]
 image:https://github.com/domino-osgi/domino/actions/workflows/build.yml/badge.svg["Build and Test", link="https://github.com/domino-osgi/domino/actions/workflows/build.yml"]
@@ -163,10 +164,11 @@ If you want to show appreciation for the project, please "star" it on https://gi
 
 Domino is build with the https://github.com/lihaoyi/mill[Mill build tool].
 
-To cleanly build domino, you can use the bundles start script or your locally installed mill executable:
+To cleanly build domino (for Scala {example-scala-version}), you can use the bundles start script or your locally installed mill executable:
 
+[subs="attributes"]
 ----
-./millw clean package
+./mill domino[{example-scala-version}].jar
 ----
 
 === Creating a Release
@@ -180,7 +182,7 @@ To cleanly build domino, you can use the bundles start script or your locally in
 ==== Deploy to Maven Central / Sonatype Open Source Respository (OSSRH)
 
 ----
-./millw mill.scalalib.PublishModule/publishAll \
+./mill mill.scalalib.PublishModule/publishAll \
   --release true \
   --signed true \
   --publishArtifacts __.publishArtifacts \
