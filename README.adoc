@@ -120,9 +120,9 @@ compile 'com.github.domino-osgi:domino_${scala.version}:{stable-version}'
 Manual::
 [horizontal]
 Scala 2.13:::
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.13/{stable-version}/domino_2.13-{stable-version}.jar[domino_2.12-{stable-version}.jar],
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.13/{stable-version}/domino_2.13-{stable-version}-sources.jar[domino_2.12-{stable-version}-sources.jar],
-http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.13/{stable-version}/domino_2.13-{stable-version}-javadoc.jar[domino_2.12-{stable-version}-scaladoc.jar]
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.13/{stable-version}/domino_2.13-{stable-version}.jar[domino_2.13-{stable-version}.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.13/{stable-version}/domino_2.13-{stable-version}-sources.jar[domino_2.13-{stable-version}-sources.jar],
+http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.13/{stable-version}/domino_2.13-{stable-version}-javadoc.jar[domino_2.13-{stable-version}-scaladoc.jar]
 Scala 2.12:::
 http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.12/{stable-version}/domino_2.12-{stable-version}.jar[domino_2.12-{stable-version}.jar],
 http://search.maven.org/remotecontent?filepath=com/github/domino-osgi/domino_2.12/{stable-version}/domino_2.12-{stable-version}-sources.jar[domino_2.12-{stable-version}-sources.jar],
