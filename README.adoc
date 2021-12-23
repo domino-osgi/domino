@@ -164,8 +164,9 @@ If you want to show appreciation for the project, please "star" it on https://gi
 
 Domino is build with the https://github.com/lihaoyi/mill[Mill build tool].
 
-To cleanly build domino (for Scala 2.13), you can use the bundles start script or your locally installed mill executable:
+To cleanly build domino (for Scala {example-scala-version}), you can use the bundles start script or your locally installed mill executable:
 
+[subs="attributes"]
 ----
 ./mill domino[{example-scala-version}].jar
 ----
