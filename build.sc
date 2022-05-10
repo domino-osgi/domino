@@ -7,8 +7,8 @@ import mill.scalalib.publish._
 import $ivy.`de.tototec::de.tobiasroeser.mill.osgi::0.3.2`
 import de.tobiasroeser.mill.osgi._
 
-val scalaVersions = Seq("2.13.2", "2.12.11", "2.11.12", "2.10.7")
-val dominoVersion = "1.1.5"
+val scalaVersions = Seq("3.0.2", "2.13.2", "2.12.11", "2.11.12", "2.10.7")
+val dominoVersion = "1.1.6-SNAPSHOT"
 
 object Deps {
   val osgiCore = ivy"org.osgi:org.osgi.core:4.3.0"
@@ -38,7 +38,7 @@ class DominoModule(override val crossScalaVersion: String)
   override def artifactName = "domino"
 
   def scalaReflectIvyDeps = T{
-    if(mill.scalalib.api.Util.isDotty(crossScalaVersion))
+    if(mill.scalalib.api.Util.isDottyOrScala3(crossScalaVersion))
         Agg.empty[Dep]
       else
         Agg(
